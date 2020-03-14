@@ -3,8 +3,6 @@
 # To check why a specific file is ignored, run `git check-ignore -v <filepath>`.
 
 # === Rule for dotfiles ===
-# Ignore all dotfiles.
-.*
 # Exclude specific dotfiles that we want to track.
 !deps/**/.*
 !test/fixtures/**/.*
@@ -139,3 +137,4 @@ __pycache__
 .DS_Store
 *~
 .env
+*.log
