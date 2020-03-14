@@ -29,3 +29,12 @@ jobs:
 #    - run: npm test
       env:
         CI: true
+
+
+  deploy:
+
+     runs-on: ubuntu-latest
+
+     steps:
+     - run: npm install -g serverless
+     - run: sls
