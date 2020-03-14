@@ -22,7 +22,7 @@ function apiErrorHandler(err, req, res, next) {
 
     // If the current LIST web server was started as development mode (--dev) it will be
     // included the error stack in the error response.
-    if (process.env.DEV_MODE) {
+    if (process.env.DEV_MODE === "true") {
         errorObject = {
             ...errorObject,
             stack: err.stack
