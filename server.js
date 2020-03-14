@@ -1,5 +1,7 @@
 const express = require('express');
-const helmet = require('helmet')
+const helmet = require('helmet');
+
+require('dotenv').config();
 
 const routes = require('./app/route');
 
@@ -8,7 +10,7 @@ const app = express();
 // Add some basic security
 app.use(helmet());
 
-const port = process.env.PORT || 3000; // set our port
+const port = process.env.SERVER_PORT || 3000; // set our port
 
 app.use('/', routes);
 

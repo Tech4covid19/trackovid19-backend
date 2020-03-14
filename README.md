@@ -13,3 +13,5 @@ npm install
 ```
 node server.js
 ```
+
+:warning: Change `.env.local`to `.env`
