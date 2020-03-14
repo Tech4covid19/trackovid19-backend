@@ -44,7 +44,25 @@ function resourceNotFoundHandler (req, res, next) {
     next(err);
 }
 
+/**
+ * Checks if the current API user is Authenticated.
+ * If the user is authenticated the response from API should proceed. Otherwise the API should return an response
+ * with the unauthorized status code.
+ */
+function isAuthenticated (req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        logger('express-middleware-auth').info(
+            `Actual client session ${req.sessionID}, doesn't have permissions to access ${req.originalUrl}`
+        );
+
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED).send(API_ERRORS.USER_NOT_AUTHENTICATED);
+    }
+}
+
 module.exports = {
     apiErrorHandler,
-    resourceNotFoundHandler
+    resourceNotFoundHandler,
+    isAuthenticated
 };
