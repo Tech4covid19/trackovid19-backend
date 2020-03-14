@@ -1,8 +1,12 @@
-
 const express = require('express');
+const helmet = require('helmet')
+
 const routes = require('./app/route');
 
 const app = express();
+
+// Add some basic security
+app.use(helmet());
 
 const port = process.env.PORT || 3000; // set our port
 

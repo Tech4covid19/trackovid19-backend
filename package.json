@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Tech4covid19/trackovid19-backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "helmet": "^3.21.3"
   }
 }
