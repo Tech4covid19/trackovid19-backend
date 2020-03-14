@@ -5,7 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+     - master
+     - deploy-aws
+
   pull_request:
     branches: [ master ]
 
@@ -36,5 +39,6 @@ jobs:
      runs-on: ubuntu-latest
 
      steps:
-     - run: npm install -g serverless
+     - uses: actions/checkout@v2
+     - run: npm install serverless
      - run: sls
