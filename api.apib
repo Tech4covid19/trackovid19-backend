@@ -1,0 +1,208 @@
+FORMAT: 1A
+HOST: https://trackcovid.pt/
+
+# trackcovid
+
+The API for the tarckcovid app.
+
+## User [/users/{user_id}] 
+
++ Parameters
+    + user_id (number) - ID of the user in the form of an integer
+
+### Retrieve an user [GET]
+
++ Response 200 (application/json)
+        {
+            "user": {
+                "id": "999", 
+                "fbId": "<fb-provided-id>",
+                "cases": [
+                    {
+                            "id": 123,
+                            "fbId": "<fb-provided-id>",
+                            "postalCode": "xxxx-xx",
+                            "geo": {
+                                "lat": 0,
+                                "lon": 0
+                            },
+                            "condition": "normal",
+                            "timestamp": "2012-04-23T18:25:43.511Z"
+                        },
+                    {
+                            "id": 123,
+                            "fbId": "<fb-provided-id>",
+                            "postalCode": "xxxx-xx",
+                            "geo": {
+                                "lat": 0,
+                                "lon": 0
+                            },
+                            "condition": "normal",
+                            "timestamp": "2012-04-23T18:25:43.511Z"
+                        }
+                        
+                ],
+                "network": {
+                    "direct": [
+                        {
+                            "condition": "infected",
+                            "value": 10
+                        },
+                        {
+                            "condition": "quarentine",
+                            "value": 10
+                        }
+                    ],
+                    "indirect": [
+                        {
+                            "condition": "infected",
+                            "value": 10
+                        },
+                        {
+                            "condition": "quarentine",
+                            "value": 10
+                        }
+                    ]
+                }
+            } 
+            
+        }
+    
++ Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
+
+
+## Cases Collection [/cases]
+
+### List All Cases [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "case": {
+                    "id": 123,
+                    "fbId": "<fb-provided-id>",
+                    "postalCode": "xxxx-xx",
+                    "geo": {
+                        "lat": 0,
+                        "lon": 0
+                    },
+                    "condition": "normal|infected|quarentine|symptomatic|recovered",
+                    "timestamp": "2012-04-23T18:25:43.511Z"
+                }
+            }
+        ]
+        
+        + Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
+
+### Create a New Case [POST]
+
+Create a new case
+
++ Request (application/json)
+
+        {
+            "case": {
+                "fbId": "<fb-provided-id>",
+                "postalCode": "xxxx-xx",
+                "geo": {
+                    "lat": 0,
+                    "lon": 0
+                },
+                "condition": "normal|infected|quarentine|symptomatic|recovered",
+                "timestamp": "2012-04-23T18:25:43.511Z"
+            }
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /cases/123
+
+    + Body
+
+            {
+                "case": {
+                    "id": 123,
+                    "fbId": "<fb-provided-id>",
+                    "postalCode": "xxxx-xx",
+                    "geo": {
+                        "lat": 0,
+                        "lon": 0
+                    },
+                    "condition": "normal|infected|quarentine|symptomatic|recovered",
+                    "timestamp": "2012-04-23T18:25:43.511Z"
+                }
+            }
+
++ Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
+
+## Case [/cases/{case_id}]
+
++ Parameters
+    + case_id (number) - ID of the case in the form of an integer
+
+### Retrieve a case [GET]
+
++ Response 200 (application/json)
+        {
+            "case": {
+                "id": 123,
+                "fbId": "<fb-provided-id>",
+                "postalCode": "xxxx-xx",
+                "geo": {
+                    "lat": 0,
+                    "lon": 0
+                },
+                "condition": "normal|infected|quarentine|symptomatic|recovered",
+                "timestamp": "2012-04-23T18:25:43.511Z"
+            }
+        }
+    
++ Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
+
+### Update a case [POST]
+
++ Response 200 (application/json)
+        {
+            "case": {
+                "id": 123,
+                "fbId": "<fb-provided-id>",
+                "postalCode": "xxxx-xx",
+                "geo": {
+                    "lat": 0,
+                    "lon": 0
+                },
+                "condition": "normal|infected|quarentine|symptomatic|recovered",
+                "timestamp": "2012-04-23T18:25:43.511Z"
+            }
+        }
+
++ Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
+    
+
+### Remove a case [DELETE]
+
++ Response 204
+    
+
++ Response 401 (application/json)
+        {
+          "error": "error.unauthorized"
+        }
