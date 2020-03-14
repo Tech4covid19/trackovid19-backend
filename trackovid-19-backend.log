@@ -1,1 +1,74 @@
 2020-03-14T19:07:29.480Z [server] info: trackovid-19 server started on port 3000 
+2020-03-14T19:23:40.409Z [server] info: trackovid-19 server started on port 3000 
+2020-03-14T19:23:55.906Z [trackovid-api] info: ::1 - GET / HTTP/1.1 200 41 - 4.467 ms 
+2020-03-14T19:24:08.094Z [trackovid-api] info: ::1 - GET /users HTTP/1.1 404 49 - 0.637 ms 
+2020-03-14T19:24:10.842Z [trackovid-api] info: ::1 - GET /user HTTP/1.1 200 34 - 1.284 ms 
+2020-03-14T19:33:13.086Z [server] info: trackovid-19 server started on port 3000 
+2020-03-14T19:33:15.913Z [express-middleware] error: Resource not found. Request: /user 
+2020-03-14T19:33:15.914Z [express-middleware] error: Error: Not Found
+    at resourceNotFoundHandler (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/utils/express-middleware.js:38:17)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:275:10)
+    at logger (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/morgan/index.js:144:5)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7 
+2020-03-14T19:33:15.924Z [trackovid-api] info: ::1 - GET /user HTTP/1.1 404 95 - 5.794 ms 
+2020-03-14T19:33:37.898Z [express-middleware] error: Resource not found. Request: /users 
+2020-03-14T19:33:37.899Z [express-middleware] error: Error: Not Found
+    at resourceNotFoundHandler (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/utils/express-middleware.js:38:17)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:275:10)
+    at logger (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/morgan/index.js:144:5)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7 
+2020-03-14T19:33:37.903Z [trackovid-api] info: ::1 - GET /users HTTP/1.1 404 95 - 3.215 ms 
+2020-03-14T19:34:27.156Z [server] info: trackovid-19 server started on port 3000 
+2020-03-14T19:34:29.512Z [express-middleware] error: Resource not found. Request: /users 
+2020-03-14T19:34:29.514Z [express-middleware] error: Error: Not Found
+    at resourceNotFoundHandler (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/utils/express-middleware.js:39:17)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:275:10)
+    at logger (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/morgan/index.js:144:5)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7 
+2020-03-14T19:34:29.524Z [trackovid-api] info: ::1 - GET /users HTTP/1.1 404 1485 - 7.914 ms 
+2020-03-14T19:34:37.701Z [express-middleware] error: Resource not found. Request: /user 
+2020-03-14T19:34:37.702Z [express-middleware] error: Error: Not Found
+    at resourceNotFoundHandler (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/utils/express-middleware.js:39:17)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:275:10)
+    at logger (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/morgan/index.js:144:5)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7 
+2020-03-14T19:34:37.706Z [trackovid-api] info: ::1 - GET /user HTTP/1.1 404 1485 - 4.521 ms 
+2020-03-14T19:35:41.922Z [server] info: trackovid-19 server started on port 3000 
+2020-03-14T19:35:42.656Z [trackovid-api] info: ::1 - GET /user HTTP/1.1 200 34 - 2.576 ms 
+2020-03-14T19:35:46.817Z [express-middleware] error: Resource not found. Request: /users 
+2020-03-14T19:35:46.817Z [express-middleware] error: Error: Not Found
+    at resourceNotFoundHandler (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/utils/express-middleware.js:39:17)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5)
+    at trim_prefix (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:317:13)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:335:12)
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:275:10)
+    at /Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:635:15
+    at next (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/index.js:260:14)
+    at jsonParser (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/body-parser/lib/types/json.js:110:7)
+    at Layer.handle [as handle_request] (/Users/victor.fernandes/Documents/Tech4covid19/trackovid19-backend/node_modules/express/lib/router/layer.js:95:5) 
+2020-03-14T19:35:46.823Z [trackovid-api] info: ::1 - GET /users HTTP/1.1 404 1497 - 3.562 ms 
