@@ -6,12 +6,16 @@
 
 ```
 npm install
+
+OR
+
+yarn install
 ```
 
 # Start server
 
 ```
-node server.js
+npm start dev
 ```
 
 :warning: Change `.env.local`to `.env`
