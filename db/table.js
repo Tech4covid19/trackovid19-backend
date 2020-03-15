@@ -74,7 +74,7 @@ module.exports = (table) => ({
 
 		const keys = Object.keys(fields)
 		const indexes = keys.map((_, i) => `${(i + 1)}`).join(', ')
-		const values = Object.values(fields).push(id)
+		const values = Object.values(fields)
 
 		if (values.length <= 1) {
 			return null

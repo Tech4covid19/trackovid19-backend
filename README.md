@@ -19,3 +19,6 @@ npm start dev
 ```
 
 :warning: Change `.env.local`to `.env`
+
+
+# Endpoints

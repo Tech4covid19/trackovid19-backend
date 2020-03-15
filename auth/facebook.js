@@ -10,7 +10,7 @@ passport.use(new Strategy({
     callbackURL: process.env.FB_CALLBACK_URL,
     profileFields: ['id', 'displayName', 'photos', 'email'],
     enableProof: true
-}, function(accessToken, refreshToken, profile, cb) {
+}, function (accessToken, refreshToken, profile, cb) {
     return cb(null, profile._json);
 }));
 
@@ -19,7 +19,10 @@ router.get("/facebook", passport.authenticate("facebook"));
 router.get("/facebook/callback",
     passport.authenticate("facebook", {
         failureRedirect: "/auth/fail",
-    }), (req, res) => res.redirect("/api/user/")
+    }), (req, res) => {
+        //TODO create user
+        res.redirect("/api/user/")
+    }
 );
 
 router.get("/fail", (req, res) => {

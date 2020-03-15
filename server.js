@@ -32,7 +32,7 @@ app.use(json());
 // Initialize the REST API logger
 app.use(morgan('short', { stream: logger('trackovid-api').restAPILogger }));
 
-app.use('/api/', isAuthenticated, api);
+app.use('/api/', api);
 
 // Handles with the 404 Not Found
 app.use(resourceNotFoundHandler);
