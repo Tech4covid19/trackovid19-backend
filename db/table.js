@@ -2,7 +2,7 @@ const db = require('./connection')
 
 /**
  * Provides methods which abstract common CRUD queries for a single table.
- * 
+ *
  * @param {string}	table	The name of the database table
  */
 module.exports = (table) => ({
@@ -16,7 +16,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Performs the query: SELECT * FROM <table> WHERE <restrictions>
-	 * 
+	 *
 	 * @param {string}	restrictions	A set of restrictions to apply. This is a SQL string (ex: <restr1> AND <restr2> AND ...).
 	 * @param {array}	values			The arguments to be replaced in the final SQL (link to $<argumentIndex> string in the SQL command).
 	 * @param {Client}	client			If provided, will use this client connection instead of creating a new one. Useful for transactions.
@@ -36,7 +36,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Selects a single row from this table.
-	 * 
+	 *
 	 * @param {number}	id		The row's id.
 	 * @param {Client}	client	The current client connection, if any.
 	 */
@@ -46,7 +46,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Performs the query: UPDATE <table> SET (<fieldA> = <valueA>, <fieldB> = <valueB>...) WHERE id = <id>
-	 * 
+	 *
 	 * @param {number}					id		The row's ID value.
 	 * @param {Object<string, object>}	fields	A key-value map, where each key refers to a column name, and the value to the value to insert (duh).
 	 * @param {Client}					client	If provided, will use this client connection instead of creating a new one. Useful for transactions.
@@ -65,7 +65,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Performs the query: INSERT INTO <table> VALUES (<fieldA> = <valueA>, <fieldB> = <valueB>...)
-	 * 
+	 *
 	 * @param {string}					table	The table name
 	 * @param {Object<string, object>}	fields	A key-value map, where each key refers to a column name, and the value to the value to insert (duh).
 	 * @param {Client}					client	If provided, will use this client connection instead of creating a new one. Useful for transactions.
@@ -80,12 +80,12 @@ module.exports = (table) => ({
 			return null
 		}
 
-		return db.query(`INSERT INTO ${table} (${keys}) VALUES (${indexes})`, values, client)
+		return db.query(`INSERT INTO ${table} (${keys}) VALUES (${indexes}) RETURNING *`, values, client)
 	},
 
 	/**
 	 * Performs the query: DELETE FROM <table> WHERE id = <id>
-	 * 
+	 *
 	 * @param {string}	table	The table name
 	 * @param {number}	id		The row's id.
 	 * @param {Client}	client	If provided, will use this client connection instead of creating a new one. Useful for transactions.
@@ -97,7 +97,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Obtains the values as an array for a given column.
-	 * 
+	 *
 	 * @param {number}	id		The row's id.
 	 * @param {number}	name	The column name.
 	 * @param {Client}	client	The current client connection, if any.
@@ -108,7 +108,7 @@ module.exports = (table) => ({
 
 	/**
 	 * Obtains the value of a single row column.
-	 * 
+	 *
 	 * @param {number}	id		The row's id.
 	 * @param {number}	name	The column name.
 	 * @param {Client}	client	The current client connection, if any.

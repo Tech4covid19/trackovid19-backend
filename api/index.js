@@ -8,6 +8,7 @@ if (process.env.MOCK_SERVICES === "true") {
 }
 else {
     router.use('/user', require('./user'));
+    router.use('/case', require('./case'));
 }
 
 module.exports = router;
