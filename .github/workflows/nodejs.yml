@@ -39,5 +39,13 @@ jobs:
      runs-on: ubuntu-latest
 
      steps:
-     - uses: actions/checkout@v2
-     - run: npm install aws-xray-sdk
+     - name: checkout source code
+       uses: actions/checkout@v2
+     - name: default deploy
+       uses: appleboy/lambda-action@master
+       with:
+         aws_access_key_id: AKIAIVS2HJQYUTZ3GETQ
+         aws_secret_access_key: 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
+         aws_region: eu-west-3
+         function_name: trackovid19-backend
+         source: ./
