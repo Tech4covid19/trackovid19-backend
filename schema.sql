@@ -108,8 +108,3 @@ CREATE TABLE example (
     unix_timestamp int default extract(epoch from now())
 );
 --DROP TABLE IF EXISTS examples CASCADE;
-
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS history CASCADE;
-DROP TABLE IF EXISTS network CASCADE;
-DROP TYPE IF EXISTS statustype CASCADE;
