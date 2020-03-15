@@ -53,14 +53,14 @@ module.exports = (table) => ({
 	 */
 	update: function (id, fields, client = null) {
 
-		const operation = Object.keys(fields).map((key, i) => `${key} = ${(i + 1)}`).join(', ')
-		const values = Object.values(fields).push(id)
+		const operation = Object.keys(fields).map((key, i) => `${key} = $${(i + 1)}`).join(', ')
+		const values = Object.values(fields).concat([id])
 
 		if (values.length <= 1) {
 			return false
 		}
 
-		return db.query(`UPDATE ${table} SET ${operation} WHERE id = ${id}`, values, client)
+		return db.query(`UPDATE ${table} SET ${operation} WHERE id = $${(values.length)}`, values, client)
 	},
 
 	/**
@@ -73,7 +73,7 @@ module.exports = (table) => ({
 	insert: async function (fields, client = null) {
 
 		const keys = Object.keys(fields)
-		const indexes = keys.map((_, i) => `${(i + 1)}`).join(', ')
+		const indexes = keys.map((_, i) => `$${(i + 1)}`).join(', ')
 		const values = Object.values(fields)
 
 		if (values.length <= 1) {
