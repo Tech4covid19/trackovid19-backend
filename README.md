@@ -66,6 +66,36 @@ Run it:
 sls deploy
 ```
 
+You should see
+
+```sh
+Serverless: Uploading artifacts...
+Serverless: Uploading service trackovid19-backend.zip file to S3 (2.78 MB)...
+Serverless: Validating template...
+Serverless: Updating Stack...
+Serverless: Checking Stack update progress...
+..............
+Serverless: Stack update finished...
+Service Information
+service: trackovid19-backend
+stage: dev
+region: eu-west-1
+stack: trackovid19-backend-dev
+resources: 12
+api keys:
+  None
+endpoints:
+  ANY - https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/
+  ANY - https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/{proxy+}
+functions:
+  server: trackovid19-backend-dev-server
+layers:
+  None
+Serverless: Removing old service artifacts from S3...
+Serverless: Run the "serverless" command to setup monitoring, troubleshooting and testing.
+
+```
+
 # Debug
 
 ```sh
