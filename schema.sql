@@ -62,21 +62,31 @@ CREATE INDEX IF NOT EXISTS network_id0 ON network (user_id);
 --DROP TABLE IF EXISTS network CASCADE;
 
 --View To Easily Get Latest User Health Status For Each User:
-DROP VIEW latest_status;
-CREATE VIEW latest_status AS
-    SELECT a.user_id, a.status, a.symptoms, a.timestamp
-    FROM history a WHERE NOT EXISTS (
-        SELECT 1 FROM history b
-        WHERE a.user_id = b.user_id
-          AND a.timestamp < b.timestamp);
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'latest_status') THEN
+        CREATE VIEW latest_status AS
+            SELECT a.user_id, a.status, a.symptoms, a.timestamp
+            FROM history a WHERE NOT EXISTS (
+                SELECT 1 FROM history b
+                WHERE a.user_id = b.user_id
+                  AND a.timestamp < b.timestamp);
+    END IF;
+END$$;
+--DROP VIEW latest_status;
 
 --View To Easily Get Latest Network Health Status For Each User:
-DROP VIEW network_status;
-CREATE VIEW network_status AS
-    SELECT b.user_id, b.met_with, c.status, c.symptoms, c.timestamp
-    FROM users a
-    INNER JOIN network b ON a.id = b.user_id
-    INNER JOIN latest_status c ON b.met_with = c.user_id;
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'network_status') THEN
+        CREATE VIEW network_status AS
+            SELECT b.user_id, b.met_with, c.status, c.symptoms, c.timestamp
+            FROM users a
+            INNER JOIN network b ON a.id = b.user_id
+            INNER JOIN latest_status c ON b.met_with = c.user_id;
+    END IF;
+END$$;
+--DROP VIEW network_status;
 
 --Dummy Data For Test Proposes
 DELETE FROM users where id in ('1','2','3');
@@ -119,4 +129,3 @@ CREATE TABLE IF NOT EXISTS example (
     unix_timestamp int default extract(epoch from now())
 );
 --DROP TABLE IF EXISTS examples CASCADE;
-
