@@ -3,7 +3,8 @@
 --  user_symptoms : list of all possible symptoms
 --  users : list of all users and their basic info
 --  history : all historic of registered user health status
---  network : all user networks with other users
+--  network : user network info (facebook_id, name, email, ..)
+--  user_network : all user connections with his network
 
 --Current DB Views:
 --  latest_status : easily access any user current status
