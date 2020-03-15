@@ -102,6 +102,9 @@ _UpgradeReport_Files/
 /tools/doc/node_modules
 /tools/clang-format/node_modules
 
+# NPM rules
+package-lock.json
+
 # === Rules for test artifacts ===
 /*.tap
 /*.xml
