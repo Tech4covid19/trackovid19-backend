@@ -50,7 +50,10 @@ function resourceNotFoundHandler (req, res, next) {
  * with the unauthorized status code.
  */
 function isAuthenticated (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (process.env.MOCK_SERVICES === "true") {
+        next();
+    }
+    else if (req.isAuthenticated()) {
         next();
     } else {
         logger('express-middleware-auth').info(
