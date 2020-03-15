@@ -2,6 +2,12 @@ const { Router } = require('express');
 const router = Router();
 
 // API routes
-router.use('/user', require('./user'));
+if (process.env.MOCK_SERVICES === "true") {
+    router.use('/user', require('./mocks/user'));
+    router.use('/case', require('./mocks/case'));
+}
+else {
+    router.use('/user', require('./user'));
+}
 
 module.exports = router;

@@ -5,7 +5,7 @@ HOST: https://trackcovid.pt/
 
 The API for the tarckcovid app.
 
-## User [/users/{user_id}] 
+## User [/users/{user_id}]
 
 + Parameters
     + user_id (number) - ID of the user in the form of an integer
@@ -14,8 +14,7 @@ The API for the tarckcovid app.
 
 + Response 200 (application/json)
         {
-            "user": {
-                "id": "999", 
+                "id": "999",
                 "fbId": "<fb-provided-id>",
                 "cases": [
                     {
@@ -65,13 +64,12 @@ The API for the tarckcovid app.
                     ]
                 }
             } 
-            
-        }
     
 + Response 401 (application/json)
         {
           "error": "error.unauthorized"
         }
+
 
 
 ## Cases Collection [/cases]
@@ -82,7 +80,6 @@ The API for the tarckcovid app.
 
         [
             {
-                "case": {
                     "id": 123,
                     "fbId": "<fb-provided-id>",
                     "postalCode": "xxxx-xx",
@@ -93,7 +90,6 @@ The API for the tarckcovid app.
                     "condition": "normal|infected|quarentine|symptomatic|recovered",
                     "timestamp": "2012-04-23T18:25:43.511Z"
                 }
-            }
         ]
         
         + Response 401 (application/json)
@@ -108,16 +104,14 @@ Create a new case
 + Request (application/json)
 
         {
-            "case": {
-                "fbId": "<fb-provided-id>",
-                "postalCode": "xxxx-xx",
-                "geo": {
-                    "lat": 0,
-                    "lon": 0
-                },
-                "condition": "normal|infected|quarentine|symptomatic|recovered",
-                "timestamp": "2012-04-23T18:25:43.511Z"
-            }
+            "fbId": "<fb-provided-id>",
+            "postalCode": "xxxx-xx",
+            "geo": {
+                "lat": 0,
+                "lon": 0
+            },
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
+            "timestamp": "2012-04-23T18:25:43.511Z"
         }
 
 + Response 201 (application/json)
@@ -129,17 +123,15 @@ Create a new case
     + Body
 
             {
-                "case": {
-                    "id": 123,
-                    "fbId": "<fb-provided-id>",
-                    "postalCode": "xxxx-xx",
-                    "geo": {
-                        "lat": 0,
-                        "lon": 0
-                    },
-                    "condition": "normal|infected|quarentine|symptomatic|recovered",
-                    "timestamp": "2012-04-23T18:25:43.511Z"
-                }
+                "id": 123,
+                "fbId": "<fb-provided-id>",
+                "postalCode": "xxxx-xx",
+                "geo": {
+                    "lat": 0,
+                    "lon": 0
+                },
+                "condition": "normal|infected|quarentine|symptomatic|recovered",
+                "timestamp": "2012-04-23T18:25:43.511Z"
             }
 
 + Response 401 (application/json)
@@ -156,17 +148,15 @@ Create a new case
 
 + Response 200 (application/json)
         {
-            "case": {
-                "id": 123,
-                "fbId": "<fb-provided-id>",
-                "postalCode": "xxxx-xx",
-                "geo": {
-                    "lat": 0,
-                    "lon": 0
-                },
-                "condition": "normal|infected|quarentine|symptomatic|recovered",
-                "timestamp": "2012-04-23T18:25:43.511Z"
-            }
+            "id": 123,
+            "fbId": "<fb-provided-id>",
+            "postalCode": "xxxx-xx",
+            "geo": {
+                "lat": 0,
+                "lon": 0
+            },
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
+            "timestamp": "2012-04-23T18:25:43.511Z"
         }
     
 + Response 401 (application/json)
@@ -178,17 +168,15 @@ Create a new case
 
 + Response 200 (application/json)
         {
-            "case": {
-                "id": 123,
-                "fbId": "<fb-provided-id>",
-                "postalCode": "xxxx-xx",
-                "geo": {
-                    "lat": 0,
-                    "lon": 0
-                },
-                "condition": "normal|infected|quarentine|symptomatic|recovered",
-                "timestamp": "2012-04-23T18:25:43.511Z"
-            }
+            "id": 123,
+            "fbId": "<fb-provided-id>",
+            "postalCode": "xxxx-xx",
+            "geo": {
+                "lat": 0,
+                "lon": 0
+            },
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
+            "timestamp": "2012-04-23T18:25:43.511Z"
         }
 
 + Response 401 (application/json)
