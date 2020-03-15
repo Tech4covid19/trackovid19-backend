@@ -22,7 +22,7 @@ let mock = {
                 value: 10
             },
             {
-                condition: "quarantine",
+                condition: "quarentine",
                 value: 20
             },
             {
@@ -45,7 +45,7 @@ let mock = {
                 value: 10
             },
             {
-                condition: "quarantine",
+                condition: "quarentine",
                 value: 20
             },
             {

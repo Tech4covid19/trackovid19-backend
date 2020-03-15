@@ -1,3 +1,4 @@
+const serverless = require('serverless-http');
 const dotenv = require('dotenv');
 const express = require('express');
 const helmet = require('helmet');
@@ -22,6 +23,13 @@ app.use(session({
     saveUninitialized: true
 }));
 
+app.get('/', (req, res) => {
+    res.send({ application: 'trackovid', version: '1' });
+  });
+app.post('/getback', (req, res) => {
+    res.send({ ...req.body });
+});
+
 auth(app);
 
 // Add some basic security
@@ -43,7 +51,9 @@ app.use(apiErrorHandler);
 
 const port = process.env.APP_SERVER_PORT || 3000; // set our port
 
-// Start the server
-app.listen(port);
+// Start the server -> Dev
+// app.listen(port);
+// Deploy the server -> Serverless
+module.exports.handler = serverless(app);
 
 logger('server').info(`trackovid-19 server started on port ${port}`);

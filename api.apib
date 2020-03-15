@@ -3,7 +3,7 @@ HOST: https://trackcovid.pt/
 
 # trackcovid
 
-The API for the trackcovid app.
+The API for the tarckcovid app.
 
 ## User [/users/{user_id}]
 
@@ -39,7 +39,7 @@ The API for the trackcovid app.
                             "condition": "normal",
                             "timestamp": "2012-04-23T18:25:43.511Z"
                         }
-
+                        
                 ],
                 "network": {
                     "direct": [
@@ -48,7 +48,7 @@ The API for the trackcovid app.
                             "value": 10
                         },
                         {
-                            "condition": "quarantine",
+                            "condition": "quarentine",
                             "value": 10
                         }
                     ],
@@ -58,13 +58,13 @@ The API for the trackcovid app.
                             "value": 10
                         },
                         {
-                            "condition": "quarantine",
+                            "condition": "quarentine",
                             "value": 10
                         }
                     ]
                 }
-            }
-
+            } 
+    
 + Response 401 (application/json)
         {
           "error": "error.unauthorized"
@@ -87,11 +87,11 @@ The API for the trackcovid app.
                         "lat": 0,
                         "lon": 0
                     },
-                    "condition": "normal|infected|quarantine|symptomatic|recovered",
+                    "condition": "normal|infected|quarentine|symptomatic|recovered",
                     "timestamp": "2012-04-23T18:25:43.511Z"
                 }
         ]
-
+        
         + Response 401 (application/json)
         {
           "error": "error.unauthorized"
@@ -110,7 +110,7 @@ Create a new case
                 "lat": 0,
                 "lon": 0
             },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
             "timestamp": "2012-04-23T18:25:43.511Z"
         }
 
@@ -130,7 +130,7 @@ Create a new case
                     "lat": 0,
                     "lon": 0
                 },
-                "condition": "normal|infected|quarantine|symptomatic|recovered",
+                "condition": "normal|infected|quarentine|symptomatic|recovered",
                 "timestamp": "2012-04-23T18:25:43.511Z"
             }
 
@@ -155,10 +155,10 @@ Create a new case
                 "lat": 0,
                 "lon": 0
             },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
             "timestamp": "2012-04-23T18:25:43.511Z"
         }
-
+    
 + Response 401 (application/json)
         {
           "error": "error.unauthorized"
@@ -175,7 +175,7 @@ Create a new case
                 "lat": 0,
                 "lon": 0
             },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
+            "condition": "normal|infected|quarentine|symptomatic|recovered",
             "timestamp": "2012-04-23T18:25:43.511Z"
         }
 
@@ -183,12 +183,12 @@ Create a new case
         {
           "error": "error.unauthorized"
         }
-
+    
 
 ### Remove a case [DELETE]
 
 + Response 204
-
+    
 
 + Response 401 (application/json)
         {

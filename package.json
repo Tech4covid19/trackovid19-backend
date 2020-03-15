@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "start:dev": "DEBUG=* nodemon -w server.js -w api -w auth -w mock -w db"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -27,13 +26,10 @@
     "helmet": "^3.21.3",
     "lodash": "^4.17.15",
     "morgan": "^1.9.1",
-    "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "pg": "^7.18.2",
+    "serverless-http": "^2.3.2",
     "winston": "^3.2.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.2"
   }
 }
