@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "start:dev": "DEBUG=* nodemon -w server.js -w api -w auth -w mock -w db"
+    "start:dev": "DEBUG=* nodemon $NODE_DEBUG_OPTION -w server.js -w api -w auth -w mock -w db"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Tech4covid19/trackovid19-backend#readme",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "deep-freeze": "^0.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
