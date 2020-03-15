@@ -16,12 +16,18 @@
 --\d <view> : get <view> info
 
 --Possible Status For A Given User:
-CREATE TYPE statustype as ENUM ('infected', 'recovered', 'normal');
-ALTER TYPE statustype ADD VALUE 'quarentine';
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'statustype') THEN
+        CREATE TYPE statustype as ENUM ('infected', 'recovered', 'normal', 'quarentine');
+        ALTER TYPE statustype ADD VALUE 'self quarentine';
+    END IF;
+END$$;
 --DROP TYPE IF EXISTS statustype CASCADE;
 
 --Table Users With All User Info:
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id varchar(16) primary key,
     hash bytea,
     age integer,
@@ -31,31 +37,32 @@ CREATE TABLE users (
     timestamp timestamp without time zone default (now() at time zone 'utc'),
     unix_ts int default extract(epoch from now())
 );
-CREATE UNIQUE INDEX users_id0 ON users (id);
+CREATE INDEX IF NOT EXISTS users_id0 ON users (id);
 --DROP TABLE IF EXISTS users CASCADE;
 
 --Table History With The Whole User Health History:
-CREATE TABLE history (
+CREATE TABLE IF NOT EXISTS history (
     user_id varchar(16) references users(id),
     status statustype,
     symptoms bool,
     timestamp timestamp without time zone default (now() at time zone 'utc'),
     unix_ts int default extract(epoch from now())
 );
-CREATE INDEX history_id0 ON history (user_id, timestamp);
+CREATE INDEX IF NOT EXISTS history_id0 ON history (user_id, timestamp);
 --DROP TABLE IF EXISTS history CASCADE;
 
 --Table Network With The Whole Users Network/Connections:
-CREATE TABLE network (
+CREATE TABLE IF NOT EXISTS network (
     user_id varchar(16) references users(id),
     met_with varchar(16) references users(id),
     timestamp timestamp without time zone default (now() at time zone 'utc'),
     unix_ts int default extract(epoch from now())
 );
-CREATE INDEX network_id0 ON network (user_id);
+CREATE INDEX IF NOT EXISTS network_id0 ON network (user_id);
 --DROP TABLE IF EXISTS network CASCADE;
 
 --View To Easily Get Latest User Health Status For Each User:
+DROP VIEW latest_status;
 CREATE VIEW latest_status AS
     SELECT a.user_id, a.status, a.symptoms, a.timestamp
     FROM history a WHERE NOT EXISTS (
@@ -64,6 +71,7 @@ CREATE VIEW latest_status AS
           AND a.timestamp < b.timestamp);
 
 --View To Easily Get Latest Network Health Status For Each User:
+DROP VIEW network_status;
 CREATE VIEW network_status AS
     SELECT b.user_id, b.met_with, c.status, c.symptoms, c.timestamp
     FROM users a
@@ -71,6 +79,9 @@ CREATE VIEW network_status AS
     INNER JOIN latest_status c ON b.met_with = c.user_id;
 
 --Dummy Data For Test Proposes
+DELETE FROM users where id in ('1','2','3');
+DELETE FROM history where user_id in ('1','2','3');
+DELETE FROM network where user_id in ('1','2','3');
 INSERT INTO users(id, hash, age, city, ip, info) values('1', '1', 1, 'Lisboa', null, null);
 INSERT INTO users(id, hash, age, city, ip, info) values('2', '2', 1, 'Lisboa', null, null);
 INSERT INTO users(id, hash, age, city, ip, info) values('3', '3', 1, 'Lisboa', null, null);
@@ -94,7 +105,7 @@ SELECT status, count(1) FROM latest_status GROUP BY status;
 SELECT status, count(1) FROM network_status WHERE user_id='1' GROUP BY status;
 
 --Dummy Table With Column Type Examples
-CREATE TABLE example (
+CREATE TABLE IF NOT EXISTS example (
     user_id varchar(16) references users(id),
     inteiro integer,
     numerico numeric,
@@ -108,3 +119,4 @@ CREATE TABLE example (
     unix_timestamp int default extract(epoch from now())
 );
 --DROP TABLE IF EXISTS examples CASCADE;
+
