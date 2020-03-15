@@ -18,4 +18,4 @@ yarn install
 npm start dev
 ```
 
-:warning: Change `.env.local`to `.env`
+:warning: Change `.env.local` to `.env`

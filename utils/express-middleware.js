@@ -1,6 +1,7 @@
 const logger = require('./logger');
 const HTTP_STATUS_CODE = require('../enums/http-status-code');
 const API_ERRORS = require('../enums/api-errors');
+const { hasAuthentication } = require('../utils/common');
 
 /**
  * Handles the unexpected API errors
@@ -50,7 +51,7 @@ function resourceNotFoundHandler (req, res, next) {
  * with the unauthorized status code.
  */
 function isAuthenticated (req, res, next) {
-    if (req.isAuthenticated() || process.env.MOCK_SERVICES === "true") {
+    if (req.isAuthenticated() || !hasAuthentication() || process.env.MOCK_SERVICES === "true") {
         next();
     } else {
         logger('express-middleware-auth').info(

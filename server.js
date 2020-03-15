@@ -9,11 +9,12 @@ dotenv.config();
 
 const logger = require('./utils/logger');
 const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./utils/express-middleware');
+const { hasAuthentication } = require('./utils/common');
 
 const api = require('./api');
-const auth = require('./auth');
 
 const app = express();
+const serverLogger = logger('server');
 
 app.use(session({
     secret: process.env.APP_SESSION_SALT,
@@ -22,7 +23,12 @@ app.use(session({
     saveUninitialized: true
 }));
 
-auth(app);
+if (hasAuthentication()) {
+    const auth = require('./auth');
+
+    serverLogger.info('Server started with authentication configured');
+    auth(app);
+}
 
 // Add some basic security
 app.use(helmet());
@@ -46,4 +52,4 @@ const port = process.env.APP_SERVER_PORT || 3000; // set our port
 // Start the server
 app.listen(port);
 
-logger('server').info(`trackovid-19 server started on port ${port}`);
+serverLogger.info(`trackovid-19 server started on port ${port}`);
