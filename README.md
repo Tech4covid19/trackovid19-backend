@@ -5,17 +5,21 @@
 # Install dependencies
 
 ```
-npm install
-
-OR
-
 yarn install
 ```
 
-# Start server
+# Start server in production mode
 
 ```
-npm start dev
+yarn start
+```
+
+# Start server in dev mode
+
+This will reload your files.
+
+```
+yarn start:dev
 ```
 
 :warning: Change `.env.local`to `.env`
