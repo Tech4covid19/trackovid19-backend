@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon -w server -w api -w auth"
+    "start:dev": "DEBUG=* nodemon -w server.js -w api -w auth -w mock -w db"
   },
   "repository": {
     "type": "git",
@@ -32,5 +32,8 @@
     "passport-facebook": "^3.0.0",
     "pg": "^7.18.2",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
