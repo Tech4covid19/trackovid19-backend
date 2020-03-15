@@ -1,3 +1,20 @@
+--Current DB Tables:
+--  users : list of all users and their basic info
+--  history : all historic of registered user health status
+--  network : all user networks with other users
+
+--Current DB Views:
+--  latest_status : easily access any user current status
+--  network_status : easily access current status of users in your network
+
+--Useful Commands:
+--\list : list all databases
+--\d : list all tables & views
+--\dt : list all tables
+--\dv : list all views
+--\d <table> : get <table> info
+--\d <view> : get <view> info
+
 --Possible Status For A Given User:
 CREATE TYPE statustype as ENUM ('infected', 'recovered', 'normal');
 ALTER TYPE statustype ADD VALUE 'quarentine';
@@ -91,3 +108,8 @@ CREATE TABLE example (
     unix_timestamp int default extract(epoch from now())
 );
 --DROP TABLE IF EXISTS examples CASCADE;
+
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS history CASCADE;
+DROP TABLE IF EXISTS network CASCADE;
+DROP TYPE IF EXISTS statustype CASCADE;
