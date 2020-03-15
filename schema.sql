@@ -42,6 +42,7 @@ CREATE INDEX IF NOT EXISTS users_id0 ON users (id);
 
 --Table History With The Whole User Health History:
 CREATE TABLE IF NOT EXISTS history (
+    id serial,
     user_id varchar(16) references users(id),
     status statustype,
     symptoms bool,
@@ -53,6 +54,7 @@ CREATE INDEX IF NOT EXISTS history_id0 ON history (user_id, timestamp);
 
 --Table Network With The Whole Users Network/Connections:
 CREATE TABLE IF NOT EXISTS network (
+    id serial,
     user_id varchar(16) references users(id),
     met_with varchar(16) references users(id),
     timestamp timestamp without time zone default (now() at time zone 'utc'),
