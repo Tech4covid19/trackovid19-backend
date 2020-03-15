@@ -39,8 +39,8 @@ CREATE TABLE IF NOT EXISTS user_symptoms (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS user_symptoms_id0 ON user_symptoms (id);
 DELETE FROM user_symptoms;
-INSERT INTO user_symptoms(symptoms) values('with symptoms');
 INSERT INTO user_symptoms(symptoms) values('without symptoms');
+INSERT INTO user_symptoms(symptoms) values('with symptoms');
 --DROP TABLE IF EXISTS user_symptoms CASCADE;
 
 --Table Users With All User Info:
@@ -128,12 +128,12 @@ INSERT INTO users(id, hash, year, postalcode, ip, info) values('3', '3', 1, '100
 INSERT INTO network(user_id, facebook_id, name, email, url) values('1', '1', 'name1', 'email1@email.com', 'http://url1.com');
 INSERT INTO network(user_id, facebook_id, name, email, url) values('2', '2', 'name2', 'email2@email.com', 'http://url2.com');
 INSERT INTO network(user_id, facebook_id, name, email, url) values('3', '3', 'name3', 'email3@email.com', 'http://url3.com');
-INSERT INTO history(user_id, status, symptoms) values('1', 'normal', False);
-INSERT INTO history(user_id, status, symptoms) values('1', 'infected', True);
-INSERT INTO history(user_id, status, symptoms) values('1', 'recovered', False);
-INSERT INTO history(user_id, status, symptoms) values('2', 'normal', False);
-INSERT INTO history(user_id, status, symptoms) values('2', 'infected', True);
-INSERT INTO history(user_id, status, symptoms) values('3', 'normal', False);
+INSERT INTO history(user_id, status, symptoms) values('1', 0, 0);
+INSERT INTO history(user_id, status, symptoms) values('1', 3, 1);
+INSERT INTO history(user_id, status, symptoms) values('1', 4, 0);
+INSERT INTO history(user_id, status, symptoms) values('2', 0, 0);
+INSERT INTO history(user_id, status, symptoms) values('2', 3, 1);
+INSERT INTO history(user_id, status, symptoms) values('3', 0, 0);
 INSERT INTO user_network(facebook_id, met_with) values('1', '2');
 INSERT INTO user_network(facebook_id, met_with) values('1', '3');
 INSERT INTO user_network(facebook_id, met_with) values('2', '1');
