@@ -42,14 +42,15 @@ module.exports = function(sequelize, DataTypes) {
 		timestamp: {
 			type: DataTypes.DATE,
 			allowNull: true,
-			defaultValue: 'timezone(utc'
+			defaultValue: 'timezone(utc)'
 		},
 		unix_ts: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-			defaultValue: 'date_part(epoch'
+			defaultValue: 'date_part(epoch)'
 		}
 	}, {
-		tableName: 'users'
+		tableName: 'users',
+		timestamps: false
 	});
 };
