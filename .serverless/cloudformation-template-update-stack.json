@@ -1,379 +1,384 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "The AWS CloudFormation template for this Serverless application",
-    "Resources": {
-        "ServerlessDeploymentBucket": {
-            "Type": "AWS::S3::Bucket",
-            "Properties": {
-                "BucketEncryption": {
-                    "ServerSideEncryptionConfiguration": [
-                        {
-                            "ServerSideEncryptionByDefault": {
-                                "SSEAlgorithm": "AES256"
-                            }
-                        }
-                    ]
-                }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
             }
-        },
-        "ServerlessDeploymentBucketPolicy": {
-            "Type": "AWS::S3::BucketPolicy",
-            "Properties": {
-                "Bucket": {
-                    "Ref": "ServerlessDeploymentBucket"
-                },
-                "PolicyDocument": {
-                    "Statement": [
-                        {
-                            "Action": "s3:*",
-                            "Effect": "Deny",
-                            "Principal": "*",
-                            "Resource": [
-                                {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "arn:",
-                                            {
-                                                "Ref": "AWS::Partition"
-                                            },
-                                            ":s3:::",
-                                            {
-                                                "Ref": "ServerlessDeploymentBucket"
-                                            },
-                                            "/*"
-                                        ]
-                                    ]
-                                }
-                            ],
-                            "Condition": {
-                                "Bool": {
-                                    "aws:SecureTransport": false
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "ServerLogGroup": {
-            "Type": "AWS::Logs::LogGroup",
-            "Properties": {
-                "LogGroupName": "/aws/lambda/trackovid19-backend-dev-server"
-            }
-        },
-        "IamRoleLambdaExecution": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
-                                    "lambda.amazonaws.com"
-                                ]
-                            },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
-                        }
-                    ]
-                },
-                "Policies": [
-                    {
-                        "PolicyName": {
-                            "Fn::Join": [
-                                "-",
-                                [
-                                    "trackovid19-backend-dev",
-                                    "lambda"
-                                ]
-                            ]
-                        },
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Effect": "Allow",
-                                    "Action": [
-                                        "logs:CreateLogStream",
-                                        "logs:CreateLogGroup"
-                                    ],
-                                    "Resource": [
-                                        {
-                                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/trackovid19-backend-dev*:*"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "Effect": "Allow",
-                                    "Action": [
-                                        "logs:PutLogEvents"
-                                    ],
-                                    "Resource": [
-                                        {
-                                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/trackovid19-backend-dev*:*:*"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "Path": "/",
-                "RoleName": {
-                    "Fn::Join": [
-                        "-",
-                        [
-                            "trackovid19-backend-dev",
-                            {
-                                "Ref": "AWS::Region"
-                            },
-                            "lambdaRole"
-                        ]
-                    ]
-                }
-            }
-        },
-        "ServerLambdaFunction": {
-            "Type": "AWS::Lambda::Function",
-            "Properties": {
-                "Code": {
-                    "S3Bucket": {
-                        "Ref": "ServerlessDeploymentBucket"
-                    },
-                    "S3Key": "serverless/trackovid19-backend/dev/1584304769935-2020-03-15T20:39:29.935Z/trackovid19-backend.zip"
-                },
-                "FunctionName": "trackovid19-backend-dev-server",
-                "Handler": "server.handler",
-                "MemorySize": 1024,
-                "Role": {
-                    "Fn::GetAtt": [
-                        "IamRoleLambdaExecution",
-                        "Arn"
-                    ]
-                },
-                "Runtime": "nodejs12.x",
-                "Timeout": 6
-            },
-            "DependsOn": [
-                "ServerLogGroup",
-                "IamRoleLambdaExecution"
-            ]
-        },
-        "ServerLambdaVersionZSFoFswWF0gHa3QnRU8KIjz8Xb8E4xAeRnr4DCbqgg": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-                "FunctionName": {
-                    "Ref": "ServerLambdaFunction"
-                },
-                "CodeSha256": "vZE4X9AUJkNr7r3b5bExlzIkOr5zTAL2Q3gvdu20RmQ="
-            }
-        },
-        "ApiGatewayRestApi": {
-            "Type": "AWS::ApiGateway::RestApi",
-            "Properties": {
-                "Name": "dev-trackovid19-backend",
-                "EndpointConfiguration": {
-                    "Types": [
-                        "EDGE"
-                    ]
-                },
-                "Policy": ""
-            }
-        },
-        "ApiGatewayResourceProxyVar": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-                "ParentId": {
-                    "Fn::GetAtt": [
-                        "ApiGatewayRestApi",
-                        "RootResourceId"
-                    ]
-                },
-                "PathPart": "{proxy+}",
-                "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                }
-            }
-        },
-        "ApiGatewayMethodAny": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-                "HttpMethod": "ANY",
-                "RequestParameters": {},
-                "ResourceId": {
-                    "Fn::GetAtt": [
-                        "ApiGatewayRestApi",
-                        "RootResourceId"
-                    ]
-                },
-                "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                },
-                "ApiKeyRequired": false,
-                "AuthorizationType": "NONE",
-                "Integration": {
-                    "IntegrationHttpMethod": "POST",
-                    "Type": "AWS_PROXY",
-                    "Uri": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "arn:",
-                                {
-                                    "Ref": "AWS::Partition"
-                                },
-                                ":apigateway:",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                ":lambda:path/2015-03-31/functions/",
-                                {
-                                    "Fn::GetAtt": [
-                                        "ServerLambdaFunction",
-                                        "Arn"
-                                    ]
-                                },
-                                "/invocations"
-                            ]
-                        ]
-                    }
-                },
-                "MethodResponses": []
-            }
-        },
-        "ApiGatewayMethodProxyVarAny": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-                "HttpMethod": "ANY",
-                "RequestParameters": {},
-                "ResourceId": {
-                    "Ref": "ApiGatewayResourceProxyVar"
-                },
-                "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                },
-                "ApiKeyRequired": false,
-                "AuthorizationType": "NONE",
-                "Integration": {
-                    "IntegrationHttpMethod": "POST",
-                    "Type": "AWS_PROXY",
-                    "Uri": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "arn:",
-                                {
-                                    "Ref": "AWS::Partition"
-                                },
-                                ":apigateway:",
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                ":lambda:path/2015-03-31/functions/",
-                                {
-                                    "Fn::GetAtt": [
-                                        "ServerLambdaFunction",
-                                        "Arn"
-                                    ]
-                                },
-                                "/invocations"
-                            ]
-                        ]
-                    }
-                },
-                "MethodResponses": []
-            }
-        },
-        "ApiGatewayDeployment1584304766932": {
-            "Type": "AWS::ApiGateway::Deployment",
-            "Properties": {
-                "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                },
-                "StageName": "dev"
-            },
-            "DependsOn": [
-                "ApiGatewayMethodAny",
-                "ApiGatewayMethodProxyVarAny"
-            ]
-        },
-        "ServerLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-                "FunctionName": {
-                    "Fn::GetAtt": [
-                        "ServerLambdaFunction",
-                        "Arn"
-                    ]
-                },
-                "Action": "lambda:InvokeFunction",
-                "Principal": "apigateway.amazonaws.com",
-                "SourceArn": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            "arn:",
-                            {
-                                "Ref": "AWS::Partition"
-                            },
-                            ":execute-api:",
-                            {
-                                "Ref": "AWS::Region"
-                            },
-                            ":",
-                            {
-                                "Ref": "AWS::AccountId"
-                            },
-                            ":",
-                            {
-                                "Ref": "ApiGatewayRestApi"
-                            },
-                            "/*/*"
-                        ]
-                    ]
-                }
-            }
+          ]
         }
+      }
     },
-    "Outputs": {
-        "ServerlessDeploymentBucketName": {
-            "Value": {
-                "Ref": "ServerlessDeploymentBucket"
-            }
+    "ServerlessDeploymentBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "ServerlessDeploymentBucket"
         },
-        "ServerLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-                "Ref": "ServerLambdaVersionZSFoFswWF0gHa3QnRU8KIjz8Xb8E4xAeRnr4DCbqgg"
-            }
-        },
-        "ServiceEndpoint": {
-            "Description": "URL of the service endpoint",
-            "Value": {
-                "Fn::Join": [
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
                     "",
                     [
-                        "https://",
-                        {
-                            "Ref": "ApiGatewayRestApi"
-                        },
-                        ".execute-api.",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        ".",
-                        {
-                            "Ref": "AWS::URLSuffix"
-                        },
-                        "/dev"
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      },
+                      "/*"
                     ]
-                ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
             }
+          ]
         }
+      }
+    },
+    "AppLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/trackovid19-backend-dev-app"
+      }
+    },
+    "IamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "trackovid19-backend-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:CreateLogGroup"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/trackovid19-backend-dev*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/trackovid19-backend-dev*:*:*"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "trackovid19-backend-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "lambdaRole"
+            ]
+          ]
+        }
+      }
+    },
+    "AppLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/trackovid19-backend/dev/1584393390944-2020-03-16T21:16:30.944Z/trackovid19-backend.zip"
+        },
+        "FunctionName": "trackovid19-backend-dev-app",
+        "Handler": "app.handler",
+        "MemorySize": 1024,
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "AWS_EXECUTION_ENV": "dev"
+          }
+        }
+      },
+      "DependsOn": [
+        "AppLogGroup",
+        "IamRoleLambdaExecution"
+      ]
+    },
+    "AppLambdaVersionRVnWrXcAJm32DXpLZmy4zarSLhNIoz5NYwk3zZ9gRT0": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "AppLambdaFunction"
+        },
+        "CodeSha256": "lKNtbA0L4HgBNAsuTQDKTPy5s6flk5s2c/L/xR/E4TA="
+      }
+    },
+    "ApiGatewayRestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "dev-trackovid19-backend",
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Policy": ""
+      }
+    },
+    "ApiGatewayResourceProxyVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodAny": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AppLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodProxyVarAny": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "ANY",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceProxyVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "AppLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayDeployment1584393380117": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "StageName": "dev"
+      },
+      "DependsOn": [
+        "ApiGatewayMethodAny",
+        "ApiGatewayMethodProxyVarAny"
+      ]
+    },
+    "AppLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "AppLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
+      }
     }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      }
+    },
+    "AppLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "AppLambdaVersionRVnWrXcAJm32DXpLZmy4zarSLhNIoz5NYwk3zZ9gRT0"
+      }
+    },
+    "ServiceEndpoint": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatewayRestApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev"
+          ]
+        ]
+      }
+    }
+  }
 }
