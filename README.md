@@ -157,7 +157,8 @@ Serverless: Run the "serverless" command to setup monitoring, troubleshooting an
 # Debug
 
 ```sh
-sls logs -f app -t
+sls logs --stage prd -f app -t
+sls logs --stage dev -f app -t
 ```
 
 ### Authors
