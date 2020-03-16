@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon -w debug -P app.js",
+    "dev": "nodemon $NODE_DEBUG_OPTION -w debug -P app.js",
     "generate-db": "node ./db/generate.js"
   },
   "keywords": [
