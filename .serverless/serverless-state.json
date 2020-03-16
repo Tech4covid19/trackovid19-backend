@@ -11,7 +11,12 @@
       "runtime": "nodejs12.x",
       "region": "eu-west-1",
       "environment": {
-        "AWS_EXECUTION_ENV": "dev"
+        "AWS_EXECUTION_ENV": "dev",
+        "DB_HOST": "db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com",
+        "DB_USER": "postgres",
+        "DB_PASS": "`[G8\\6Yh&$r8u]f8",
+        "DB_NAME": "postgres",
+        "DB_PORT": "54320"
       },
       "versionFunctions": true,
       "remoteFunctionData": null,
@@ -161,7 +166,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/trackovid19-backend/dev/1584393390944-2020-03-16T21:16:30.944Z/trackovid19-backend.zip"
+                "S3Key": "serverless/trackovid19-backend/dev/1584395570456-2020-03-16T21:52:50.456Z/trackovid19-backend.zip"
               },
               "FunctionName": "trackovid19-backend-dev-app",
               "Handler": "app.handler",
@@ -176,7 +181,12 @@
               "Timeout": 6,
               "Environment": {
                 "Variables": {
-                  "AWS_EXECUTION_ENV": "dev"
+                  "AWS_EXECUTION_ENV": "dev",
+                  "DB_HOST": "db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com",
+                  "DB_USER": "postgres",
+                  "DB_PASS": "`[G8\\6Yh&$r8u]f8",
+                  "DB_NAME": "postgres",
+                  "DB_PORT": "54320"
                 }
               }
             },
@@ -185,14 +195,14 @@
               "IamRoleLambdaExecution"
             ]
           },
-          "AppLambdaVersionRVnWrXcAJm32DXpLZmy4zarSLhNIoz5NYwk3zZ9gRT0": {
+          "AppLambdaVersionqUZjdfuw3YidQ2o0e1dNiU8mnsQoeFFjBZrVLzvLKI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "lKNtbA0L4HgBNAsuTQDKTPy5s6flk5s2c/L/xR/E4TA="
+              "CodeSha256": "Vsntg6w7UqfDMwXi8C1BDPus+VYhiDci+n+R0HaeQRs="
             }
           },
           "ApiGatewayRestApi": {
@@ -311,7 +321,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1584393380117": {
+          "ApiGatewayDeployment1584395558167": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -371,7 +381,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersionRVnWrXcAJm32DXpLZmy4zarSLhNIoz5NYwk3zZ9gRT0"
+              "Ref": "AppLambdaVersionqUZjdfuw3YidQ2o0e1dNiU8mnsQoeFFjBZrVLzvLKI"
             }
           },
           "ServiceEndpoint": {
@@ -468,6 +478,35 @@
       },
       "vpc": {}
     },
+    "custom": {
+      "stages": [
+        "dev",
+        "prd"
+      ],
+      "DB_HOST": {
+        "dev": "db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com",
+        "prd": "db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com"
+      },
+      "DB_NAME": {
+        "dev": "postgres",
+        "prd": "postgres"
+      },
+      "DB_USER": {
+        "dev": "postgres",
+        "prd": "postgres"
+      },
+      "DB_PASS": {
+        "dev": "`[G8\\6Yh&$r8u]f8",
+        "prd": "`[G8\\6Yh&$r8u]f8"
+      },
+      "DB_PORT": {
+        "dev": "54320",
+        "prd": "54320"
+      }
+    },
+    "plugins": [
+      "serverless-stage-manager"
+    ],
     "pluginsData": {},
     "functions": {
       "app": {
@@ -494,7 +533,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersionRVnWrXcAJm32DXpLZmy4zarSLhNIoz5NYwk3zZ9gRT0"
+        "versionLogicalId": "AppLambdaVersionqUZjdfuw3YidQ2o0e1dNiU8mnsQoeFFjBZrVLzvLKI"
       }
     },
     "serviceFilename": "serverless.yaml",
@@ -503,7 +542,7 @@
     "artifact": "/Users/christianchostak/trackovid19-backend/.serverless/trackovid19-backend.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/trackovid19-backend/dev/1584393390944-2020-03-16T21:16:30.944Z",
+    "artifactDirectoryName": "serverless/trackovid19-backend/dev/1584395570456-2020-03-16T21:52:50.456Z",
     "artifact": "trackovid19-backend.zip"
   }
 }

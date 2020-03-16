@@ -63,6 +63,19 @@ curl --request GET \
 
 # Serverless usage
 
+Install the framework:
+
+```sh
+npm install -g serverless
+serverless plugin install --name serverless-stage-manager
+```
+
+Verify its installation:
+
+```sh
+serverless --version
+```
+
 In dev, use:
 
 
@@ -75,7 +88,14 @@ yarn start
 For dev deploy, use:
 
 ```sh
-serverless deploy
+sls deploy --stage dev --db_pass 'PASSWORD'
+
+```
+
+For prd deploy, use:
+
+```sh
+sls deploy --stage dev --db_pass 'PASSWORD'
 
 ```
 
