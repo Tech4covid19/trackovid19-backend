@@ -1,39 +1,47 @@
 {
   "name": "trackovid19-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "Trackovid-19 API",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "start:dev": "DEBUG=* nodemon -w server.js -w api -w auth -w mock -w db"
+    "start": "node app.js",
+    "dev": "nodemon $NODE_DEBUG_OPTION -w debug -P app.js",
+    "generate-db": "node ./db/generate.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tech4covid19/trackovid19-backend.git"
-  },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "trackovid19",
+    "covid19",
+    "trackovid-19",
+    "tracovid19",
+    "tracovid-19",
+    "covid-19"
+  ],
+  "author": "Tech4COVID19 Team",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Tech4covid19/trackovid19-backend/issues"
+  "peerDependencies": {
+    "sequelize": "^5.21.5"
   },
-  "homepage": "https://github.com/Tech4covid19/trackovid19-backend#readme",
   "dependencies": {
-    "deep-freeze": "^0.0.1",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "helmet": "^3.21.3",
-    "lodash": "^4.17.15",
-    "morgan": "^1.9.1",
-    "nodemon": "^2.0.2",
-    "passport": "^0.4.1",
-    "passport-facebook": "^3.0.0",
-    "pg": "^7.18.2",
-    "winston": "^3.2.1"
+    "bcrypt": "^3.0.8",
+    "fastify": "^2.0.0",
+    "fastify-autoload": "^1.0.0",
+    "fastify-cli": "^1.4.0",
+    "fastify-compress": "^2.0.1",
+    "fastify-helmet": "^3.0.2",
+    "fastify-jwt": "^1.2.1",
+    "fastify-plugin": "^1.5.0",
+    "fastify-rate-limit": "^3.0.1",
+    "fastify-sequelize": "^1.0.4",
+    "pg-hstore": "^2.3.3",
+    "proper-lockfile": "^4.1.1",
+    "sequelize-auto": "^0.4.29",
+    "serverless-http": "^2.3.2",
+    "pg": "6.4.2",
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "install-peers": "^1.0.3",
+    "sequelize-cli": "^5.5.1",
+    "tap": "^12.5.3"
   }
 }
