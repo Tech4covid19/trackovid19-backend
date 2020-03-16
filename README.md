@@ -84,20 +84,7 @@ yarn start
 
 ```
 
-
-For dev deploy, use:
-
-```sh
-sls deploy --stage dev --db_pass 'PASSWORD'
-
-```
-
-For prd deploy, use:
-
-```sh
-sls deploy --stage dev --db_pass 'PASSWORD'
-
-```
+Configure your environment:
 
 Credentials were given before, use 'lambda' user.
 
@@ -118,10 +105,17 @@ Paste it inside:
 region=eu-west-1
 ```
 
-Run it:
+For dev deploy, use:
 
 ```sh
-sls deploy
+sls deploy --stage dev --db_pass 'PASSWORD'
+
+```
+
+For prd deploy, use:
+
+```sh
+sls deploy --stage dev --db_pass 'PASSWORD'
 ```
 
 You should see
