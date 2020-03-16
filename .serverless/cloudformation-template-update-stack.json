@@ -155,7 +155,7 @@
                         "Arn"
                     ]
                 },
-                "Runtime": "nodejs13.x",
+                "Runtime": "nodejs12.x",
                 "Timeout": 6
             },
             "DependsOn": [

@@ -11,7 +11,7 @@
 - This is to be run at AWS Lambda (via wrapper):
 --> Your code is running in a serverless environment. You cannot rely on your server being 'up' in the sense that you can/should not use in-memory sessions, web sockets, etc. You are also subject to provider specific restrictions on request/response size, duration, etc.
 ### Installation
-You will need atleast nodejs version 13.0 to run this server.
+You will need atleast nodejs version 12 LTS to run this server.
 ### 1 - Generate Private and Public keys to be used with JWT:
 ```sh
 $ openssl genrsa -out private.key 2048

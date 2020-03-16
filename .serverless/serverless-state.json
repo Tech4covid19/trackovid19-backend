@@ -8,7 +8,7 @@
             "stage": "dev",
             "variableSyntax": "\\${([^{}]+?)}",
             "name": "aws",
-            "runtime": "nodejs13.x",
+            "runtime": "nodejs12.x",
             "region": "eu-west-1",
             "versionFunctions": true,
             "remoteFunctionData": null,
@@ -169,7 +169,7 @@
                                     "Arn"
                                 ]
                             },
-                            "Runtime": "nodejs13.x",
+                            "Runtime": "nodejs12.x",
                             "Timeout": 6
                         },
                         "DependsOn": [
