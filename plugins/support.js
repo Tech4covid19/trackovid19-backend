@@ -1,16 +1,12 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const bcrypt = require('bcrypt');
 const uuid = require('uuid');
 const crypto = require('crypto');
 const lockfile = require('proper-lockfile');
 const fs = require('fs');
 
 module.exports = fp(async (fastify, opts) => {
-  fastify.decorate('bcrypt', () => {
-    return bcrypt
-  })
 
   fastify.decorate('genUnique', (size = 9) => {
     const posI = Math.floor(Math.random() * 10);
