@@ -67,6 +67,7 @@ Install the framework:
 
 ```sh
 npm install -g serverless
+npm install -g serverless-domain-manager
 serverless plugin install --name serverless-stage-manager
 ```
 

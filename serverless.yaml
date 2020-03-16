@@ -28,6 +28,10 @@ functions:
 
 # Custom Variables
 custom:
+  customDomain:
+    domainName: ${opt:stage, 'dev'}.tech4covid19.pt
+    endpointType: 'regional'
+    certificateName: '*.tech4covid19.pt'
   stages:
     - dev
     - prd
@@ -50,3 +54,4 @@ custom:
 # Plugins
 plugins:
   - serverless-stage-manager
+  - serverless-domain-manager
