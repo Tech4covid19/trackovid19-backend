@@ -61,6 +61,85 @@ curl --request GET \
   --url http://localhost:3000/api/v1/case/27
 ```
 
+# Serverless usage
+
+In dev, use:
+
+
+```sh
+yarn start
+
+```
+
+
+For dev deploy, use:
+
+```sh
+serverless deploy
+
+```
+
+Credentials were given before, use 'lambda' user.
+
+```sh
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_PROFILE="default"
+```
+
+```sh
+touch ~/.aws/config
+```
+
+Paste it inside:
+
+```sh
+[default]
+region=eu-west-1
+```
+
+Run it:
+
+```sh
+sls deploy
+```
+
+You should see
+
+```sh
+Serverless: Uploading artifacts...
+Serverless: Uploading service trackovid19-backend.zip file to S3 (2.78 MB)...
+Serverless: Validating template...
+Serverless: Updating Stack...
+Serverless: Checking Stack update progress...
+..............
+Serverless: Stack update finished...
+Service Information
+service: trackovid19-backend
+stage: dev
+region: eu-west-1
+stack: trackovid19-backend-dev
+resources: 12
+api keys:
+  None
+endpoints:
+  ANY - https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/
+  ANY - https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/{proxy+}
+functions:
+  server: trackovid19-backend-dev-server
+layers:
+  None
+Serverless: Removing old service artifacts from S3...
+Serverless: Run the "serverless" command to setup monitoring, troubleshooting and testing.
+
+```
+
+# Debug
+
+```sh
+sls logs -f app -t
+```
+
 ### Authors
 Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @lcfb91 @zepcp @jcazevedo @cchostak for the work and efforts to bootstrap this service!
 Feel free to change / improve / delete everything you want!
