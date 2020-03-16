@@ -206,4 +206,4 @@ test/types/index.js
 .env
 
 #Serverless
-.serverless/*.zip
+.serverless/*
