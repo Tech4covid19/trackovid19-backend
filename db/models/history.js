@@ -5,37 +5,47 @@ module.exports = function(sequelize, DataTypes) {
 		id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true
+			defaultValue: 'nextval(history_id_seq::regclass)',
+			primaryKey: true
 		},
 		user_id: {
 			type: DataTypes.STRING,
 			allowNull: true,
-			references: {
-				model: 'users',
-				key: 'id'
-			}
+			primaryKey: true
 		},
 		status: {
-			type: DataTypes.ENUM("infected","recovered","normal","quarentine","self quarentine"),
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			primaryKey: true
+		},
+		confinement_state: {
+			type: DataTypes.INTEGER,
+			allowNull: true,
+			primaryKey: true
+		},
+		latitude: {
+			type: DataTypes.DOUBLE,
 			allowNull: true
 		},
-		symptoms: {
-			type: DataTypes.BOOLEAN,
+		longitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true
+		},
+		info: {
+			type: DataTypes.STRING,
 			allowNull: true
 		},
 		timestamp: {
 			type: DataTypes.DATE,
 			allowNull: true,
-			defaultValue: 'timezone(utc)'
+			defaultValue: 'timezone(utc'
 		},
 		unix_ts: {
-			type: DataTypes.BIGINT,
+			type: DataTypes.INTEGER,
 			allowNull: true,
-			defaultValue: 'date_part(epoch)'
+			defaultValue: 'date_part(epoch'
 		}
 	}, {
-		tableName: 'history',
-		timestamps: false
+		tableName: 'history'
 	});
 };

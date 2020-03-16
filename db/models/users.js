@@ -11,16 +11,28 @@ module.exports = function(sequelize, DataTypes) {
 			type: "BYTEA",
 			allowNull: true
 		},
-		age: {
+		facebook_id: {
+			type: "BYTEA",
+			allowNull: true
+		},
+		year: {
 			type: DataTypes.INTEGER,
 			allowNull: true
 		},
-		city: {
+		postalcode: {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
 		ip: {
 			type: DataTypes.STRING,
+			allowNull: true
+		},
+		latitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true
+		},
+		longitude: {
+			type: DataTypes.DOUBLE,
 			allowNull: true
 		},
 		info: {
@@ -30,15 +42,14 @@ module.exports = function(sequelize, DataTypes) {
 		timestamp: {
 			type: DataTypes.DATE,
 			allowNull: true,
-			defaultValue: 'timezone(utc)'
+			defaultValue: 'timezone(utc'
 		},
 		unix_ts: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-			defaultValue: 'date_part(epoch)'
+			defaultValue: 'date_part(epoch'
 		}
 	}, {
-		tableName: 'users',
-		timestamps: false
+		tableName: 'users'
 	});
 };
