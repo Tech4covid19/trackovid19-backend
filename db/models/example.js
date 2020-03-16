@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		status: {
-			type: DataTypes.ENUM("infected","recovered","normal","quarentine","self quarentine""),
+			type: DataTypes.ENUM("infected","recovered","normal","quarentine","self quarentine"),
 			allowNull: true
 		},
 		texto: {
@@ -46,12 +46,12 @@ module.exports = function(sequelize, DataTypes) {
 		timestamp: {
 			type: DataTypes.DATE,
 			allowNull: true,
-			defaultValue: 'timezone(utc'
+			defaultValue: 'timezone(utc)'
 		},
 		unix_timestamp: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
-			defaultValue: 'date_part(epoch'
+			defaultValue: 'date_part(epoch)'
 		}
 	}, {
 		tableName: 'example'
