@@ -4,11 +4,7 @@ module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('example', {
 		user_id: {
 			type: DataTypes.STRING,
-			allowNull: true,
-			references: {
-				model: 'users',
-				key: 'id'
-			}
+			allowNull: true
 		},
 		inteiro: {
 			type: DataTypes.INTEGER,
@@ -21,10 +17,6 @@ module.exports = function(sequelize, DataTypes) {
 		bytes: {
 			type: "BYTEA",
 			allowNull: false
-		},
-		status: {
-			type: DataTypes.ENUM("infected","recovered","normal","quarentine","self quarentine"),
-			allowNull: true
 		},
 		texto: {
 			type: DataTypes.STRING,
@@ -54,6 +46,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: 'date_part(epoch)'
 		}
 	}, {
-		tableName: 'example'
+		tableName: 'example',
+		timestamps: false
 	});
 };

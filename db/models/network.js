@@ -9,19 +9,27 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		user_id: {
 			type: DataTypes.STRING,
-			allowNull: true,
-			references: {
-				model: 'users',
-				key: 'id'
-			}
+			allowNull: true
 		},
 		met_with: {
 			type: DataTypes.STRING,
-			allowNull: true,
-			references: {
-				model: 'users',
-				key: 'id'
-			}
+			allowNull: true
+		},
+		facebook_id: {
+			type: "BYTEA",
+			allowNull: true
+		},
+		latitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true
+		},
+		longitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true
+		},
+		info: {
+			type: DataTypes.STRING,
+			allowNull: true
 		},
 		timestamp: {
 			type: DataTypes.DATE,

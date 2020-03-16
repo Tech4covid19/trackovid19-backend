@@ -11,16 +11,28 @@ module.exports = function(sequelize, DataTypes) {
 			type: "BYTEA",
 			allowNull: true
 		},
-		age: {
+		facebook_id: {
+			type: "BYTEA",
+			allowNull: true
+		},
+		year: {
 			type: DataTypes.INTEGER,
 			allowNull: true
 		},
-		city: {
+		postalcode: {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
 		ip: {
 			type: DataTypes.STRING,
+			allowNull: true
+		},
+		latitude: {
+			type: DataTypes.DOUBLE,
+			allowNull: true
+		},
+		longitude: {
+			type: DataTypes.DOUBLE,
 			allowNull: true
 		},
 		info: {

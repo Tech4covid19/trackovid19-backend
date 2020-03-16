@@ -18,7 +18,7 @@ module.exports = async (fastify, opts) => {
 
   fastify.get('/case/:id', { schema: { params: fastify.schemas().getCaseById } }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'user_id', 'status', 'symptoms', 'timestamp'] };
+      const publicAttributes = { attributes: ['id', 'user_id', 'status', 'confinement_state', 'timestamp'] };
       const clients = await Case.findOne({ where: { id: request.params.id }, ...publicAttributes });
       return clients;
     } catch (error) {
