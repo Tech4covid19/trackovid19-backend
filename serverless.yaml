@@ -6,10 +6,15 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-1
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   environment:
-    AWS_EXECUTION_ENV: dev
-
+    AWS_EXECUTION_ENV: ${opt:stage, 'dev'}
+    DB_HOST: ${self:custom.DB_HOST.${opt:stage, 'dev'}}
+    DB_USER: ${self:custom.DB_USER.${opt:stage, 'dev'}}
+    DB_PASS: ${self:custom.DB_PASS.${opt:stage, 'dev'}}
+    DB_NAME: ${self:custom.DB_NAME.${opt:stage, 'dev'}}
+    DB_PORT: ${self:custom.DB_PORT.${opt:stage, 'dev'}}
+ 
 functions:
   app:
     handler: app.handler
@@ -20,3 +25,28 @@ functions:
       - http: 
           path: /{proxy+}
           method: ANY
+
+# Custom Variables
+custom:
+  stages:
+    - dev
+    - prd
+  DB_HOST:
+    dev: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
+    prd: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
+  DB_NAME:
+    dev: postgres
+    prd: postgres
+  DB_USER:
+    dev: postgres
+    prd: postgres
+  DB_PASS:
+    dev: ${opt:db_pass, 'PASSWORD_DEV'}
+    prd: ${opt:db_pass, 'PASSWORD_PRD'}
+  DB_PORT:
+    dev: '54320'
+    prd: '54320'
+
+# Plugins
+plugins:
+  - serverless-stage-manager

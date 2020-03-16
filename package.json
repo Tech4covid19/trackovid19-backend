@@ -41,6 +41,7 @@
   "devDependencies": {
     "install-peers": "^1.0.3",
     "sequelize-cli": "^5.5.1",
+    "serverless-stage-manager": "^1.0.5",
     "tap": "^12.5.3"
   }
 }
