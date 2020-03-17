@@ -1,48 +1,28 @@
 /* jshint indent: 1 */
 
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('case', {
+	return sequelize.define('user_symptoms', {
 		id: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true
 		},
-		user_id: {
-			type: DataTypes.STRING,
-			allowNull: true,
-			references: {
-				model: 'users',
-				key: 'id'
-			}
-		},
-		status: {
+		history_id: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
-				model: 'user_status',
+				model: 'history',
 				key: 'id'
 			}
 		},
-		confinement_state: {
+		symptom_id: {
 			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
-				model: 'confinement_states',
+				model: 'symptoms',
 				key: 'id'
 			}
-		},
-		latitude: {
-			type: DataTypes.DOUBLE,
-			allowNull: true
-		},
-		longitude: {
-			type: DataTypes.DOUBLE,
-			allowNull: true
-		},
-		info: {
-			type: DataTypes.STRING,
-			allowNull: true
 		},
 		timestamp: {
 			type: DataTypes.DATE,
@@ -55,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: 'date_part(epoch)'
 		}
 	}, {
-		tableName: 'history',
+		tableName: 'user_symptoms',
 		timestamps: false
 	});
 };

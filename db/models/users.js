@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: 'timezone(utc)'
 		},
 		unix_ts: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BIGINT,
 			allowNull: true,
 			defaultValue: 'date_part(epoch)'
 		}

@@ -39,28 +39,10 @@ You will see a weird snippet inside package.json:
 This is to handle external dependencies for 3rd party modules, otherwise we will receive security warnings from deprecated / insecure modules.
 
 ### Documentation
-To create a new case:
-```sh
-curl --request POST \
-  --url http://localhost:3000/api/v1/case \
-  --header 'content-type: application/json' \
-  --data '{
-	"postalCode": "4610-670",
-	"geo": {
-		"lat": 31.5812858,
-		"lon": 54.0828852
-	},
-	"condition": "infected",
-	"symptoms": true,
-	"timestamp": "2012-04-23T18:25:43.511Z"
-}'
-```
-To get a case by Id:
-```sh
-curl --request GET \
-  --url http://localhost:3000/api/v1/case/27
-```
-
+1º - Login using your facebook account on: http://localhost:3000/login/facebook;
+2º - You will receive a JWT token, use it as a Bearer Token in all the authenticated requests;
+3º- Please load the `insomnia.json` file into your Insomnia Rest Client and call the routes or consult https://trackcovid19.docs.apiary.io;
+PS: Do not forget to set the Bearer token on insomnia!
 # Serverless usage
 
 Install the framework:

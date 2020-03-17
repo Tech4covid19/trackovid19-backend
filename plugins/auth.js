@@ -9,7 +9,7 @@ module.exports = fp(async (fastify, opts) => {
             public: readFileSync(`${path.join(__dirname, 'certs')}/public.key`, 'utf8')
         },
         decode: { complete: true },
-        sign: { algorithm: 'RS256', expiresIn: '2h' }
+        sign: { algorithm: 'RS256', expiresIn: '24h' }
     })
 
     fastify.decorate('authenticate', async (request, reply) => {

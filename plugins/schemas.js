@@ -26,8 +26,7 @@ const schemas = {
                 }
             },
             condition: {
-                type: 'string',
-                enum: ["normal", "infected", "quarantine", "symptomatic", "recovered"]
+                type: 'number'
             },
             timestamp: {
                 type: 'string',
@@ -35,12 +34,29 @@ const schemas = {
             }
         }
     },
-    getCaseById: {
+    updateUser: {
         type: 'object',
-        required: ['id'],
         properties: {
-            symptoms: {
-                type: 'boolean'
+            year: {
+                type: 'number'
+            },
+            postalCode: {
+                type: 'string',
+                pattern: "^[0-9]{4}-[0-9]{3}$"
+            },
+            geo: {
+                type: 'object',
+                properties: {
+                    lat: {
+                        type: 'number'
+                    },
+                    lon: {
+                        type: 'number'
+                    }
+                }
+            },
+            info: {
+                type: 'object'
             }
         }
     }
