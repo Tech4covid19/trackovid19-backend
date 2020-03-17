@@ -29,15 +29,28 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.get('/case/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
-    try {
-      const cases = await fastify.models().Case.findAll({
-        include: [{
-          model: fastify.models().Users,
-          where: {postalcode: request.params.postalCode}
-         }]
+  fastify.get('/case/condition/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
+    try {     
+      const cases = await fastify.models().StatusByPostalCode.findAll({
+      where: {postalcode: request.params.postalCode}
+    });
+
+      //({postalCode: request.params.postalCode});
+      return cases;
+    } catch (error) {
+      request.log.error(error)
+      reply.status(500).send({
+        error
       });
-      
+    }
+  });
+
+  fastify.get('/case/confinement/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
+    try {     
+      const cases = await fastify.models().ConfinementStateByPostalCode.findAll({
+      where: {postalcode: request.params.postalCode}
+    });
+
       //({postalCode: request.params.postalCode});
       return cases;
     } catch (error) {

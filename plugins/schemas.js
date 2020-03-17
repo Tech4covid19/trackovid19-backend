@@ -51,8 +51,11 @@ const schemas = {
                     }
                 }
             },
-            info: {
-                type: 'object'
+            email: {
+                type: 'string'
+            },
+            phone: {
+                type: 'string'
             }
         }
     },

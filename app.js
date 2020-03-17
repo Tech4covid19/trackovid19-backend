@@ -77,7 +77,8 @@ fastify.register(oauthPlugin, {
     auth: oauthPlugin.FACEBOOK_CONFIGURATION
   },
   startRedirectPath: '/login/facebook',
-  callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`
+  callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`,
+  scope: 'email,public_profile'
 })
 
 // Support for AWS Lambda

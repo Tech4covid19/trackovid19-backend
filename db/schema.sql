@@ -160,6 +160,33 @@ CREATE VIEW public.latest_status AS
 
 ALTER TABLE public.latest_status OWNER TO postgres;
 
+
+--
+-- Name: status_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.status_by_postalcode
+as
+select h.postalcode, h.status, count(h.*) as hits
+from history h
+inner join latest_status ls on ls.user_id = h.user_id
+group by h.postalcode, h.status;
+
+ALTER TABLE public.status_by_postalcode OWNER TO postgres;
+
+--
+-- Name: confinement_states_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.confinement_states_by_postalcode
+as
+select h.postalcode, h.confinement_state, count(h.*) as hits
+from history h
+inner join latest_status ls on ls.user_id = h.user_id
+group by h.postalcode, h.confinement_state;
+
+ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
+
 --
 -- TOC entry 210 (class 1259 OID 24848)
 -- Name: network; Type: TABLE; Schema: public; Owner: postgres
