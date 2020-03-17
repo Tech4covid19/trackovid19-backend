@@ -51,7 +51,6 @@ module.exports = async (fastify, opts) => {
         where: { postalcode: request.params.postalCode }
       });
 
-      //({postalCode: request.params.postalCode});
       return cases;
     } catch (error) {
       request.log.error(error)
@@ -73,7 +72,6 @@ module.exports = async (fastify, opts) => {
         where: { postalcode: request.params.postalCode }
       });
 
-      //({postalCode: request.params.postalCode});
       return cases;
     } catch (error) {
       request.log.error(error)
