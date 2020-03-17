@@ -32,10 +32,6 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
-		postalcode: {
-			type: DataTypes.STRING,
-			allowNull: true
-		},
 		latitude: {
 			type: DataTypes.DOUBLE,
 			allowNull: true

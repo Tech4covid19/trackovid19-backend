@@ -5,8 +5,8 @@ module.exports = async (fastify, opts) => {
   fastify.post('/case', { preValidation: [fastify.authenticate], schema: { body: fastify.schemas().createCase } }, async (request, reply) => {
     try {
       const { postalCode, geo, condition, confinementState } = request.body
-      
-      await fastify.models().Case.create({ postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now()})
+
+      await fastify.models().Case.create({ postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now() })
 
       reply.send({ status: 'success' })
     } catch (error) {
@@ -29,13 +29,12 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.get('/case/condition/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
-    try {     
+  fastify.get('/case/condition/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } }, async (request, reply) => {
+    try {
       const cases = await fastify.models().StatusByPostalCode.findAll({
-      where: {postalcode: request.params.postalCode}
-    });
+        where: { postalcode: request.params.postalCode }
+      });
 
-      //({postalCode: request.params.postalCode});
       return cases;
     } catch (error) {
       request.log.error(error)
@@ -45,13 +44,12 @@ module.exports = async (fastify, opts) => {
     }
   });
 
-  fastify.get('/case/confinement/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
-    try {     
+  fastify.get('/case/confinement/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } }, async (request, reply) => {
+    try {
       const cases = await fastify.models().ConfinementStateByPostalCode.findAll({
-      where: {postalcode: request.params.postalCode}
-    });
+        where: { postalcode: request.params.postalCode }
+      });
 
-      //({postalCode: request.params.postalCode});
       return cases;
     } catch (error) {
       request.log.error(error)
