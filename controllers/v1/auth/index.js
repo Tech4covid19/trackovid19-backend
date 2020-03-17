@@ -9,6 +9,7 @@ module.exports = async (fastify, opts) => {
 
             reply.send({ access_token: await fastify.jwt.sign({ payload: { id, name }, roles: ['user'] }) });
         } catch (error) {
+            console.log(error)
             request.log.error(error)
             reply.status(500).send({ error: 'Could not authenticate correctly' })
         }

@@ -11,15 +11,15 @@ module.exports = fp(async (fastify, opts) => {
         const Condition = fastify.sequelize.import('../db/models/user_status.js');
 
         //relationships       
-        Case.belongsTo(Users, { foreignKey: 'id' });
+        Case.belongsTo(Users, { foreignKey: 'user_id' });
         Users.hasMany(Case, { foreignKey: 'user_id' });
         
         Users.hasMany(Network, { foreignKey: 'user_id' });
-        Network.belongsTo(Users, { foreignKey: 'id' });
+        Network.belongsTo(Users, { foreignKey: 'user_id' });
 
         Symptom.hasMany(UserSymptom, { foreignKey: 'symptom_id' });
         Case.hasMany(UserSymptom, { foreignKey: 'history_id' });
-        UserSymptom.belongsTo(Case, { foreignKey: 'id' });
+        UserSymptom.belongsTo(Case, { foreignKey: 'history_id' });
 
         return { Case, Network, Users, Symptom, ConfinementState, Condition }
     })
