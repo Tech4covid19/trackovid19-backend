@@ -2,7 +2,13 @@
 
 module.exports = async (fastify, opts) => {
 
-  fastify.post('/case', { preValidation: [fastify.authenticate], schema: { body: fastify.schemas().createCase } }, async (request, reply) => {
+  fastify.post('/case', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['case'],
+      body: fastify.schemas().createCase
+    }
+  }, async (request, reply) => {
     try {
       const { postalCode, geo, condition, confinementState } = request.body
 
@@ -17,7 +23,11 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.get('/case/all', async (request, reply) => {
+  fastify.get('/case/all', {
+    schema: {
+      tags: ['case']
+    }
+  }, async (request, reply) => {
     try {
       const cases = await fastify.models().Case.findAll();
       return cases;
@@ -29,7 +39,13 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.get('/case/condition/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } }, async (request, reply) => {
+  fastify.get('/case/condition/:postalCode', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['case'],
+      params: fastify.schemas().getGeoCases
+    }
+  }, async (request, reply) => {
     try {
       const cases = await fastify.models().StatusByPostalCode.findAll({
         where: { postalcode: request.params.postalCode }
@@ -44,7 +60,13 @@ module.exports = async (fastify, opts) => {
     }
   });
 
-  fastify.get('/case/confinement/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } }, async (request, reply) => {
+  fastify.get('/case/confinement/:postalCode', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['case'],
+      params: fastify.schemas().getGeoCases
+    }
+  }, async (request, reply) => {
     try {
       const cases = await fastify.models().ConfinementStateByPostalCode.findAll({
         where: { postalcode: request.params.postalCode }

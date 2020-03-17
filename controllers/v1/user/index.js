@@ -2,7 +2,12 @@
 
 module.exports = async (fastify, opts) => {
 
-  fastify.get('/user', { preValidation: [fastify.authenticate] }, async (request, reply) => {
+  fastify.get('/user', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['user'],
+    }
+  }, async (request, reply) => {
     try {
       const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
       const user = await fastify.models().Users.findOne({
@@ -28,7 +33,13 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.put('/user', { preValidation: [fastify.authenticate], schema: { body: fastify.schemas().updateUser } }, async (request, reply) => {
+  fastify.put('/user', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['user'],
+      body: fastify.schemas().updateUser
+    }
+  }, async (request, reply) => {
     try {
       const { year, postalCode, geo, phone, email } = request.body;
       console.log(phone);

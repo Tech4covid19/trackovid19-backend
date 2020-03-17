@@ -1,7 +1,11 @@
 'use strict'
 module.exports = async (fastify, opts) => {
 
-    fastify.get('/login/facebook/callback', async function (request, reply) {
+    fastify.get('/login/facebook/callback', {
+        schema: {
+          tags: ['auth']
+        }
+      }, async function (request, reply) {
         try {
             const token = await this.facebookOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
             const { data: { id, name, email }, status } = await fastify.axios.get('https://graph.facebook.com/v3.0/me?fields=id,name,email', { headers: { Authorization: `Bearer ${token.access_token}` } })
