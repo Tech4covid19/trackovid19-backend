@@ -8,8 +8,10 @@ const path = require('path');
 const AutoLoad = require('fastify-autoload');
 const fsequelize = require('fastify-sequelize');
 const oauthPlugin = require('fastify-oauth2');
+const oas = require('fastify-oas');
 const swagger = require('./config/swagger');
-fastify.register(require('fastify-swagger'), swagger.options);
+
+fastify.register(oas, swagger.options);
 
 const dotEnv = require('dotenv').config();
 
@@ -93,7 +95,7 @@ if (process.env.LAMBDA_TASK_ROOT && process.env.AWS_EXECUTION_ENV) {
       console.log(err);
       process.exit(1);
     }
-    fastify.swagger();
+    fastify.oas();
     console.log(`server listening on ${fastify.server.address().port}`);
   })
 }

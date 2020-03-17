@@ -11,17 +11,29 @@ exports.options = {
             url: 'https://swagger.io',
             description: 'Find more info here'
         },
-        host: 'localhost:3000',
+        servers: [{
+            url: 'http://localhost:3000',
+            description: 'Local Server',
+        }],
         schemes: ['http'],
         consumes: ['application/json'],
         produces: ['application/json'],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
         tags: [
             { name: 'auth', description: 'Auth related end-points' },
             { name: 'user', description: 'User related end-points' },
             { name: 'case', description: 'Cases related end-points' },
             { name: 'symptom', description: 'Symptoms related end-points' },
             { name: 'condition', description: 'Condition related end-points' }
-          ],
+        ],
     },
     routePrefix: '/doc'
 };

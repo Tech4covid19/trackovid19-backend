@@ -2,7 +2,7 @@
 
 module.exports = async (fastify, opts) => {
 
-  fastify.post('/case', { 
+  fastify.post('/case', {
     preValidation: [fastify.authenticate],
     schema: {
       tags: ['case'],
@@ -39,11 +39,17 @@ module.exports = async (fastify, opts) => {
     }
   })
 
-  fastify.get('/case/condition/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
-    try {     
+  fastify.get('/case/condition/:postalCode', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['case'],
+      params: fastify.schemas().getGeoCases
+    }
+  }, async (request, reply) => {
+    try {
       const cases = await fastify.models().StatusByPostalCode.findAll({
-      where: {postalcode: request.params.postalCode}
-    });
+        where: { postalcode: request.params.postalCode }
+      });
 
       //({postalCode: request.params.postalCode});
       return cases;
@@ -55,11 +61,17 @@ module.exports = async (fastify, opts) => {
     }
   });
 
-  fastify.get('/case/confinement/:postalCode', { preValidation: [fastify.authenticate], schema: { params: fastify.schemas().getGeoCases } },async (request, reply) => {
-    try {     
+  fastify.get('/case/confinement/:postalCode', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['case'],
+      params: fastify.schemas().getGeoCases
+    }
+  }, async (request, reply) => {
+    try {
       const cases = await fastify.models().ConfinementStateByPostalCode.findAll({
-      where: {postalcode: request.params.postalCode}
-    });
+        where: { postalcode: request.params.postalCode }
+      });
 
       //({postalCode: request.params.postalCode});
       return cases;

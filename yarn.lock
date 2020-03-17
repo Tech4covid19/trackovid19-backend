@@ -213,6 +213,11 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
+app-root-path@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/app-root-path/-/app-root-path-2.2.1.tgz#d0df4a682ee408273583d43f6f79e9892624bc9a"
+  integrity sha512-91IFKeKk7FjfmezPKkwtaRvSpnUc4gDwPAjA1YZ9Gn0q0PPeW+vbeUsZuyDwjI7+QTHhcLen2v25fi/AmhvbJA==
+
 append-transform@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-1.0.0.tgz#046a52ae582a228bd72f58acfbe2967c678759ab"
@@ -1505,6 +1510,18 @@ fastify-jwt@^1.2.1:
     jsonwebtoken "^8.3.0"
     steed "^1.1.3"
 
+fastify-oas@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/fastify-oas/-/fastify-oas-2.5.2.tgz#a2f3d2b433583a34b25c3e0352952b7519f6262b"
+  integrity sha512-iDGkRwJtYFlKRfNuoUawxKFa7FWQS1RovKVQ94tNtw2qJwIh873JX2EyuacKvm4NPiBeQgymDn4TUtLzVxNzXg==
+  dependencies:
+    "@types/swagger-schema-official" "^2.0.20"
+    app-root-path "^2.2.1"
+    fastify-plugin "^1.6.0"
+    fastify-static "^2.6.0"
+    js-yaml "^3.13.1"
+    openapi3-ts "^1.3.0"
+
 fastify-oauth2@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/fastify-oauth2/-/fastify-oauth2-3.0.0.tgz#4607c2a95b982c4256725a00d96106f6c8df377e"
@@ -1546,7 +1563,7 @@ fastify-sequelize@^1.0.4:
     fastify-plugin "^0.1.1"
     sequelize "^4.20.1"
 
-fastify-static@^2.5.1:
+fastify-static@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/fastify-static/-/fastify-static-2.6.0.tgz#ecf6c6a09399d8ad95f7912e27c373ba92cbc4c6"
   integrity sha512-OyaGl6KWQQCdv8FO9w0BAc1NYohuJizQkEGqBGaUijDmluIgU1YJr088inSyo2nVd688At50KiZKmeVKYHWYgw==
@@ -1555,16 +1572,6 @@ fastify-static@^2.5.1:
     glob "^7.1.4"
     readable-stream "^3.4.0"
     send "^0.16.0"
-
-fastify-swagger@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/fastify-swagger/-/fastify-swagger-2.5.0.tgz#961362f009f730b248fc11fb058e43543b18fb6b"
-  integrity sha512-WF3LpwwZunLtxzs1Dukwg7P4uBR9f2cwXL/JKD5D4O9Leq/S2QUfMNZg0eHxe4bJy1aUS9tt7IAHvY3ybgbApg==
-  dependencies:
-    "@types/swagger-schema-official" "^2.0.20"
-    fastify-plugin "^1.6.0"
-    fastify-static "^2.5.1"
-    js-yaml "^3.12.1"
 
 fastify@^2.0.0:
   version "2.12.1"
@@ -2528,7 +2535,7 @@ js-tokens@^4.0.0:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-yaml@^3.12.1, js-yaml@^3.13.1, js-yaml@^3.2.7, js-yaml@^3.3.1, js-yaml@^3.9.1:
+js-yaml@^3.13.1, js-yaml@^3.2.7, js-yaml@^3.3.1, js-yaml@^3.9.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
   integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
@@ -3186,6 +3193,11 @@ onetime@^2.0.0:
   integrity sha1-BnQoIw/WdEOyeUsiu6UotoZ5YtQ=
   dependencies:
     mimic-fn "^1.0.0"
+
+openapi3-ts@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/openapi3-ts/-/openapi3-ts-1.3.0.tgz#a6b4a6dda1d037cb826f3230426ce5243c75edb3"
+  integrity sha512-Xk3hsB0PzB4dzr/r/FdmK+VfQbZH7lQQ2iipMS1/1eoz1wUvh5R7rmOakYvw0bQJJE6PYrOLx8UHsYmzgTr+YQ==
 
 opener@^1.5.1:
   version "1.5.1"
