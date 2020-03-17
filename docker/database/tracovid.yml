@@ -1,0 +1,25 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "54320:5432"
+    volumes:
+      - tracovid_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: tracovid 
+      POSTGRES_PASSWORD: tracovid
+      POSTGRES_DB: tracovid
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  tracovid_data:

@@ -137,6 +137,38 @@ sls logs --stage prd -f app -t
 sls logs --stage dev -f app -t
 ```
 
+# Local DB
+
+A docker compose yml file was added for launching a local postgres database and a web based admin app (adminer). 
+
+You can check/change all db parameters by editing the docker compose file:
+
+```sh
+docker/database/tracovid.yml
+```
+
+You can use the convenience start/stop scripts for starting/stopping the database, but first you need to add execute permissions:
+
+```sh
+chmod +x docker/database/*.sh
+```
+
+Then for starting the local database:
+
+```sh
+docker/database/start.sh
+```
+
+You can then go to your browser and access the database via adminer at http://localhost:8080
+
+
+Stopping the local database:
+
+```sh
+docker/database/stop.sh
+```
+
+
 ### Authors
 Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @lcfb91 @zepcp @jcazevedo @cchostak for the work and efforts to bootstrap this service!
 Feel free to change / improve / delete everything you want!
