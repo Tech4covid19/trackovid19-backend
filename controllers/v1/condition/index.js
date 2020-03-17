@@ -2,7 +2,11 @@
 
 module.exports = async (fastify, opts) => {
 
-  fastify.get('/condition/all', async (request, reply) => {
+  fastify.get('/condition/all', {
+    schema: {
+      tags: ['condition']
+    }
+  }, async (request, reply) => {
     try {
       const conditions = await fastify.models().Condition.findAll();
       return conditions;

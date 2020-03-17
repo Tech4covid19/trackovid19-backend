@@ -3,11 +3,13 @@
 // Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @zepcp @lcfb91 @jcazevedo @cchostak for the work and efforts to bootstrap this service!
 // Feel free to change / improve / delete everything you want!
 
-const fastify = require('fastify')({ logger: false })
-const path = require('path')
-const AutoLoad = require('fastify-autoload')
-const fsequelize = require('fastify-sequelize')
-const oauthPlugin = require('fastify-oauth2')
+const fastify = require('fastify')({ logger: false });
+const path = require('path');
+const AutoLoad = require('fastify-autoload');
+const fsequelize = require('fastify-sequelize');
+const oauthPlugin = require('fastify-oauth2');
+const swagger = require('./config/swagger');
+fastify.register(require('fastify-swagger'), swagger.options);
 
 const dotEnv = require('dotenv').config();
 
@@ -87,10 +89,11 @@ if (process.env.LAMBDA_TASK_ROOT && process.env.AWS_EXECUTION_ENV) {
 } else {
   fastify.listen(process.env.PORT, err => {
     if (err) {
-      console.log(err)
-      process.exit(1)
+      console.log(err);
+      process.exit(1);
     }
-    console.log(`server listening on ${fastify.server.address().port}`)
+    fastify.swagger();
+    console.log(`server listening on ${fastify.server.address().port}`);
   })
 }
 
