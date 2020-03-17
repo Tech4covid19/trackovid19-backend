@@ -51,9 +51,18 @@ const schemas = {
                     }
                 }
             },
-            info: {
-                type: 'object'
+            email: {
+                type: 'string'
+            },
+            phone: {
+                type: 'string'
             }
+        }
+    },
+    getGeoCases: {
+        postalCode: {
+            type: 'string',
+            pattern: "^[0-9]{4}-[0-9]{3}$"
         }
     }
 };
