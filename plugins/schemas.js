@@ -5,10 +5,10 @@ const fp = require('fastify-plugin')
 const schemas = {
     createCase: {
         type: 'object',
-        required: ['postalCode', 'condition', 'timestamp', 'symptoms'],
+        required: ['postalCode', 'condition', 'confinementState'],
         properties: {
-            symptoms: {
-                type: 'boolean'
+            confinementState: {
+                type: 'number'
             },
             postalCode: {
                 type: 'string',
@@ -27,10 +27,6 @@ const schemas = {
             },
             condition: {
                 type: 'number'
-            },
-            timestamp: {
-                type: 'string',
-                format: 'date-time'
             }
         }
     },
