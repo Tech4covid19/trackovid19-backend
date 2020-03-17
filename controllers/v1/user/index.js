@@ -36,11 +36,13 @@ module.exports = async (fastify, opts) => {
       const user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
       });
-      var info = {
-        version: "v1",
-        phone: phone !== undefined ? phone : user.info.phone,
-        email: email !== undefined ? email : user.info.email 
-      }
+      
+      // Fill info
+      var info = JSON.parse(user.info != null ? user.info : '{}');     
+      info.version = 1
+      info.phone = phone !== undefined ? phone : info.phone;
+      info.email = email !== undefined ? email : info.email;
+ 
       await fastify.models().Users.update({ year, postalcode: postalCode, latitude: geo.lat, longitude: geo.lon, info: JSON.stringify(info), unix_ts: Date.now() }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode', 'latitude', 'longitude', 'unix_ts', 'info'] })
       reply.send({ status: 'ok' });
     } catch (error) {
