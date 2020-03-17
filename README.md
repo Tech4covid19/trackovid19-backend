@@ -139,7 +139,7 @@ $ sls deploy --stage dev --db_pass 'PASSWORD'
 
 For prd deploy, use:
 ```sh
-$ sls deploy --stage dev --db_pass 'PASSWORD'
+$ sls deploy --stage prd --db_pass 'PASSWORD'
 ```
 
 You should see
