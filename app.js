@@ -7,6 +7,8 @@ const fastify = require('fastify')({ logger: false })
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
 const fsequelize = require('fastify-sequelize')
+const oauthPlugin = require('fastify-oauth2')
+
 const dotEnv = require('dotenv').config();
 
 const sequelizeConfig = {
@@ -60,6 +62,22 @@ fastify.register(AutoLoad, {
 fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'controllers/v1'),
   options: Object.assign({}, { prefix: '/api/v1' })
+})
+
+fastify.register(require('fastify-axios'))
+
+
+fastify.register(oauthPlugin, {
+  name: 'facebookOAuth2',
+  credentials: {
+    client: {
+      id: process.env.FB_APP_ID,
+      secret: process.env.FB_APP_SECRET
+    },
+    auth: oauthPlugin.FACEBOOK_CONFIGURATION
+  },
+  startRedirectPath: '/login/facebook',
+  callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`
 })
 
 // Support for AWS Lambda

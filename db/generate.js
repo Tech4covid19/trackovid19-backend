@@ -6,7 +6,7 @@ var auto = new SequelizeAuto(process.env.DB_NAME, process.env.DB_USER, process.e
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'postgres',
-    tables: ['users', 'history', 'network', 'example'],
+    //tables: ['users', 'history', 'network', 'confinement_states', 'symptoms', 'user_status', 'user_symptoms'],
     directory: __dirname + '/models'
 })
 
