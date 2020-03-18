@@ -168,8 +168,8 @@ ALTER TABLE public.latest_status OWNER TO postgres;
 CREATE VIEW public.status_by_postalcode
 as
 select h.postalcode, h.status, count(h.*) as hits
-from history h
-inner join latest_status ls on ls.user_id = h.user_id
+from public.history h
+inner join public.latest_status ls on ls.user_id = h.user_id
 group by h.postalcode, h.status;
 
 ALTER TABLE public.status_by_postalcode OWNER TO postgres;
@@ -181,8 +181,8 @@ ALTER TABLE public.status_by_postalcode OWNER TO postgres;
 CREATE VIEW public.confinement_states_by_postalcode
 as
 select h.postalcode, h.confinement_state, count(h.*) as hits
-from history h
-inner join latest_status ls on ls.user_id = h.user_id
+from public.history h
+inner join public.latest_status ls on ls.user_id = h.user_id
 group by h.postalcode, h.confinement_state;
 
 ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
