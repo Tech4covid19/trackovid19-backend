@@ -15,6 +15,14 @@ module.exports = function(sequelize, DataTypes) {
 			type: "BYTEA",
 			allowNull: true
 		},
+		patient_token: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		show_onboarding: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true
+		},
 		year: {
 			type: DataTypes.INTEGER,
 			allowNull: true
