@@ -54,10 +54,6 @@ fastify
   .register(fsequelize, sequelizeConfig)
   .ready()
 
-fastify.register(
-  require('fastify-compress')
-)
-
 fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'plugins'),
   //options: Object.assign({}, opts)
