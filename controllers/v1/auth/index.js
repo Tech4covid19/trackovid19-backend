@@ -12,7 +12,7 @@ module.exports = async (fastify, opts) => {
             await fastify.models().Users.upsert({ id, ip: request.ip, facebook_id: id, timestamp: new Date(), unix_ts: Date.now(), info: JSON.stringify({ version: 1, name: name, email: email }) }, { fields: ['unix_ts', 'info'] })
 
             reply.header('access_token', await fastify.jwt.sign({ payload: { id, name }, roles: ['user'] }))
-            reply.redirect('http://localhost:4200/post-code');
+            reply.redirect('http://localhost:4200/post-code?code=${token.access_token}');
             //reply.send({ access_token: await fastify.jwt.sign({ payload: { id, name }, roles: ['user'] }) });
         } catch (error) {
             console.log(error)
