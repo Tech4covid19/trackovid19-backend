@@ -20,9 +20,9 @@ module.exports = fp(async (fastify, opts) => {
         Network.belongsTo(Users, { foreignKey: 'user_id' });
 
         Symptom.hasMany(UserSymptom, { foreignKey: 'symptom_id' });
-        Case.hasMany(UserSymptom, { foreignKey: 'history_id' });
-        UserSymptom.belongsTo(Case, { foreignKey: 'history_id' });
+        Case.hasMany(UserSymptom, { foreignKey: 'case_id' });
+        UserSymptom.belongsTo(Case, { foreignKey: 'case_id' });
 
-        return { Case, Network, Users, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode }
+        return { Case, Network, Users, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom }
     })
 })

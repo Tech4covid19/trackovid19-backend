@@ -5,7 +5,7 @@ const fp = require('fastify-plugin')
 const schemas = {
     createCase: {
         type: 'object',
-        required: ['postalCode', 'condition', 'confinementState'],
+        required: ['postalCode', 'condition', 'confinementState', 'symptoms'],
         properties: {
             confinementState: {
                 type: 'number'
@@ -27,6 +27,12 @@ const schemas = {
             },
             condition: {
                 type: 'number'
+            },
+            symptoms: {
+                type: 'array',
+                items: {
+                    type: 'number'
+                }
             }
         }
     },
@@ -56,6 +62,15 @@ const schemas = {
             },
             phone: {
                 type: 'string'
+            },
+            name: {
+                type: 'string'
+            }, 
+            patientToken: {
+                type: 'string'
+            },
+            showOnboarding: {
+                type: 'boolean'
             }
         }
     },

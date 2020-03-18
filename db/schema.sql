@@ -241,6 +241,8 @@ CREATE TABLE public.users (
     id character varying(16) NOT NULL,
     hash bytea,
     facebook_id bytea,
+    patient_token character varying(256),
+    show_onboarding boolean DEFAULT true,
     year integer,
     postalcode character varying(8),
     ip character varying(20),

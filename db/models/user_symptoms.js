@@ -8,8 +8,9 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true,
 			autoIncrement: true
 		},
-		history_id: {
-			type: DataTypes.BIGINT,
+		case_id: {
+			field: 'history_id',
+			type: DataTypes.INTEGER,
 			allowNull: true,
 			references: {
 				model: 'history',
