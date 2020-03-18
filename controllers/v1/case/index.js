@@ -53,6 +53,9 @@ module.exports = async (fastify, opts) => {
 
       return cases;
     } catch (error) {
+      console.log('------------------------------------');
+      console.log(error);
+      console.log('------------------------------------');
       request.log.error(error)
       reply.status(500).send({
         error
