@@ -1,16 +1,15 @@
 
-<h1 align="center">Trackovid19-Backend</h1>
+<h1 align="center">Covidografia-Backend</h1>
 
 <div align="center">
 <a href="[https://tech4covid19.org/](https://tech4covid19.org/)" target="_blank"><img src="https://ucarecdn.com/e2cfb782-1524-496a-a48f-f97b75440d56/"></a>
 </div>
 <div align="center">
-  <strong>Trackovid19-Backend</strong>
+  <strong>Covidografia-Backend</strong>
 </div>
 <div align="center">
-  Trackovid19 API
+  Covidografia API
 </div>
-
 <br />
 
 <div align="center">
@@ -139,7 +138,7 @@ $ sls deploy --stage dev --db_pass 'PASSWORD'
 
 For prd deploy, use:
 ```sh
-$ sls deploy --stage dev --db_pass 'PASSWORD'
+$ sls deploy --stage prd --db_pass 'PASSWORD'
 ```
 
 You should see
