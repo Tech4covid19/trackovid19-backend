@@ -3,13 +3,13 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('user_symptoms', {
 		id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BIGINT,
 			allowNull: false,
 			primaryKey: true,
 			autoIncrement: true
 		},
 		history_id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.BIGINT,
 			allowNull: true,
 			references: {
 				model: 'history',

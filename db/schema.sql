@@ -102,7 +102,7 @@ ALTER TABLE public.example OWNER TO postgres;
 --
 
 CREATE TABLE public.history (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     user_id character varying(16),
     status integer,
     confinement_state integer,
@@ -123,7 +123,7 @@ ALTER TABLE public.history OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.history_id_seq
-    AS integer
+    AS bigint
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -354,8 +354,8 @@ ALTER SEQUENCE public.user_status_id_seq OWNED BY public.user_status.id;
 --
 
 CREATE TABLE public.user_symptoms (
-    id integer NOT NULL,
-    history_id integer,
+    id bigint NOT NULL,
+    history_id bigint,
     symptom_id integer,
     "timestamp" timestamp without time zone DEFAULT timezone('utc'::text, now()),
     unix_ts bigint DEFAULT date_part('epoch'::text, now())
@@ -370,7 +370,7 @@ ALTER TABLE public.user_symptoms OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.user_symptoms_id_seq
-    AS integer
+    AS bigint
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
