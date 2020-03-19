@@ -539,14 +539,19 @@ COPY public.network (id, user_id, met_with, facebook_id, latitude, longitude, in
 
 COPY public.symptoms (id, symptom) FROM stdin;
 1	Sem sintomas
-2	Tosse seca
-3	Tosse com expectoração
-4	Febre (acima de 37.5º)
-5	Dores musculares
-6	Arrepios/calafrios
-7	Dores de cabeça
-8	Dificuldade em respirar
-9	Náuseas, vómitos ou diarreia
+2	Tosse
+3	Congestão nasal
+4	Dor de garganta
+5	Dificuldade em respirar
+6	Dor no peito
+7	Conjuntivite
+8	Febre (acima de 37.5º)
+9	Cansaço
+10	Dores musculares
+11	Dores de cabeça
+12	Naúseas / vómitos
+13	Diarreia
+14	Dor abdominal
 \.
 
 
