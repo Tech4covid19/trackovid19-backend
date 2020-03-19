@@ -48,6 +48,7 @@ module.exports = async (fastify, opts) => {
   })
 
   fastify.get('/case/all', {
+    preValidation: [fastify.authenticate],
     schema: {
       tags: ['case']
     }
@@ -83,9 +84,6 @@ module.exports = async (fastify, opts) => {
 
       return cases;
     } catch (error) {
-      console.log('------------------------------------');
-      console.log(error);
-      console.log('------------------------------------');
       request.log.error(error)
       reply.status(500).send({
         error

@@ -22,10 +22,11 @@
     "sequelize": "^5.21.5"
   },
   "dependencies": {
+    "crypto-random-string": "^3.2.0",
+    "dotenv": "^8.2.0",
     "fastify": "^2.0.0",
     "fastify-autoload": "^1.0.0",
     "fastify-axios": "^1.1.1",
-    "fastify-cli": "^1.4.0",
     "fastify-compress": "^2.0.1",
     "fastify-helmet": "^3.0.2",
     "fastify-jwt": "^1.2.1",
@@ -34,17 +35,14 @@
     "fastify-plugin": "^1.5.0",
     "fastify-rate-limit": "^3.0.1",
     "fastify-sequelize": "^1.0.4",
+    "pdfjs": "^2.3.5",
     "pg": "6.4.2",
-    "pg-hstore": "^2.3.3",
     "proper-lockfile": "^4.1.1",
     "sequelize-auto": "^0.4.29",
     "serverless-http": "^2.3.2",
-    "uuid": "^3.4.0"
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
-    "install-peers": "^1.0.3",
-    "sequelize-cli": "^5.5.1",
-    "serverless-stage-manager": "^1.0.5",
-    "tap": "^12.5.3"
+    "sequelize-cli": "^5.5.1"
   }
 }
