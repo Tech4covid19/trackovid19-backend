@@ -44,6 +44,7 @@ SET default_tablespace = '';
 CREATE TABLE public.confinement_states (
     id integer NOT NULL,
     state character varying(100),
+    state_summary character varying(100),
     description character varying(500)
 );
 
@@ -149,6 +150,7 @@ ALTER SEQUENCE public.history_id_seq OWNED BY public.history.id;
 
 CREATE VIEW public.latest_status AS
  SELECT a.user_id,
+    a.id as history_id,
     a.status,
     a.confinement_state,
     a."timestamp"
@@ -160,32 +162,6 @@ CREATE VIEW public.latest_status AS
 
 ALTER TABLE public.latest_status OWNER TO postgres;
 
-
---
--- Name: status_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.status_by_postalcode
-as
-select h.postalcode, h.status, count(h.*) as hits
-from public.history h
-inner join public.latest_status ls on ls.user_id = h.user_id
-group by h.postalcode, h.status;
-
-ALTER TABLE public.status_by_postalcode OWNER TO postgres;
-
---
--- Name: confinement_states_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
---
-
-CREATE VIEW public.confinement_states_by_postalcode
-as
-select h.postalcode, h.confinement_state, count(h.*) as hits
-from public.history h
-inner join public.latest_status ls on ls.user_id = h.user_id
-group by h.postalcode, h.confinement_state;
-
-ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
 
 --
 -- TOC entry 210 (class 1259 OID 24848)
@@ -319,7 +295,8 @@ ALTER SEQUENCE public.symptoms_id_seq OWNED BY public.symptoms.id;
 
 CREATE TABLE public.user_status (
     id integer NOT NULL,
-    status character varying(100)
+    status character varying(100),
+    status_summary character varying(100)
 );
 
 
@@ -440,16 +417,57 @@ ALTER TABLE ONLY public.user_symptoms ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: status_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.status_by_postalcode
+as
+select h.postalcode, h.status, us.status_summary as status_text, count(h.*) as hits
+from public.history h
+inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
+inner join public.user_status us on us.id = h.status
+where h.postalcode is not null
+group by h.postalcode, h.status, us.status_summary
+union all
+select h.postalcode, case when us.has_symptoms then 100 else 200 end as status, case when us.has_symptoms then 'Com sintomas' else 'Sem sintomas' end as status_text, count(h.*) as hits
+from public.history h
+inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
+inner join (
+	select uus.history_id, min(uus.symptom_id), case when min(uus.symptom_id) = 1 then false else true end as has_symptoms
+	from public.user_symptoms uus
+	group by uus.history_id
+) us on us.history_id = h.id
+where h.postalcode is not null
+group by h.postalcode, us.has_symptoms;
+
+ALTER TABLE public.status_by_postalcode OWNER TO postgres;
+
+--
+-- Name: confinement_states_by_postalcode; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW public.confinement_states_by_postalcode
+as
+select h.postalcode, h.confinement_state, cs.state_summary as confinement_state_text, count(h.*) as hits
+from public.history h
+inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
+inner join public.confinement_states cs on cs.id = h.confinement_state
+where h.postalcode is not null
+group by h.postalcode, h.confinement_state, cs.state_summary;
+
+ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
+
+--
 -- TOC entry 3911 (class 0 OID 24778)
 -- Dependencies: 203
 -- Data for Name: confinement_states; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.confinement_states (id, state, description) FROM stdin;
-1	Afastamento social	Presumo estar saudável e estou por opção em casa em prevenção
-2	Isolamento obrigatório	Estou doente e isolado através do afastamento social não contagiando outros cidadãos
-3	Quarentena	Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos
-4	Vida normal	Faço a minha rotina habitual
+COPY public.confinement_states (id, state, description, state_summary) FROM stdin;
+1	Afastamento social	Presumo estar saudável e estou por opção em casa em prevenção	Em casa, preventivamente
+2	Isolamento obrigatório	Estou doente e isolado através do afastamento social não contagiando outros cidadãos	Isolados
+3	Quarentena	Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos	Isolados
+4	Vida normal	Faço a minha rotina habitual	Rotina habitual
 \.
 
 
@@ -538,11 +556,11 @@ COPY public.symptoms (id, symptom) FROM stdin;
 -- Data for Name: user_status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_status (id, status) FROM stdin;
-1	Infeção confirmada
-2	Caso suspeito
-3	Recuperado
-4	Presumo que não
+COPY public.user_status (id, status, status_summary) FROM stdin;
+1	Infeção confirmada	Infetados
+2	Caso suspeito	Suspeitos
+3	Recuperado	Recuperados
+4	Presumo que não	Não sabem
 \.
 
 

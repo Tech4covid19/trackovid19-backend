@@ -15,6 +15,10 @@ module.exports = function(sequelize, DataTypes) {
 				model: 'user_status',
 				key: 'id'
 			}
+        },
+        status_text: {
+			type: DataTypes.STRING,
+            allowNull: true
 		},
 		hits: {
 			type: DataTypes.INTEGER,
