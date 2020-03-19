@@ -1,0 +1,505 @@
+openapi: 3.0.0
+info:
+  title: tracovid
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost
+  variables: {}
+paths:
+  /login/facebook:
+    get:
+      tags:
+      - Misc
+      summary: login
+      operationId: login
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /api/v1/case/all:
+    get:
+      tags:
+      - Misc
+      summary: all-cases
+      operationId: all-cases
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+      deprecated: false
+  /api/v1/case:
+    post:
+      tags:
+      - Misc
+      summary: add-case
+      operationId: add-case
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/add-case-request'
+            example:
+              status: 1
+              postalCode: 4200-192
+              confinementState: 1
+              condition: 1
+              info: 
+              geo:
+                lat: 0
+                lon: 0
+              symptoms:
+              - 3
+              - 4
+              - 5
+        required: true
+        x-send-file-in-body: false
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/add-case'
+              example:
+                status: success
+      deprecated: false
+  /api/v1/symptom/all:
+    get:
+      tags:
+      - Misc
+      summary: all-symptoms
+      operationId: all-symptoms
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/all-symptom'
+              example:
+              - id: 1
+                symptom: Sem sintomas
+              - id: 2
+                symptom: Tosse seca
+              - id: 3
+                symptom: Tosse com expectoração
+              - id: 4
+                symptom: Febre (acima de 37.5º)
+              - id: 5
+                symptom: Dores musculares
+              - id: 6
+                symptom: Arrepios/calafrios
+              - id: 7
+                symptom: Dores de cabeça
+              - id: 8
+                symptom: Dificuldade em respirar
+              - id: 9
+                symptom: Náuseas, vómitos ou diarreia
+      deprecated: false
+  /api/v1/condition/all:
+    get:
+      tags:
+      - Misc
+      summary: all-conditions
+      operationId: all-conditions
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/all-condition'
+              example:
+              - id: 1
+                status: Infeção confirmada
+              - id: 2
+                status: Caso suspeito
+              - id: 3
+                status: Recuperado
+              - id: 4
+                status: Presumo que não
+      deprecated: false
+  /api/v1/confinementState/all:
+    get:
+      tags:
+      - Misc
+      summary: all-confinement-states
+      operationId: all-confinement-states
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/all-confinement-state'
+              example:
+              - id: 1
+                state: Afastamento social
+                description: Presumo estar saudável e estou por opção em casa em prevenção
+              - id: 2
+                state: Isolamento obrigatório
+                description: Estou doente e isolado através do afastamento social não contagiando outros cidadãos
+              - id: 3
+                state: Quarentena
+                description: Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos
+              - id: 4
+                state: Vida normal
+                description: Faço a minha rotina habitual
+      deprecated: false
+  /api/v1/case/condition/4200-192:
+    get:
+      tags:
+      - Misc
+      summary: case-condiitons-by-postalcode
+      operationId: case-condiitons-by-postalcode
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/case-condiitons-by-postalcode'
+              example:
+              - postalcode: 4200-192
+                status: 1
+                status_text: Infetados
+                hits: 22
+              - postalcode: 4200-192
+                status: 3
+                status_text: Recuperados
+                hits: 2
+              - postalcode: 4200-192
+                status: 4
+                status_text: Não sabem
+                hits: 1
+              - postalcode: 4200-192
+                status: 100
+                status_text: Com sintomas
+                hits: 1
+      deprecated: false
+  /api/v1/case/confinement/4200-192:
+    get:
+      tags:
+      - Misc
+      summary: case-confinements-by-postalcode
+      operationId: case-confinements-by-postalcode
+      parameters: []
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/case-confinements-by-postalcode'
+              example:
+              - postalcode: 4200-192
+                confinement_state: 1
+                confinement_state_text: Em casa, preventivamente
+                hits: 3
+              - postalcode: 4200-192
+                confinement_state: 2
+                confinement_state_text: Isolados
+                hits: 2
+              - postalcode: 4200-192
+                confinement_state: 3
+                confinement_state_text: Isolados
+                hits: 2
+      deprecated: false
+  /api/v1/user:
+    put:
+      tags:
+      - Misc
+      summary: update-user
+      operationId: update-user
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-user-request'
+            example:
+              postalCode: 4200-192
+              geo:
+                lat: 10.34
+                lon: 2.7999999999999998
+              phone: +351960123122
+              email: jane@doe.com
+              name: John Doe
+              patientToken: QWERTY
+              showOnboarding: false
+        required: true
+        x-send-file-in-body: false
+      responses:
+        200:
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/update-user'
+              example:
+                status: ok
+      deprecated: false
+components:
+  schemas:
+    add-case-request:
+      title: add-case-request
+      required:
+      - status
+      - postalCode
+      - confinementState
+      - condition
+      - info
+      - geo
+      - symptoms
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+        postalCode:
+          type: string
+        confinementState:
+          type: integer
+          format: int32
+        condition:
+          type: integer
+          format: int32
+        info:
+          type: string
+          nullable: true
+        geo:
+          $ref: '#/components/schemas/Geo'
+        symptoms:
+          type: array
+          items:
+            type: integer
+            format: int32
+      example:
+        status: 1
+        postalCode: 4200-192
+        confinementState: 1
+        condition: 1
+        info: 
+        geo:
+          lat: 0
+          lon: 0
+        symptoms:
+        - 3
+        - 4
+        - 5
+    Geo:
+      title: Geo
+      required:
+      - lat
+      - lon
+      type: object
+      properties:
+        lat:
+          type: integer
+          format: int32
+        lon:
+          type: integer
+          format: int32
+      example:
+        lat: 0
+        lon: 0
+    add-case:
+      title: add-case
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: success
+    all-symptom:
+      title: all-symptom
+      required:
+      - id
+      - symptom
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        symptom:
+          type: string
+      example:
+        id: 1
+        symptom: Sem sintomas
+    all-condition:
+      title: all-condition
+      required:
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        status:
+          type: string
+      example:
+        id: 1
+        status: Infeção confirmada
+    all-confinement-state:
+      title: all-confinement-state
+      required:
+      - id
+      - state
+      - description
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        state:
+          type: string
+        description:
+          type: string
+      example:
+        id: 1
+        state: Afastamento social
+        description: Presumo estar saudável e estou por opção em casa em prevenção
+    case-condiitons-by-postalcode:
+      title: case-condiitons-by-postalcode
+      required:
+      - postalcode
+      - status
+      - status_text
+      - hits
+      type: object
+      properties:
+        postalcode:
+          type: string
+        status:
+          type: integer
+          format: int32
+        status_text:
+          type: string
+        hits:
+          type: string
+      example:
+        postalcode: 4200-192
+        status: 1
+        status_text: Infetados
+        hits: 22
+    case-confinements-by-postalcode:
+      title: case-confinements-by-postalcode
+      required:
+      - postalcode
+      - confinement_state
+      - confinement_state_text
+      - hits
+      type: object
+      properties:
+        postalcode:
+          type: string
+        confinement_state:
+          type: integer
+          format: int32
+        confinement_state_text:
+          type: string
+        hits:
+          type: string
+      example:
+        postalcode: 4200-192
+        confinement_state: 1
+        confinement_state_text: Em casa, preventivamente
+        hits: 3
+    update-user-request:
+      title: update-user-request
+      required:
+      - postalCode
+      - geo
+      - phone
+      - email
+      - name
+      - patientToken
+      - showOnboarding
+      type: object
+      properties:
+        postalCode:
+          type: string
+        geo:
+          $ref: '#/components/schemas/Geo1'
+        phone:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        patientToken:
+          type: string
+        showOnboarding:
+          type: boolean
+      example:
+        postalCode: 4200-192
+        geo:
+          lat: 10.34
+          lon: 2.7999999999999998
+        phone: +351960123122
+        email: jane@doe.com
+        name: John Doe
+        patientToken: QWERTY
+        showOnboarding: false
+    Geo1:
+      title: Geo1
+      required:
+      - lat
+      - lon
+      type: object
+      properties:
+        lat:
+          type: number
+        lon:
+          type: number
+      example:
+        lat: 10.34
+        lon: 2.7999999999999998
+    update-user:
+      title: update-user
+      required:
+      - status
+      type: object
+      properties:
+        status:
+          type: string
+      example:
+        status: ok
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+- httpBearer: []
+tags:
+- name: Misc
+  description: ''
