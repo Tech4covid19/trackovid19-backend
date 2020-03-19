@@ -9,14 +9,20 @@ module.exports = async (fastify, opts) => {
       body: fastify.schemas().createCase
     }
   }, async (request, reply) => {
-    try {
-      const { postalCode, geo, condition, confinementState, symptoms } = request.body
 
+    // Create a transaction
+    const t = await fastify.sequelize.transaction();
+
+    // Do the magic...
+    try {
+
+      const { postalCode, geo, condition, confinementState, symptoms } = request.body;
       const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
 
       await fastify.models().Case.create(
-        {postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
+        {postalcode: postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
         {
+          transaction: t,
           include: [
             {
               model: fastify.models().UserSymptom
@@ -25,9 +31,16 @@ module.exports = async (fastify, opts) => {
         }
       )
 
+      // Commit the transaction
+      await t.commit();
+
       reply.send({ status: 'success' })
     } catch (error) {
       request.log.error(error)
+
+      // Rollback the transaction
+      await t.rollback();
+
       reply.status(500).send({
         error
       });

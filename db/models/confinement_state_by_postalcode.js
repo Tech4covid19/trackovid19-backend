@@ -16,6 +16,10 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
+		confinement_state_text: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 		hits: {
 			type: DataTypes.INTEGER,
 			allowNull: true
