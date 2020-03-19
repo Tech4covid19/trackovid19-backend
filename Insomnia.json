@@ -1,1 +1,140 @@
-{"_type":"export","__export_format":4,"__export_date":"2020-03-17T13:39:22.908Z","__export_source":"insomnia.desktop.app:v7.1.1","resources":[{"_id":"req_7b1365b8d25941b795c1427e56fc6a25","authentication":{},"body":{},"created":1584452327975,"description":"","headers":[],"isPrivate":false,"metaSortKey":-1584452327975,"method":"GET","modified":1584452335474,"name":"All symptoms","parameters":[],"parentId":"fld_f4dad4c32d364cf480722eb6e140351a","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/symptom/all","_type":"request"},{"_id":"fld_f4dad4c32d364cf480722eb6e140351a","created":1584452318467,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1584452318467,"modified":1584452318467,"name":"Symptom","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"request_group"},{"_id":"wrk_f8f36a56382942c59467e54c50cea007","created":1584280742201,"description":"","modified":1584280742201,"name":"COVID19","parentId":null,"_type":"workspace"},{"_id":"req_ecad7109bb864b8688ad740c401147a1","authentication":{},"body":{},"created":1584452106478,"description":"","headers":[],"isPrivate":false,"metaSortKey":-1584452106478,"method":"GET","modified":1584452125505,"name":"All conditions","parameters":[],"parentId":"fld_52dc5687cb1a45a78c17277838ae0c34","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/condition/all","_type":"request"},{"_id":"fld_52dc5687cb1a45a78c17277838ae0c34","created":1584452096422,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1584452096422,"modified":1584452096422,"name":"Condition","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"request_group"},{"_id":"req_fe05aef6680d40c69f647afa0a7da292","authentication":{"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiMjkyMTY3MjIzNDU2MjcyMCIsIm5hbWUiOiJKb8OjbyBEdWFydGUifSwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE1ODQ0MDcwNjcsImV4cCI6MTU4NDQ5MzQ2N30.XCDH2EpKJPW7V5iXCuAsvS-w7e5449maVT_hIUXnOZ0jip24_VVsgn6I_W1oqViNmp-lJpQxS8FFv2APUJjBbsAkVu5z6Yw3CJgHBb0fBAIKoEOmDVooWm18zdEIQbl_DFeSo73lOD56YDo3W3eY7burGMT40h1Ul_C6161KvBG32Ux8tRCqPLUPMfNehL7pSRe10B90NABQU1CywHqe7rpCmZOcBqsvgzzZAqM6AGXXo26pMCrm9jlGJLOv94syHALK4ds0VJHLRk-KpMD9nUUoeF9ny8nromAILPDOG0BjzY403LAvoJ2h7CydHYsCuWVf6NU0ZxaqiZ4thvk2Ow","type":"bearer"},"body":{},"created":1584407335053,"description":"","headers":[],"isPrivate":false,"metaSortKey":-1584297147590.1875,"method":"GET","modified":1584411833416,"name":"Get User","parameters":[],"parentId":"fld_1fb3ed8365f544698ea9e854e0c38c20","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/user","_type":"request"},{"_id":"fld_1fb3ed8365f544698ea9e854e0c38c20","created":1584411827305,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1584411827405,"modified":1584451958379,"name":"User","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"request_group"},{"_id":"req_04ec84d0d885452db087f089aa3fdc45","authentication":{"disabled":false,"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiMjkyMTY3MjIzNDU2MjcyMCIsIm5hbWUiOiJKb8OjbyBEdWFydGUifSwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE1ODQ0MDcwNjcsImV4cCI6MTU4NDQ5MzQ2N30.XCDH2EpKJPW7V5iXCuAsvS-w7e5449maVT_hIUXnOZ0jip24_VVsgn6I_W1oqViNmp-lJpQxS8FFv2APUJjBbsAkVu5z6Yw3CJgHBb0fBAIKoEOmDVooWm18zdEIQbl_DFeSo73lOD56YDo3W3eY7burGMT40h1Ul_C6161KvBG32Ux8tRCqPLUPMfNehL7pSRe10B90NABQU1CywHqe7rpCmZOcBqsvgzzZAqM6AGXXo26pMCrm9jlGJLOv94syHALK4ds0VJHLRk-KpMD9nUUoeF9ny8nromAILPDOG0BjzY403LAvoJ2h7CydHYsCuWVf6NU0ZxaqiZ4thvk2Ow","type":"bearer"},"body":{"mimeType":"application/json","text":"{\n\t\"postalCode\": \"4610-670\",\n\t\"geo\": {\n\t\t\"lat\": 31.5812858,\n\t\t\"lon\": 54.0828852\n\t},\n\t\"year\": 1992,\n\t\"info\": {\n\t\t\"annotations\": \"Test annotations\"\n\t}\n}"},"created":1584413108518,"description":"","headers":[{"id":"pair_0e8ae402d8224d2cb8454185f9c43fb9","name":"Content-Type","value":"application/json"}],"isPrivate":false,"metaSortKey":-1584297147565.1875,"method":"PUT","modified":1584413251234,"name":"Update User","parameters":[],"parentId":"fld_1fb3ed8365f544698ea9e854e0c38c20","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/user","_type":"request"},{"_id":"req_6413cdb7c62d415d94ee61db0523ea3b","authentication":{"token":"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiMjkyMTY3MjIzNDU2MjcyMCIsIm5hbWUiOiJKb8OjbyBEdWFydGUifSwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE1ODQ0MDcwNjcsImV4cCI6MTU4NDQ5MzQ2N30.XCDH2EpKJPW7V5iXCuAsvS-w7e5449maVT_hIUXnOZ0jip24_VVsgn6I_W1oqViNmp-lJpQxS8FFv2APUJjBbsAkVu5z6Yw3CJgHBb0fBAIKoEOmDVooWm18zdEIQbl_DFeSo73lOD56YDo3W3eY7burGMT40h1Ul_C6161KvBG32Ux8tRCqPLUPMfNehL7pSRe10B90NABQU1CywHqe7rpCmZOcBqsvgzzZAqM6AGXXo26pMCrm9jlGJLOv94syHALK4ds0VJHLRk-KpMD9nUUoeF9ny8nromAILPDOG0BjzY403LAvoJ2h7CydHYsCuWVf6NU0ZxaqiZ4thvk2Ow","type":"bearer"},"body":{"mimeType":"application/json","text":"{\n\t\"postalCode\": \"4610-670\",\n\t\"geo\": {\n\t\t\"lat\": 31.5812858,\n\t\t\"lon\": 54.0828852\n\t},\n\t\"condition\": 1,\n\t\"symptoms\": 1,\n\t\"timestamp\": \"2012-04-23T18:25:43.511Z\",\n\t\"confinementState\": 1\n}"},"created":1584280747631,"description":"","headers":[{"id":"pair_0e8ae402d8224d2cb8454185f9c43fb9","name":"Content-Type","value":"application/json"}],"isPrivate":false,"metaSortKey":-1584297147540.1875,"method":"POST","modified":1584451923658,"name":"Create Case","parameters":[],"parentId":"fld_1fb3ed8365f544698ea9e854e0c38c20","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/case","_type":"request"},{"_id":"req_042a5eb176c240179e2363eca9bfc60b","authentication":{},"body":{},"created":1584452053692,"description":"","headers":[],"isPrivate":false,"metaSortKey":-1584452053692,"method":"GET","modified":1584452170469,"name":"All Confinement States","parameters":[],"parentId":"fld_7b641062f7194c90936bbd7b03da0a48","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/confinementState/all","_type":"request"},{"_id":"fld_7b641062f7194c90936bbd7b03da0a48","created":1584452001605,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1584411827380,"modified":1584452038018,"name":"ConfinementState","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"request_group"},{"_id":"req_9339975a35704c5aa44dafe279962b1a","authentication":{},"body":{},"created":1584330986416,"description":"","headers":[],"isPrivate":false,"metaSortKey":-1584411862176,"method":"GET","modified":1584452155755,"name":"All Cases","parameters":[],"parentId":"fld_e8fa37f6f66548adb4e2b8cf1841d15c","settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingFollowRedirects":"global","settingRebuildPath":true,"settingSendCookies":true,"settingStoreCookies":true,"url":"http://localhost:3000/api/v1/case/all","_type":"request"},{"_id":"fld_e8fa37f6f66548adb4e2b8cf1841d15c","created":1584411854269,"description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1584411827355,"modified":1584451955792,"name":"Cases","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"request_group"},{"_id":"env_e7eb6f5dba59fc2365cfc75ca1de5541fdab05da","color":null,"created":1584280742237,"data":{},"dataPropertyOrder":null,"isPrivate":false,"metaSortKey":1584280742237,"modified":1584280742237,"name":"Base Environment","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"environment"},{"_id":"jar_e7eb6f5dba59fc2365cfc75ca1de5541fdab05da","cookies":[{"creation":"2020-03-15T14:10:54.458Z","domain":"localhost","hostOnly":true,"httpOnly":true,"id":"9722598128682975","key":"connect.sid","lastAccessed":"2020-03-15T15:29:10.677Z","path":"/","value":"s%3Ab9CqFMilFHCVNHk7zAF_NWlft8yUznXy.%2BNW0mQ%2Baao0R%2FEHdB78vldpTD6PRxzsAE6YA2by1Ce0"},{"creation":"2020-03-15T14:14:33.970Z","domain":"facebook.com","expires":"2020-06-13T14:14:35.000Z","hostOnly":false,"httpOnly":true,"id":"35965117369153865","key":"fr","lastAccessed":"2020-03-15T14:14:33.970Z","maxAge":7775999,"path":"/","secure":true,"value":"1ZycH0qGuISI53VxX..BebjhM.LX.AAA.0.0.BebjhM.AWW3YqfU"},{"creation":"2020-03-15T14:14:33.970Z","domain":"facebook.com","expires":"2022-03-15T14:14:36.000Z","hostOnly":false,"httpOnly":true,"id":"47822274088702743","key":"sb","lastAccessed":"2020-03-15T14:14:33.970Z","maxAge":63072000,"path":"/","secure":true,"value":"TDhuXqfEE7sZI4wl5bKIn3qL"},{"creation":"2020-03-15T14:30:25.424Z","domain":"www.facebook.com","hostOnly":true,"httpOnly":true,"id":"06852340086461539","key":"connect.sid","lastAccessed":"2020-03-15T14:30:25.424Z","path":"/","value":"s%3AwfmS7nuIdmOH6XIoaxUpSGhTfEdimWNU.pP%2BbEZaLlZpEIZeTRkXZ0fGU8Qe%2BuBVDNmLlT88q0%2BI"}],"created":1584280742238,"modified":1584286150677,"name":"Default Jar","parentId":"wrk_f8f36a56382942c59467e54c50cea007","_type":"cookie_jar"}]}
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_source": "apimatic.transformer",
+  "resources": [
+    {
+      "name": "tracovid",
+      "_type": "workspace",
+      "_id": "wrk_0c7e46baea1348808af5376ae04cfc48"
+    },
+    {
+      "name": "Misc",
+      "_type": "request_group",
+      "_id": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
+      "parentId": "wrk_0c7e46baea1348808af5376ae04cfc48",
+      "description": ""
+    },
+    {
+      "name": "login",
+      "method": "GET",
+      "url": "http://localhost/login/facebook",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_81137cfbc661458b8d3b80b3b6175cb9",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "all-cases",
+      "method": "GET",
+      "url": "http://localhost/api/v1/case/all",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_d0f490d97cf349cf9e263d5e76cfeaca",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "add-case",
+      "method": "POST",
+      "url": "http://localhost/api/v1/case",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\r\n  \"status\": 1,\r\n  \"postalCode\": \"4200-192\",\r\n  \"confinementState\": 1,\r\n  \"condition\": 1,\r\n  \"info\": null,\r\n  \"geo\": {\r\n    \"lat\": 0,\r\n    \"lon\": 0\r\n  },\r\n  \"symptoms\": [\r\n    3,\r\n    4,\r\n    5\r\n  ]\r\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "disabled": false
+        }
+      ],
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_be25ff70d1b140c4bdc8439a25fd6281",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "all-symptoms",
+      "method": "GET",
+      "url": "http://localhost/api/v1/symptom/all",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_b553b2433f1d4dbd9ad9f8789a4f8c3b",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "all-conditions",
+      "method": "GET",
+      "url": "http://localhost/api/v1/condition/all",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_7dcfda178cb04cdbab5d191f4b9c362f",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "all-confinement-states",
+      "method": "GET",
+      "url": "http://localhost/api/v1/confinementState/all",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_3ec8c33bf0bc476e8c100ca8759b478f",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "case-condiitons-by-postalcode",
+      "method": "GET",
+      "url": "http://localhost/api/v1/case/condition/4200-192",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_8361810611b14630884eb3fce5bc1bbe",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "case-confinements-by-postalcode",
+      "method": "GET",
+      "url": "http://localhost/api/v1/case/confinement/4200-192",
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_c4a905f0302a47df829fe1c7a1224e2c",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    },
+    {
+      "name": "update-user",
+      "method": "PUT",
+      "url": "http://localhost/api/v1/user",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\r\n  \"postalCode\": \"4200-192\",\r\n  \"geo\": {\r\n    \"lat\": 10.34,\r\n    \"lon\": 2.8\r\n  },\r\n  \"phone\": \"+351960123122\",\r\n  \"email\": \"jane@doe.com\",\r\n  \"name\": \"John Doe\",\r\n  \"patientToken\": \"QWERTY\",\r\n  \"showOnboarding\": false\r\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "disabled": false
+        }
+      ],
+      "authentication": {
+        "type": "bearer"
+      },
+      "_type": "request",
+      "_id": "req_fd80cb07074d49169a95751d52d77857",
+      "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f"
+    }
+  ]
+}

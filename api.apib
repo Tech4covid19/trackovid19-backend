@@ -1,196 +1,397 @@
 FORMAT: 1A
-HOST: https://trackcovid.pt/
+HOST: http://localhost
 
-# trackcovid
+# tracovid
+## Authentication
+This API uses OAuth v2 Bearer Token / Personal Access Token for its authentication.
 
-The API for the trackcovid app.
+# Group Misc
 
-## User [/users/{user_id}]
+## Login Facebook [/login/facebook]
 
-+ Parameters
-    + user_id (number) - ID of the user in the form of an integer
+### login [GET]
 
-### Retrieve an user [GET]
-
-+ Response 200 (application/json)
-        {
-                "id": "999",
-                "fbId": "<fb-provided-id>",
-                "cases": [
-                    {
-                            "id": 123,
-                            "fbId": "<fb-provided-id>",
-                            "postalCode": "xxxx-xx",
-                            "geo": {
-                                "lat": 0,
-                                "lon": 0
-                            },
-                            "condition": "normal",
-                            "timestamp": "2012-04-23T18:25:43.511Z"
-                        },
-                    {
-                            "id": 123,
-                            "fbId": "<fb-provided-id>",
-                            "postalCode": "xxxx-xx",
-                            "geo": {
-                                "lat": 0,
-                                "lon": 0
-                            },
-                            "condition": "normal",
-                            "timestamp": "2012-04-23T18:25:43.511Z"
-                        }
-
-                ],
-                "network": {
-                    "direct": [
-                        {
-                            "condition": "infected",
-                            "value": 10
-                        },
-                        {
-                            "condition": "quarantine",
-                            "value": 10
-                        }
-                    ],
-                    "indirect": [
-                        {
-                            "condition": "infected",
-                            "value": 10
-                        },
-                        {
-                            "condition": "quarantine",
-                            "value": 10
-                        }
-                    ]
-                }
-            }
-
-+ Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
++ Response 200 
 
 
 
-## Cases Collection [/cases]
 
-### List All Cases [GET]
+## Api V1 Case All [/api/v1/case/all]
 
-+ Response 200 (application/json)
+### allcases [GET]
 
-        [
-            {
-                    "id": 123,
-                    "fbId": "<fb-provided-id>",
-                    "postalCode": "xxxx-xx",
-                    "geo": {
-                        "lat": 0,
-                        "lon": 0
-                    },
-                    "condition": "normal|infected|quarantine|symptomatic|recovered",
-                    "timestamp": "2012-04-23T18:25:43.511Z"
-                }
-        ]
++ Response 200 
 
-        + Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
 
-### Create a New Case [POST]
 
-Create a new case
+
+## Api V1 Case [/api/v1/case]
+
+### addcase [POST]
 
 + Request (application/json)
 
-        {
-            "fbId": "<fb-provided-id>",
-            "postalCode": "xxxx-xx",
-            "geo": {
-                "lat": 0,
-                "lon": 0
-            },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
-            "timestamp": "2012-04-23T18:25:43.511Z"
-        }
+    + Attributes (addcaserequest)
 
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /cases/123
 
     + Body
 
             {
-                "id": 123,
-                "fbId": "<fb-provided-id>",
-                "postalCode": "xxxx-xx",
+                "status": 1,
+                "postalCode": "4200-192",
+                "confinementState": 1,
+                "condition": 1,
+                "info": null,
                 "geo": {
                     "lat": 0,
                     "lon": 0
                 },
-                "condition": "normal|infected|quarantine|symptomatic|recovered",
-                "timestamp": "2012-04-23T18:25:43.511Z"
+                "symptoms": [
+                    3,
+                    4,
+                    5
+                ]
             }
 
-+ Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
-
-## Case [/cases/{case_id}]
-
-+ Parameters
-    + case_id (number) - ID of the case in the form of an integer
-
-### Retrieve a case [GET]
 
 + Response 200 (application/json)
-        {
-            "id": 123,
-            "fbId": "<fb-provided-id>",
-            "postalCode": "xxxx-xx",
-            "geo": {
-                "lat": 0,
-                "lon": 0
-            },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
-            "timestamp": "2012-04-23T18:25:43.511Z"
-        }
+    + Attributes (addcase)
 
-+ Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
 
-### Update a case [POST]
+    + Body
+
+            {
+              "status": "success"
+            }
+
+
+
+## Api V1 Symptom All [/api/v1/symptom/all]
+
+### allsymptoms [GET]
 
 + Response 200 (application/json)
-        {
-            "id": 123,
-            "fbId": "<fb-provided-id>",
-            "postalCode": "xxxx-xx",
-            "geo": {
-                "lat": 0,
-                "lon": 0
-            },
-            "condition": "normal|infected|quarantine|symptomatic|recovered",
-            "timestamp": "2012-04-23T18:25:43.511Z"
-        }
-
-+ Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
+    + Attributes (array[allsymptom])
 
 
-### Remove a case [DELETE]
+    + Body
 
-+ Response 204
+            [
+              {
+                "id": 1,
+                "symptom": "Sem sintomas"
+              },
+              {
+                "id": 2,
+                "symptom": "Tosse seca"
+              },
+              {
+                "id": 3,
+                "symptom": "Tosse com expectoração"
+              },
+              {
+                "id": 4,
+                "symptom": "Febre (acima de 37.5º)"
+              },
+              {
+                "id": 5,
+                "symptom": "Dores musculares"
+              },
+              {
+                "id": 6,
+                "symptom": "Arrepios/calafrios"
+              },
+              {
+                "id": 7,
+                "symptom": "Dores de cabeça"
+              },
+              {
+                "id": 8,
+                "symptom": "Dificuldade em respirar"
+              },
+              {
+                "id": 9,
+                "symptom": "Náuseas, vómitos ou diarreia"
+              }
+            ]
 
 
-+ Response 401 (application/json)
-        {
-          "error": "error.unauthorized"
-        }
+
+## Api V1 Condition All [/api/v1/condition/all]
+
+### allconditions [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[allcondition])
+
+
+    + Body
+
+            [
+              {
+                "id": 1,
+                "status": "Infeção confirmada"
+              },
+              {
+                "id": 2,
+                "status": "Caso suspeito"
+              },
+              {
+                "id": 3,
+                "status": "Recuperado"
+              },
+              {
+                "id": 4,
+                "status": "Presumo que não"
+              }
+            ]
+
+
+
+## Api V1 ConfinementState All [/api/v1/confinementState/all]
+
+### allconfinementstates [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[allconfinementstate])
+
+
+    + Body
+
+            [
+              {
+                "id": 1,
+                "state": "Afastamento social",
+                "description": "Presumo estar saudável e estou por opção em casa em prevenção"
+              },
+              {
+                "id": 2,
+                "state": "Isolamento obrigatório",
+                "description": "Estou doente e isolado através do afastamento social não contagiando outros cidadãos"
+              },
+              {
+                "id": 3,
+                "state": "Quarentena",
+                "description": "Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos"
+              },
+              {
+                "id": 4,
+                "state": "Vida normal",
+                "description": "Faço a minha rotina habitual"
+              }
+            ]
+
+
+
+## Api V1 Case Condition 4200 192 [/api/v1/case/condition/4200-192]
+
+### casecondiitonsbypostalcode [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[casecondiitonsbypostalcode])
+
+
+    + Body
+
+            [
+              {
+                "postalcode": "4200-192",
+                "status": 1,
+                "status_text": "Infetados",
+                "hits": "22"
+              },
+              {
+                "postalcode": "4200-192",
+                "status": 3,
+                "status_text": "Recuperados",
+                "hits": "2"
+              },
+              {
+                "postalcode": "4200-192",
+                "status": 4,
+                "status_text": "Não sabem",
+                "hits": "1"
+              },
+              {
+                "postalcode": "4200-192",
+                "status": 100,
+                "status_text": "Com sintomas",
+                "hits": "1"
+              }
+            ]
+
+
+
+## Api V1 Case Confinement 4200 192 [/api/v1/case/confinement/4200-192]
+
+### caseconfinementsbypostalcode [GET]
+
++ Response 200 (application/json)
+    + Attributes (array[caseconfinementsbypostalcode])
+
+
+    + Body
+
+            [
+              {
+                "postalcode": "4200-192",
+                "confinement_state": 1,
+                "confinement_state_text": "Em casa, preventivamente",
+                "hits": "3"
+              },
+              {
+                "postalcode": "4200-192",
+                "confinement_state": 2,
+                "confinement_state_text": "Isolados",
+                "hits": "2"
+              },
+              {
+                "postalcode": "4200-192",
+                "confinement_state": 3,
+                "confinement_state_text": "Isolados",
+                "hits": "2"
+              }
+            ]
+
+
+
+## Api V1 User [/api/v1/user]
+
+### updateuser [PUT]
+
++ Request (application/json)
+
+    + Attributes (updateuserrequest)
+
+
+    + Body
+
+            {
+                "postalCode": "4200-192",
+                "geo": {
+                    "lat": 10.34,
+                    "lon": 2.8
+                },
+                "phone": "+351960123122",
+                "email": "jane@doe.com",
+                "name": "John Doe",
+                "patientToken": "QWERTY",
+                "showOnboarding": false
+            }
+
+
++ Response 200 (application/json)
+    + Attributes (updateuser)
+
+
+    + Body
+
+            {
+              "status": "ok"
+            }
+
+
+
+
+# Data Structures
+
+## addcaserequest (object)
+
+
+### Properties
++ `status` (number, required) 
++ `postalCode` (string, required) 
++ `confinementState` (number, required) 
++ `condition` (number, required) 
++ `info` (string, required, nullable) 
++ `geo` (Geo, required) 
++ `symptoms` (array[number], required) 
+
+
+## Geo (object)
+
+
+### Properties
++ `lat` (number, required) 
++ `lon` (number, required) 
+
+
+## addcase (object)
+
+
+### Properties
++ `status` (string, required) 
+
+
+## allsymptom (object)
+
+
+### Properties
++ `id` (number, required) 
++ `symptom` (string, required) 
+
+
+## allcondition (object)
+
+
+### Properties
++ `id` (number, required) 
++ `status` (string, required) 
+
+
+## allconfinementstate (object)
+
+
+### Properties
++ `id` (number, required) 
++ `state` (string, required) 
++ `description` (string, required) 
+
+
+## casecondiitonsbypostalcode (object)
+
+
+### Properties
++ `postalcode` (string, required) 
++ `status` (number, required) 
++ `status_text` (string, required) 
++ `hits` (string, required) 
+
+
+## caseconfinementsbypostalcode (object)
+
+
+### Properties
++ `postalcode` (string, required) 
++ `confinement_state` (number, required) 
++ `confinement_state_text` (string, required) 
++ `hits` (string, required) 
+
+
+## updateuserrequest (object)
+
+
+### Properties
++ `postalCode` (string, required) 
++ `geo` (Geo1, required) 
++ `phone` (string, required) 
++ `email` (string, required) 
++ `name` (string, required) 
++ `patientToken` (string, required) 
++ `showOnboarding` (boolean, required) 
+
+
+## Geo1 (object)
+
+
+### Properties
++ `lat` (number, required) 
++ `lon` (number, required) 
+
+
+## updateuser (object)
+
+
+### Properties
++ `status` (string, required) 
+
