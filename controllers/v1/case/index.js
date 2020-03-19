@@ -12,10 +12,10 @@ module.exports = async (fastify, opts) => {
     try {
       const { postalCode, geo, condition, confinementState, symptoms } = request.body
 
-      const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
+      const symptoms_list = symptoms.map(id => ({ symptom_id: id, timestamp: Date(), unix_ts: Date.now() }));
 
       await fastify.models().Case.create(
-        {postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
+        { postalCode, latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
         {
           include: [
             {
@@ -35,6 +35,7 @@ module.exports = async (fastify, opts) => {
   })
 
   fastify.get('/case/all', {
+    preValidation: [fastify.authenticate],
     schema: {
       tags: ['case']
     }
@@ -70,9 +71,6 @@ module.exports = async (fastify, opts) => {
 
       return cases;
     } catch (error) {
-      console.log('------------------------------------');
-      console.log(error);
-      console.log('------------------------------------');
       request.log.error(error)
       reply.status(500).send({
         error
