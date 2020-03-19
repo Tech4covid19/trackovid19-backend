@@ -2776,6 +2776,11 @@ serverless-http@^2.3.2:
   optionalDependencies:
     "@types/aws-lambda" "^8.10.19"
 
+serverless-stage-manager@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/serverless-stage-manager/-/serverless-stage-manager-1.0.5.tgz#28f9d8c1742d95044564e81ef06a19113f1e064d"
+  integrity sha1-KPnYwXQtlQRFZOge8GoZET8eBk0=
+
 set-blocking@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
