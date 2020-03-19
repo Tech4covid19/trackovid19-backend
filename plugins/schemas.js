@@ -65,7 +65,7 @@ const schemas = {
             },
             name: {
                 type: 'string'
-            }, 
+            },
             patientToken: {
                 type: 'string'
             },

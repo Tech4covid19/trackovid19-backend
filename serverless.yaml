@@ -17,15 +17,16 @@ provider:
     FB_APP_ID: ${self:custom.FB_APP_ID.${opt:stage, 'dev'}}
     FB_APP_SECRET: ${self:custom.FB_APP_SECRET.${opt:stage, 'dev'}}
     FB_CALLBACK_URL: ${self:custom.FB_CALLBACK_URL.${opt:stage, 'dev'}}
- 
+    AFTER_LOGIN_CALLBACK_URL: ${self:custom.AFTER_LOGIN_CALLBACK_URL.${opt:stage, 'dev'}}
+
 functions:
   app:
     handler: app.handler
-    events: 
-      - http: 
+    events:
+      - http:
           path: /
           method: ANY
-      - http: 
+      - http:
           path: /{proxy+}
           method: ANY
 
@@ -42,7 +43,10 @@ custom:
     prd: ${opt:fb_secret, 'FB_SECRET_PROD'}
   FB_CALLBACK_URL:
     dev: https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/api/v1
-    prd: https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/api/v1
+    prd: https://op2pwi0nd1.execute-api.eu-west-1.amazonaws.com/prd/api/v1
+  AFTER_LOGIN_CALLBACK_URL:
+    dev: http://localhost:4200
+    prd: https://www.covidografia.pt
   DB_HOST:
     dev: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
     prd: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
@@ -56,8 +60,8 @@ custom:
     dev: ${opt:db_pass, 'PASSWORD_DEV'}
     prd: ${opt:db_pass, 'PASSWORD_PRD'}
   DB_PORT:
-    dev: '54320'
-    prd: '54320'
+    dev: "54320"
+    prd: "54320"
 
 # Plugins
 plugins:
