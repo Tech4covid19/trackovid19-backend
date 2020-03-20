@@ -1,5 +1,7 @@
 'use strict'
 
+const tools = require('../../../tools/tools')
+
 module.exports = async (fastify, opts) => {
 
   fastify.get('/user', {
@@ -9,7 +11,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
+      const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
@@ -46,7 +48,7 @@ module.exports = async (fastify, opts) => {
         user.confinement_state = acase.confinement_state;
       }
 
-      user.info = JSON.parse(user.info);
+      user.info = tools.parseInfo(user.info);
       user.facebook_id = user.facebook_id ? user.facebook_id.toString() : null
       reply.send(user);
     } catch (error) {
@@ -71,13 +73,16 @@ module.exports = async (fastify, opts) => {
       });
 
       // Fill info
-      var info = JSON.parse(user.info != null ? user.info : '{}');
-      info.version = 1
-      info.name = name !== undefined ? name : info.name;
-      info.phone = phone !== undefined ? phone : info.phone;
-      info.email = email !== undefined ? email : info.email;
+      const uinfo = tools.parseInfo(user.info);
+      const info = tools.updateInfo(uinfo, name, email, phone)
+      const strinfo = tools.stringifyInfo(info);
 
-      await fastify.models().Users.update({ year, postalcode: postalCode, latitude: geo.lat, longitude: geo.lon, info: JSON.stringify(info), unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
+      // Decode postal code
+      const postparts = tools.splitPostalCode(postalCode);
+
+      console.log(postparts);
+
+      await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
       reply.send({ status: 'ok' });
     } catch (error) {
       request.log.error(error)

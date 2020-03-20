@@ -19,6 +19,14 @@ module.exports = function(sequelize, DataTypes) {
 		description: {
 			type: DataTypes.STRING,
 			allowNull: true
+		},
+		summary_order: {
+			type: DataTypes.INTEGER,
+			allowNull: true
+		},
+		show_in_summary: {
+			type: DataTypes.BOOLEAN,
+			allowNull: true
 		}
 	}, {
 		tableName: 'confinement_states',
