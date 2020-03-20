@@ -11,7 +11,12 @@ module.exports = function(sequelize, DataTypes) {
 		status: {
 			type: DataTypes.STRING,
 			allowNull: true
+		},
+		status_summary: {
+			type: DataTypes.STRING,
+			allowNull: true
 		}
+
 	}, {
 		tableName: 'user_status',
 		timestamps: false

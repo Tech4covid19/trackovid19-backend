@@ -78,9 +78,33 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const cases = await fastify.models().StatusByPostalCode.findAll({
+      var cases = await fastify.models().StatusByPostalCode.findAll({
         where: { postalcode: request.params.postalCode }
       });
+
+      // Fallback when the postal code does not have any registered case yet
+      if (cases.length == 0) {
+        const conditions = await fastify.models().Condition.findAll();
+        cases = conditions.map(cond => ({
+          postalcode: request.params.postalCode,
+          status: cond.id,
+          status_text: cond.status_summary,
+          hits: 0
+        })).concat([
+          {
+            postalcode: request.params.postalCode,
+            status: 100,
+            status_text: 'Com sintomas',
+            hits: 0
+          },
+          {
+            postalcode: request.params.postalCode,
+            status: 200,
+            status_text: 'Sem sintomas',
+            hits: 0
+          }
+        ]);
+      }
 
       return cases;
     } catch (error) {
@@ -99,9 +123,20 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const cases = await fastify.models().ConfinementStateByPostalCode.findAll({
+      var cases = await fastify.models().ConfinementStateByPostalCode.findAll({
         where: { postalcode: request.params.postalCode }
       });
+
+      // Fallback when the postal code does not have any registered case yet
+      if (cases.length == 0) {
+        const states = await fastify.models().ConfinementState.findAll();
+        cases = states.map(state => ({
+          postalcode: request.params.postalCode,
+          confinement_state: (state.id == 2 ? 300 : state.id),
+          confinement_state_text: state.state_summary,
+          hits: 0
+        })).filter(state => state.confinement_state != 3);
+      }
 
       return cases;
     } catch (error) {

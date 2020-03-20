@@ -12,6 +12,10 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
+		state_summary: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 		description: {
 			type: DataTypes.STRING,
 			allowNull: true

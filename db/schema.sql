@@ -157,7 +157,7 @@ CREATE VIEW public.latest_status AS
    FROM public.history a
   WHERE (NOT (EXISTS ( SELECT 1
            FROM public.history b
-          WHERE (((a.user_id)::text = (b.user_id)::text) AND (a."timestamp" < b."timestamp")))));
+          WHERE (((a.user_id)::text = (b.user_id)::text) AND (a.id < b.id)))));
 
 
 ALTER TABLE public.latest_status OWNER TO postgres;
@@ -422,12 +422,18 @@ ALTER TABLE ONLY public.user_symptoms ALTER COLUMN id SET DEFAULT nextval('publi
 
 CREATE VIEW public.status_by_postalcode
 as
-select h.postalcode, h.status, us.status_summary as status_text, count(h.*) as hits
+select us.postalcode, us.id as status, us.status_summary as status_text, count(h.*) as hits
 from public.history h
 inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
-inner join public.user_status us on us.id = h.status
-where h.postalcode is not null
-group by h.postalcode, h.status, us.status_summary
+right outer join (
+	select * 
+	from (
+		select distinct h.postalcode
+		from public.history h
+	) hh
+	cross join public.user_status us
+) us on us.id = h.status
+group by us.postalcode, us.id, us.status_summary
 union all
 select h.postalcode, case when us.has_symptoms then 100 else 200 end as status, case when us.has_symptoms then 'Com sintomas' else 'Sem sintomas' end as status_text, count(h.*) as hits
 from public.history h
@@ -448,12 +454,21 @@ ALTER TABLE public.status_by_postalcode OWNER TO postgres;
 
 CREATE VIEW public.confinement_states_by_postalcode
 as
-select h.postalcode, h.confinement_state, cs.state_summary as confinement_state_text, count(h.*) as hits
-from public.history h
-inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
-inner join public.confinement_states cs on cs.id = h.confinement_state
-where h.postalcode is not null
-group by h.postalcode, h.confinement_state, cs.state_summary;
+select con.postalcode, con.confinement_state, con.state_summary as confinement_state_text, count(con.*) as hits
+from (
+	select cs.postalcode, case when cs.id in (2, 3) then 300 else cs.id end as confinement_state, cs.state_summary
+	from public.history h
+	inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
+	right outer join (
+		select * 
+		from (
+			select distinct h.postalcode
+			from public.history h
+		) hh
+		cross join public.confinement_states cs
+	) cs on cs.id = h.confinement_state
+) as con
+group by con.postalcode, con.confinement_state, con.state_summary;
 
 ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
 
