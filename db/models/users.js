@@ -47,6 +47,24 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
+		has_symptoms: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('has_symptoms', valueToBeSet);
+			}
+		},
+		has_symptoms_text: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('has_symptoms_text', valueToBeSet);
+			}
+		},
+		confinement_state: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('confinement_state', valueToBeSet);
+			}
+		},
 		timestamp: {
 			type: DataTypes.DATE,
 			allowNull: true,

@@ -10,7 +10,7 @@ module.exports = async (fastify, opts) => {
   }, async (request, reply) => {
     try {
       const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
-      const user = await fastify.models().Users.findOne({
+      var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
           {
@@ -22,6 +22,30 @@ module.exports = async (fastify, opts) => {
         ],
         ...publicAttributes
       });
+
+      // Get last submitted case
+      if (user.cases.length > 0) {
+        const acase = user.cases.reduce((acc, item) => {
+          if (acc.unix_ts < item.unix_ts) {
+            return item;
+          }
+          else {
+            return acc;
+          }
+        });
+        
+        // Check for symptoms
+        const syms = await acase.getUser_symptoms();
+        const has_symptoms = syms.reduce((acc, item) => {
+          return acc || item.symptom_id !== 1;
+        }, false);
+
+        // Save current state in the user object
+        user.has_symptoms = has_symptoms;
+        user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
+        user.confinement_state = acase.confinement_state;
+      }
+
       user.info = JSON.parse(user.info);
       user.facebook_id = user.facebook_id ? user.facebook_id.toString() : null
       reply.send(user);
