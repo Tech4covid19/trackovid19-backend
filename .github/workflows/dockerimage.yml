@@ -15,12 +15,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build -t tech4covid19-backend:latest .
+      run: docker build -t tech4covid19:backend .
     - uses: actions/checkout@v2
     - name: Tag the Image
-      run: docker tag tech4covid19-backend:latest 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest \
-    - name: Push the image
-      run: docker push 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest
+      run: docker tag tech4covid19-backend:latest 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:backend
+    - name: Login to ECR
+      id: ecr
+      uses: jwalton/gh-ecr-login@v1
+      with:
+        access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        region: eu-west-1
+    - name: Push to ECR
+      run: |
+        docker tag tech4covid19-backend:latest 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:backend
+        docker push 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:backend
 
-  
 
