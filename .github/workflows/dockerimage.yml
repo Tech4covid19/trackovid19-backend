@@ -15,9 +15,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build -t tech4covid19-backend:latest . \
-           docker tag tech4covid19-backend:latest 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest \
-           docker push 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest
+      run: docker build -t tech4covid19-backend:latest .
+    - uses: actions/checkout@v2
+    - name: Tag the Image
+      run: docker tag tech4covid19-backend:latest 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest \
+    - name: Push the image
+      run: docker push 788648735177.dkr.ecr.eu-west-1.amazonaws.com/tech4covid19:latest
 
   
 
