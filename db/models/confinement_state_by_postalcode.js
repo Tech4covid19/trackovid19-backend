@@ -3,6 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('confinement_states_by_postalcode', {
 		postalcode: {
+			field: 'postalcode1',
 			type: DataTypes.STRING,
             allowNull: true,
             primaryKey: true
@@ -18,6 +19,10 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		confinement_state_text: {
 			type: DataTypes.STRING,
+			allowNull: true
+		},
+		summary_order: {
+			type: DataTypes.INTEGER,
 			allowNull: true
 		},
 		hits: {

@@ -45,7 +45,9 @@ CREATE TABLE public.confinement_states (
     id integer NOT NULL,
     state character varying(100),
     state_summary character varying(100),
-    description character varying(500)
+    description character varying(500),
+    summary_order integer not null,
+    show_in_summary boolean not null
 );
 
 
@@ -107,7 +109,8 @@ CREATE TABLE public.history (
     user_id character varying(16),
     status integer,
     confinement_state integer,
-    postalcode character varying(8),
+    postalcode1 character varying(4),
+    postalcode2 character varying(3),
     latitude numeric,
     longitude numeric,
     info character varying(500),
@@ -220,7 +223,8 @@ CREATE TABLE public.users (
     patient_token character varying(256),
     show_onboarding boolean DEFAULT true,
     year integer,
-    postalcode character varying(8),
+    postalcode1 character varying(4),
+    postalcode2 character varying(3),
     ip character varying(20),
     latitude numeric,
     longitude numeric,
@@ -295,8 +299,10 @@ ALTER SEQUENCE public.symptoms_id_seq OWNED BY public.symptoms.id;
 
 CREATE TABLE public.user_status (
     id integer NOT NULL,
-    status character varying(100),
-    status_summary character varying(100)
+    status character varying(100) not null,
+    status_summary character varying(100) not null,
+    summary_order integer not null,
+    show_in_summary boolean not null
 );
 
 
@@ -422,20 +428,24 @@ ALTER TABLE ONLY public.user_symptoms ALTER COLUMN id SET DEFAULT nextval('publi
 
 CREATE VIEW public.status_by_postalcode
 as
-select us.postalcode, us.id as status, us.status_summary as status_text, count(h.*) as hits
+select us.postalcode1, us.id as status, us.status_summary as status_text, us.summary_order, count(h.*) as hits
 from public.history h
 inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
 right outer join (
 	select * 
 	from (
-		select distinct h.postalcode
+		select distinct h.postalcode1
 		from public.history h
 	) hh
-	cross join public.user_status us
+	cross join (
+		select *
+		from public.user_status users
+		where users.show_in_summary = true
+	)us
 ) us on us.id = h.status
-group by us.postalcode, us.id, us.status_summary
+group by us.postalcode1, us.id, us.status_summary, us.summary_order
 union all
-select h.postalcode, case when us.has_symptoms then 100 else 200 end as status, case when us.has_symptoms then 'Com sintomas' else 'Sem sintomas' end as status_text, count(h.*) as hits
+select h.postalcode1, case when us.has_symptoms then 100 else 200 end as status, case when us.has_symptoms then 'Com sintomas' else 'Sem sintomas' end as status_text, case when us.has_symptoms then 5 else 6 end as summary_order, count(h.*) as hits
 from public.history h
 inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
 inner join (
@@ -443,8 +453,8 @@ inner join (
 	from public.user_symptoms uus
 	group by uus.history_id
 ) us on us.history_id = h.id
-where h.postalcode is not null
-group by h.postalcode, us.has_symptoms;
+where h.postalcode1 is not null
+group by h.postalcode1, us.has_symptoms;
 
 ALTER TABLE public.status_by_postalcode OWNER TO postgres;
 
@@ -454,21 +464,25 @@ ALTER TABLE public.status_by_postalcode OWNER TO postgres;
 
 CREATE VIEW public.confinement_states_by_postalcode
 as
-select con.postalcode, con.confinement_state, con.state_summary as confinement_state_text, count(con.*) as hits
+select con.postalcode1, con.confinement_state, con.state_summary as confinement_state_text, con.summary_order, count(con.*) as hits
 from (
-	select cs.postalcode, case when cs.id in (2, 3) then 300 else cs.id end as confinement_state, cs.state_summary
+	select cs.postalcode1, case when cs.id in (2, 3) then 300 else cs.id end as confinement_state, cs.state_summary, cs.summary_order
 	from public.history h
 	inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
 	right outer join (
 		select * 
 		from (
-			select distinct h.postalcode
+			select distinct h.postalcode1
 			from public.history h
 		) hh
-		cross join public.confinement_states cs
+		cross join (
+			select *
+			from public.confinement_states cons
+			where cons.show_in_summary =  true
+		) cs
 	) cs on cs.id = h.confinement_state
 ) as con
-group by con.postalcode, con.confinement_state, con.state_summary;
+group by con.postalcode1, con.confinement_state, con.state_summary, con.summary_order;
 
 ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
 
@@ -478,11 +492,11 @@ ALTER TABLE public.confinement_states_by_postalcode OWNER TO postgres;
 -- Data for Name: confinement_states; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.confinement_states (id, state, description, state_summary) FROM stdin;
-1	Afastamento social	Presumo estar saudável e estou por opção em casa em prevenção	Em casa, preventivamente
-2	Isolamento obrigatório	Estou doente e isolado através do afastamento social não contagiando outros cidadãos	Isolados
-3	Quarentena	Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos	Isolados
-4	Vida normal	Faço a minha rotina habitual	Rotina habitual
+COPY public.confinement_states (id, state, description, state_summary, summary_order, show_in_summary) FROM stdin;
+1	Afastamento social	Presumo estar saudável e estou por opção em casa em prevenção	Em casa, preventivamente	10	true
+2	Isolamento obrigatório	Estou doente e isolado através do afastamento social não contagiando outros cidadãos	Isolados	30	true
+3	Quarentena	Sou um caso suspeito e estou isolado através do afastamento social não contagiando outros cidadãos	Isolados	30	true
+4	Vida normal	Faço a minha rotina habitual	Rotina habitual	20	true
 \.
 
 
@@ -502,31 +516,31 @@ COPY public.example (user_id, inteiro, numerico, bytes, texto, list_of_3_ints, l
 -- Data for Name: history; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.history (id, user_id, status, confinement_state, latitude, longitude, info, "timestamp", unix_ts, postalcode) FROM stdin;
-1	1	1	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-2	1	3	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-3	1	4	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-4	2	1	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-5	2	3	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-6	3	1	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200-192
-7	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411481752	4200-192
-8	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411541511	4200-192
-9	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542251	4200-192
-10	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542701	4200-192
-11	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542856	4200-192
-12	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543001	4200-192
-13	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543147	4200-192
-14	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543287	4200-192
-15	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543427	4200-192
-16	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543576	4200-192
-17	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543724	4200-192
-18	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543874	4200-192
-19	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544025	4200-192
-20	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544171	4200-192
-21	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544321	4200-192
-22	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544479	4200-192
-23	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544640	4200-192
-24	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544791	4200-192
+COPY public.history (id, user_id, status, confinement_state, latitude, longitude, info, "timestamp", unix_ts, postalcode1, postalcode2) FROM stdin;
+1	1	1	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+2	1	3	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+3	1	4	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+4	2	1	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+5	2	3	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+6	3	1	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
+7	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411481752	4200	192
+8	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411541511	4200	192
+9	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542251	4200	192
+10	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542701	4200	192
+11	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542856	4200	192
+12	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543001	4200	192
+13	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543147	4200	192
+14	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543287	4200	192
+15	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543427	4200	192
+16	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543576	4200	192
+17	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543724	4200	192
+18	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543874	4200	192
+19	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544025	4200	192
+20	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544171	4200	192
+21	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544321	4200	192
+22	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544479	4200	192
+23	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544640	4200	192
+24	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544791	4200	192
 \.
 
 
@@ -576,11 +590,11 @@ COPY public.symptoms (id, symptom) FROM stdin;
 -- Data for Name: user_status; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.user_status (id, status, status_summary) FROM stdin;
-1	Infeção confirmada	Infetados
-2	Caso suspeito	Suspeitos
-3	Recuperado	Recuperados
-4	Presumo que não	Não sabem
+COPY public.user_status (id, status, status_summary, summary_order, show_in_summary) FROM stdin;
+1	Infeção confirmada	Infetados	30	true
+2	Caso suspeito	Suspeitos	10	true
+3	Recuperado	Recuperados	20	true
+4	Presumidamente saudável que não	Não sabem	40	false
 \.
 
 
@@ -600,11 +614,11 @@ COPY public.user_symptoms (id, history_id, symptom_id, "timestamp", unix_ts) FRO
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, hash, facebook_id, year, postalcode, ip, latitude, longitude, info, "timestamp", unix_ts) FROM stdin;
-1	\\x31	\N	1	1000-100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-2	\\x32	\N	1	1000-100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-3	\\x33	\N	1	1000-100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-2921672234562720	\N	\\x32393231363732323334353632373230	\N	\N	\N	\N	\N	{"name":"João Duarte"}	2020-03-17 00:56:49.036	1584407067304
+COPY public.users (id, hash, facebook_id, year, postalcode1, postalcode2, ip, latitude, longitude, info, "timestamp", unix_ts) FROM stdin;
+1	\\x31	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
+2	\\x32	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
+3	\\x33	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
+2921672234562720	\N	\\x32393231363732323334353632373230	\N	\N	\N	\N	\N	\N	{"name":"João Duarte"}	2020-03-17 00:56:49.036	1584407067304
 \.
 
 

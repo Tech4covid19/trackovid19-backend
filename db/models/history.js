@@ -1,5 +1,7 @@
 /* jshint indent: 1 */
 
+const tools = require('../../tools/tools')
+
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('case', {
 		id: {
@@ -33,6 +35,16 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		postalcode: {
+			type: DataTypes.VIRTUAL,
+			get () { 
+				return tools.buildPostalCode(this.getDataValue('postalcode1'), this.getDataValue('postalcode2'));
+			}
+		},
+		postalcode1: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		postalcode2: {
 			type: DataTypes.STRING,
 			allowNull: true
 		},

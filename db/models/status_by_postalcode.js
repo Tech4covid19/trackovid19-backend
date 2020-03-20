@@ -3,6 +3,7 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('status_by_postalcode', {
 		postalcode: {
+            field: 'postalcode1',
 			type: DataTypes.STRING,
             allowNull: true,
             primaryKey: true
@@ -19,6 +20,10 @@ module.exports = function(sequelize, DataTypes) {
         status_text: {
 			type: DataTypes.STRING,
             allowNull: true
+		},
+		summary_order: {
+			type: DataTypes.INTEGER,
+			allowNull: true
 		},
 		hits: {
 			type: DataTypes.INTEGER,
