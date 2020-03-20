@@ -20,11 +20,18 @@ module.exports = fp(async (fastify, opts) => {
       sum += s.charCodeAt(i);
     }
     const integrityChar = sum % 10;
-    return integrityChar;
+    /*
+      If integrity char is 0 we change it to 1.
+      This is to avoid confusion between 0 and O.
+    */
+    if (integrityChar === 0) {
+        integrityChar++
+    }
+    return `${integrityChar}`;
   }
 
   fastify.decorate('genPatientToken', () => {
-    const allowedChars = 'ABCDEFGHIJKLMNOPQRSTUVXZ0123456789';
+    const allowedChars = 'ABCDEFGHKMNPRSTUVXZ123456789';
     const randomString = cryptoRandomString({ length: 9, characters: allowedChars });
     const integrityChar = generateIntegrityChar(randomString);
     const patientToken = `${randomString}${integrityChar}`;
@@ -36,10 +43,9 @@ module.exports = fp(async (fastify, opts) => {
     const randomString = patientToken.slice(0, -1);
     // isolate integrity check
     const integrityChar = patientToken[patientToken.length - 1];
-    //generate sum of all chars in random part
-    const sum = generateIntegrityChar(randomString);
+    const generatedIntegrityChar = generateIntegrityChar(randomString);
     // compare input integrity char with the one generated
-    if (integrityChar !== `${sum % 10}`) {
+    if (integrityChar !== generatedIntegrityChar) {
       return false;
     }
     return true;
