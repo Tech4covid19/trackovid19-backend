@@ -208,5 +208,4 @@ test/types/index.js
 #Serverless
 .serverless/*
 
-plugins/certs/private.key
-plugins/certs/public.key
+config/certificates/*
