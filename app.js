@@ -67,8 +67,8 @@ fastify.register(AutoLoad, {
 fastify.register(require('fastify-axios'))
 
 fastify.register(require('fastify-cors'), {
-  origin: ['https://www.covidografia.pt', 'https://api.covidografia.pt', 'https://covidografia.pt'],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST']
+  'access-control-allow-origin': 'https://www.covidografia.pt/',
+  'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST',
 })
 
 
