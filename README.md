@@ -88,7 +88,7 @@ This is to handle external dependencies for 3rd party modules, otherwise we will
 2. You will receive a JWT token, use it as a Bearer Token in all the authenticated requests;
 3. Please load the `insomnia.json` file into your Insomnia Rest Client and call the routes or consult https://trackcovid19.docs.apiary.io;
 
-> Do not forget to set the Bearer token on insomnia!
+> Do not forget to set the Bearer token on insomnia environment and check other variables!
 
 ## Serverless Usage
 
