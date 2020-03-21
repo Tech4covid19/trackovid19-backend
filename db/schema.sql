@@ -84,11 +84,11 @@ ALTER SEQUENCE public.confinement_states_id_seq OWNED BY public.confinement_stat
 --
 
 CREATE TABLE public.example (
-    user_id character varying(16),
+    user_id character varying(20),
     inteiro integer,
     numerico numeric,
     bytes bytea NOT NULL,
-    texto character varying(16),
+    texto character varying(20),
     list_of_3_ints integer[],
     list_of_ints integer[],
     authorized boolean DEFAULT false,
@@ -106,7 +106,7 @@ ALTER TABLE public.example OWNER TO postgres;
 
 CREATE TABLE public.history (
     id bigint NOT NULL,
-    user_id character varying(16),
+    user_id character varying(20),
     status integer,
     confinement_state integer,
     postalcode1 character varying(4),
@@ -173,8 +173,8 @@ ALTER TABLE public.latest_status OWNER TO postgres;
 
 CREATE TABLE public.network (
     id integer NOT NULL,
-    user_id character varying(16),
-    met_with character varying(16),
+    user_id character varying(20),
+    met_with character varying(20),
     facebook_id bytea,
     latitude numeric,
     longitude numeric,
@@ -217,7 +217,7 @@ ALTER SEQUENCE public.network_id_seq OWNED BY public.network.id;
 --
 
 CREATE TABLE public.users (
-    id character varying(16) NOT NULL,
+    id character varying(20) NOT NULL,
     hash bytea,
     facebook_id bytea,
     patient_token character varying(256),
