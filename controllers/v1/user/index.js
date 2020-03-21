@@ -35,7 +35,7 @@ module.exports = async (fastify, opts) => {
             return acc;
           }
         });
-        
+
         // Check for symptoms
         const syms = await acase.getUser_symptoms();
         const has_symptoms = syms.reduce((acc, item) => {

@@ -5,8 +5,8 @@ const path = require('path')
 module.exports = fp(async (fastify, opts) => {
     fastify.register(require('fastify-jwt'), {
         secret: {
-            private: readFileSync(`${path.join(__dirname, 'certs')}/private.key`, 'utf8'),
-            public: readFileSync(`${path.join(__dirname, 'certs')}/public.key`, 'utf8')
+            private: readFileSync(`${path.join(__dirname, '../config/certificates')}/private.key`, 'utf8'),
+            public: readFileSync(`${path.join(__dirname, '../config/certificates')}/public.key`, 'utf8')
         },
         decode: { complete: true },
         sign: { algorithm: 'RS256', expiresIn: '24h' }
@@ -20,13 +20,13 @@ module.exports = fp(async (fastify, opts) => {
         }
     })
 
-    /*     
+    /*
     fastify.decorate('isAdmin', async (request, reply) => {
             if (request.user.roles.includes('admin')) {
                 return true
             } else {
                 reply.status(403).send({ err: 'No permission' })
             }
-        }) 
+        })
     */
 })

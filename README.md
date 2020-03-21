@@ -59,7 +59,7 @@
 ```sh
 $ openssl genrsa -out private.key 2048
 $ openssl rsa -in private.key -outform PEM -pubout -out public.key
-$ mv private.key public.key plugins/certs
+$ mv private.key public.key config/certificates
 ```
 
 ###  Install the dependencies and devDependencies and start the server:
