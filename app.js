@@ -66,6 +66,11 @@ fastify.register(AutoLoad, {
 
 fastify.register(require('fastify-axios'))
 
+fastify.register(require('fastify-cors'), {
+  origin: ['https://www.covidografia.pt', 'https://api.covidografia.pt', 'https://covidografia.pt'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST']
+})
+
 
 fastify.register(oauthPlugin, {
   name: 'facebookOAuth2',
