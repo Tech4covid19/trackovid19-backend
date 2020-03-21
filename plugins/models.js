@@ -12,10 +12,10 @@ module.exports = fp(async (fastify, opts) => {
         const StatusByPostalCode = fastify.sequelize.import('../db/models/status_by_postalcode.js');
         const ConfinementStateByPostalCode = fastify.sequelize.import('../db/models/confinement_state_by_postalcode.js');
 
-        //relationships       
+        //relationships
         Case.belongsTo(Users, { foreignKey: 'user_id' });
         Users.hasMany(Case, { foreignKey: 'user_id' });
-        
+
         Users.hasMany(Network, { foreignKey: 'user_id' });
         Network.belongsTo(Users, { foreignKey: 'user_id' });
 

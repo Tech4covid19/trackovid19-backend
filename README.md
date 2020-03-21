@@ -54,13 +54,7 @@
 
 > You will need atleast nodejs version 12 LTS to run this server.
 
-###  Generate Private and Public keys to be used with JWT:
-
-```sh
-$ openssl genrsa -out private.key 2048
-$ openssl rsa -in private.key -outform PEM -pubout -out public.key
-$ mv private.key public.key config/certificates
-```
+###  Please don't forget to set JWT_SECRET environment variable
 
 ###  Install the dependencies and devDependencies and start the server:
 

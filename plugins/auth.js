@@ -4,12 +4,9 @@ const path = require('path')
 
 module.exports = fp(async (fastify, opts) => {
     fastify.register(require('fastify-jwt'), {
-        secret: {
-            private: readFileSync(`${path.join(__dirname, '../config/certificates')}/private.key`, 'utf8'),
-            public: readFileSync(`${path.join(__dirname, '../config/certificates')}/public.key`, 'utf8')
-        },
+        secret: process.env.JWT_SECRET,
         decode: { complete: true },
-        sign: { algorithm: 'RS256', expiresIn: '24h' }
+        sign: { algorithm: 'HS256', expiresIn: '24h' }
     })
 
     fastify.decorate('authenticate', async (request, reply) => {

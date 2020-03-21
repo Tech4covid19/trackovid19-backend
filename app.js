@@ -71,7 +71,6 @@ fastify.register(require('fastify-cors'), {
   'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST',
 })
 
-
 fastify.register(oauthPlugin, {
   name: 'facebookOAuth2',
   credentials: {

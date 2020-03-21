@@ -18,6 +18,7 @@ provider:
     FB_APP_SECRET: ${self:custom.FB_APP_SECRET.${opt:stage, 'dev'}}
     FB_CALLBACK_URL: ${self:custom.FB_CALLBACK_URL.${opt:stage, 'dev'}}
     AFTER_LOGIN_CALLBACK_URL: ${self:custom.AFTER_LOGIN_CALLBACK_URL.${opt:stage, 'dev'}}
+    JWT_SECRET: ${self:custom.JWT_SECRET.${opt:stage, 'dev'}}
 
 functions:
   app:
@@ -62,6 +63,9 @@ custom:
   DB_PORT:
     dev: "54320"
     prd: "54320"
+  JWT_SECRET:
+    dev: ${opt:jwt_secret, 'JWT_SECRET_DEV'}
+    prd: ${opt:jwt_secret, 'JWT_SECRET_PROD'}
 
 # Plugins
 plugins:
