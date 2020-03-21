@@ -87,3 +87,16 @@ INSERT INTO public.videos(
 INSERT INTO public.video_shares(
 	video_id, target, share_link, share_order, available)
 	VALUES (2, 'facebook', 'facebook-link2', 1, true);
+
+INSERT INTO public.video_shares(
+	video_id, target, share_link, share_order, available)
+	VALUES (2, 'twitter', 'twitter-link2-not-available', 2, false);
+
+
+INSERT INTO public.videos(
+	title, description, video, video_order, available)
+	VALUES ('video 3', 'video 3 desc', 'youtube/3', 3, true);
+
+INSERT INTO public.video_shares(
+	video_id, target, share_link, share_order, available)
+	VALUES (3, 'facebook', 'facebook-link3', 1, true);
