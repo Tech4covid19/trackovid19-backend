@@ -441,8 +441,8 @@ right outer join (
 		select *
 		from public.user_status users
 		where users.show_in_summary = true
-	)us
-) us on us.id = h.status
+	) us
+) us on us.id = h.status and us.postalcode1 = h.postalcode1
 group by us.postalcode1, us.id, us.status_summary, us.summary_order
 union all
 select h.postalcode1, case when us.has_symptoms then 100 else 200 end as status, case when us.has_symptoms then 'Com sintomas' else 'Sem sintomas' end as status_text, case when us.has_symptoms then 5 else 6 end as summary_order, count(h.*) as hits
@@ -464,9 +464,9 @@ ALTER TABLE public.status_by_postalcode OWNER TO postgres;
 
 CREATE VIEW public.confinement_states_by_postalcode
 as
-select con.postalcode1, con.confinement_state, con.state_summary as confinement_state_text, con.summary_order, count(con.*) as hits
+select con.postalcode1, con.confinement_state, con.state_summary as confinement_state_text, con.summary_order, sum(con.hit_value) as hits
 from (
-	select cs.postalcode1, case when cs.id in (2, 3) then 300 else cs.id end as confinement_state, cs.state_summary, cs.summary_order
+	select cs.postalcode1, case when cs.id in (2, 3) then 300 else cs.id end as confinement_state, cs.state_summary, cs.summary_order, case when h.confinement_state is not null then 1 else 0 end as hit_value
 	from public.history h
 	inner join public.latest_status ls on ls.user_id = h.user_id and ls.history_id = h.id
 	right outer join (
@@ -480,7 +480,7 @@ from (
 			from public.confinement_states cons
 			where cons.show_in_summary =  true
 		) cs
-	) cs on cs.id = h.confinement_state
+	) cs on cs.id = h.confinement_state and cs.postalcode1 = h.postalcode1
 ) as con
 group by con.postalcode1, con.confinement_state, con.state_summary, con.summary_order;
 
@@ -594,7 +594,7 @@ COPY public.user_status (id, status, status_summary, summary_order, show_in_summ
 1	Infeção confirmada	Infetados	30	true
 2	Caso suspeito	Suspeitos	10	true
 3	Recuperado	Recuperados	20	true
-4	Presumidamente saudável que não	Não sabem	40	false
+4	Presumidamente saudável	Não sabem	40	false
 \.
 
 
