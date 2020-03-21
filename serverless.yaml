@@ -37,13 +37,13 @@ custom:
     - prd
   FB_APP_ID:
     dev: 254808762195063
-    prd: 254808762195063
+    prd: 246657783167062
   FB_APP_SECRET:
     dev: ${opt:fb_secret, 'FB_SECRET_DEV'}
     prd: ${opt:fb_secret, 'FB_SECRET_PROD'}
   FB_CALLBACK_URL:
     dev: https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/api/v1
-    prd: https://op2pwi0nd1.execute-api.eu-west-1.amazonaws.com/prd/api/v1
+    prd: https://api.covidografia.pt/api/v1
   AFTER_LOGIN_CALLBACK_URL:
     dev: http://localhost:4200
     prd: https://www.covidografia.pt
