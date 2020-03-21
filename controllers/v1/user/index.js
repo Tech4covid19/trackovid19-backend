@@ -80,8 +80,6 @@ module.exports = async (fastify, opts) => {
       // Decode postal code
       const postparts = tools.splitPostalCode(postalCode);
 
-      console.log(postparts);
-
       await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
       reply.send({ status: 'ok' });
     } catch (error) {

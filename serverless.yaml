@@ -2,6 +2,11 @@ service: trackovid19-backend
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
+package:
+  include:
+    - config/certificates/private.key
+    - config/certificates/public.key
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -22,6 +27,7 @@ provider:
 functions:
   app:
     handler: app.handler
+
     events:
       - http:
           path: /
