@@ -9,15 +9,11 @@ module.exports = function(sequelize, DataTypes) {
 			autoIncrement: true
 		},
 		user_id: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 			allowNull: true
 		},
 		met_with: {
-			type: DataTypes.STRING,
-			allowNull: true
-		},
-		facebook_id: {
-			type: "BYTEA",
+			type: DataTypes.INTEGER,
 			allowNull: true
 		},
 		latitude: {

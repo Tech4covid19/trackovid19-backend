@@ -106,7 +106,7 @@ ALTER TABLE public.example OWNER TO postgres;
 
 CREATE TABLE public.history (
     id bigint NOT NULL,
-    user_id character varying(20),
+    user_id bigint,
     status integer,
     confinement_state integer,
     postalcode1 character varying(4),
@@ -160,7 +160,7 @@ CREATE VIEW public.latest_status AS
    FROM public.history a
   WHERE (NOT (EXISTS ( SELECT 1
            FROM public.history b
-          WHERE (((a.user_id)::text = (b.user_id)::text) AND (a.id < b.id)))));
+          WHERE ( (a.user_id = b.user_id) AND (a.id < b.id) ))));
 
 
 ALTER TABLE public.latest_status OWNER TO postgres;
@@ -173,9 +173,8 @@ ALTER TABLE public.latest_status OWNER TO postgres;
 
 CREATE TABLE public.network (
     id integer NOT NULL,
-    user_id character varying(20),
-    met_with character varying(20),
-    facebook_id bytea,
+    user_id bigint,
+    met_with bigint,
     latitude numeric,
     longitude numeric,
     info character varying(500),
@@ -212,29 +211,118 @@ ALTER SEQUENCE public.network_id_seq OWNED BY public.network.id;
 
 
 --
+-- external types
+--
+
+CREATE TABLE public.external_id_providers (
+    id integer NOT NULL,
+    provider character varying(100),
+    description character varying(500)
+);
+
+
+ALTER TABLE public.external_id_providers OWNER TO postgres;
+
+CREATE SEQUENCE public.external_id_providers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.external_id_providers_id_seq OWNER TO postgres;
+
+ALTER SEQUENCE public.external_id_providers_id_seq OWNED BY public.external_id_providers.id;
+
+--
 -- TOC entry 204 (class 1259 OID 24786)
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.users (
-    id character varying(20) NOT NULL,
-    hash bytea,
-    facebook_id bytea,
-    patient_token character varying(256),
+CREATE TABLE public.users_data (
+    id bigint NOT NULL,
+    external_id character varying(64) not null,
+    external_id_provider_id integer not null,
+    "name" character varying(500),
+    email character varying(500),
+    phone character varying(500),
     show_onboarding boolean DEFAULT true,
+    optin_download_use boolean DEFAULT false,
+    optin_download_use_ts timestamp without time zone,
+    optin_privacy boolean DEFAULT false,
+    optin_privacy_ts timestamp without time zone,
+    optin_health_geo boolean DEFAULT false,
+    optin_health_geo_ts timestamp without time zone,
+    optin_push boolean DEFAULT false,
+    optin_push_ts timestamp without time zone,
+    symptoms_updated_at timestamp without time zone,
+    last_login timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone  
+);
+
+ALTER TABLE public.users_data OWNER TO postgres;
+
+CREATE SEQUENCE public.users_data_id_seq
+    AS bigint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER TABLE public.users_data_id_seq OWNER TO postgres;
+
+ALTER SEQUENCE public.users_data_id_seq OWNED BY public.users_data.id;
+
+ALTER TABLE ONLY public.users_data ALTER COLUMN id SET DEFAULT nextval('public.users_data_id_seq'::regclass);
+
+--
+--
+--
+
+CREATE TABLE public.users (
+    id bigint NOT NULL,
+    external_id character varying(64) not null,
+    external_id_provider_id integer not null,
+    hash bytea,
+    patient_token character varying(256),
     year integer,
     postalcode1 character varying(4),
     postalcode2 character varying(3),
-    ip character varying(20),
     latitude numeric,
     longitude numeric,
     info character varying(500),
-    "timestamp" timestamp without time zone DEFAULT timezone('utc'::text, now()),
-    unix_ts bigint DEFAULT date_part('epoch'::text, now())
+    optin_download_use boolean DEFAULT false,
+    optin_download_use_ts timestamp without time zone,
+    optin_privacy boolean DEFAULT false,
+    optin_privacy_ts timestamp without time zone,
+    optin_health_geo boolean DEFAULT false,
+    optin_health_geo_ts timestamp without time zone,
+    optin_push boolean DEFAULT false,
+    optin_push_ts timestamp without time zone,
+    last_login timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
-
 ALTER TABLE public.users OWNER TO postgres;
+
+CREATE SEQUENCE public.users_id_seq
+    AS bigint
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 --
 -- TOC entry 212 (class 1259 OID 24864)
@@ -248,8 +336,8 @@ CREATE VIEW public.network_status AS
     c.confinement_state,
     c."timestamp"
    FROM ((public.users a
-     JOIN public.network b ON (((a.id)::text = (b.user_id)::text)))
-     JOIN public.latest_status c ON (((b.met_with)::text = (c.user_id)::text)));
+     JOIN public.network b ON (((a.id) = (b.user_id))))
+     JOIN public.latest_status c ON (((b.met_with) = (c.user_id))));
 
 
 ALTER TABLE public.network_status OWNER TO postgres;
@@ -517,30 +605,6 @@ COPY public.example (user_id, inteiro, numerico, bytes, texto, list_of_3_ints, l
 --
 
 COPY public.history (id, user_id, status, confinement_state, latitude, longitude, info, "timestamp", unix_ts, postalcode1, postalcode2) FROM stdin;
-1	1	1	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-2	1	3	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-3	1	4	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-4	2	1	3	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-5	2	3	1	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-6	3	1	2	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663	4200	192
-7	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411481752	4200	192
-8	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411541511	4200	192
-9	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542251	4200	192
-10	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542701	4200	192
-11	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411542856	4200	192
-12	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543001	4200	192
-13	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543147	4200	192
-14	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543287	4200	192
-15	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543427	4200	192
-16	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543576	4200	192
-17	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543724	4200	192
-18	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411543874	4200	192
-19	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544025	4200	192
-20	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544171	4200	192
-21	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544321	4200	192
-22	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544479	4200	192
-23	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544640	4200	192
-24	2921672234562720	1	\N	31.5812858	54.0828852	\N	2012-04-23 18:25:43.511	1584411544791	4200	192
 \.
 
 
@@ -550,13 +614,7 @@ COPY public.history (id, user_id, status, confinement_state, latitude, longitude
 -- Data for Name: network; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.network (id, user_id, met_with, facebook_id, latitude, longitude, info, "timestamp", unix_ts) FROM stdin;
-1	1	2	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-2	1	3	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-3	2	1	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-4	2	3	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-5	3	1	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-6	3	2	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
+COPY public.network (id, user_id, met_with, latitude, longitude, info, "timestamp", unix_ts) FROM stdin;
 \.
 
 
@@ -597,6 +655,9 @@ COPY public.user_status (id, status, status_summary, summary_order, show_in_summ
 4	Presumidamente saudável	Não sabem	40	false
 \.
 
+COPY public.external_id_providers (id, provider, description) FROM stdin;
+1	Facebook	Facebook
+\.
 
 --
 -- TOC entry 3916 (class 0 OID 24829)
@@ -614,11 +675,7 @@ COPY public.user_symptoms (id, history_id, symptom_id, "timestamp", unix_ts) FRO
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, hash, facebook_id, year, postalcode1, postalcode2, ip, latitude, longitude, info, "timestamp", unix_ts) FROM stdin;
-1	\\x31	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-2	\\x32	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-3	\\x33	\N	1	1000	100	\N	\N	\N	\N	2020-03-16 23:01:02.622937	1584399663
-2921672234562720	\N	\\x32393231363732323334353632373230	\N	\N	\N	\N	\N	\N	{"name":"João Duarte"}	2020-03-17 00:56:49.036	1584407067304
+COPY public.users (id, external_id, external_id_provider_id, hash, year, postalcode1, postalcode2, latitude, longitude, info) FROM stdin;
 \.
 
 
@@ -772,14 +829,6 @@ CREATE INDEX network_id1 ON public.network USING btree (met_with);
 
 
 --
--- TOC entry 3774 (class 1259 OID 24859)
--- Name: network_id2; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX network_id2 ON public.network USING btree (facebook_id);
-
-
---
 -- TOC entry 3756 (class 1259 OID 24775)
 -- Name: symptoms_id0; Type: INDEX; Schema: public; Owner: postgres
 --
@@ -816,22 +865,26 @@ CREATE UNIQUE INDEX users_id0 ON public.users USING btree (id);
 -- Name: users_id1; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE INDEX users_id1 ON public.users USING btree (facebook_id);
+CREATE INDEX users_id1 ON public.users USING btree (external_id);
 
 
---
--- TOC entry 3782 (class 2606 OID 24878)
--- Name: example example_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
+CREATE INDEX users_id_data1 ON public.users_data USING btree (external_id);
 
-ALTER TABLE ONLY public.example
-    ADD CONSTRAINT example_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
+CREATE UNIQUE INDEX external_id_provider_id_unq ON public.external_id_providers USING btree (id);
+
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_external_provider_fkey FOREIGN KEY (external_id_provider_id) REFERENCES public.external_id_providers(id);
+
+ALTER TABLE ONLY public.users_data
+    ADD CONSTRAINT users_data_external_provider_fkey FOREIGN KEY (external_id_provider_id) REFERENCES public.external_id_providers(id);
 
 --
 -- TOC entry 3779 (class 2606 OID 24821)
 -- Name: history history_confinement_state_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
+
 
 ALTER TABLE ONLY public.history
     ADD CONSTRAINT history_confinement_state_fkey FOREIGN KEY (confinement_state) REFERENCES public.confinement_states(id);

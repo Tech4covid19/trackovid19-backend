@@ -5,6 +5,7 @@ module.exports = fp(async (fastify, opts) => {
         const Case = fastify.sequelize.import('../db/models/history.js');
         const Network = fastify.sequelize.import('../db/models/network.js');
         const Users = fastify.sequelize.import('../db/models/users.js');
+        const UsersData = fastify.sequelize.import('../db/models/users_data.js');
         const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
         const UserSymptom = fastify.sequelize.import('../db/models/user_symptoms.js');
         const ConfinementState = fastify.sequelize.import('../db/models/confinement_states.js');
@@ -23,6 +24,6 @@ module.exports = fp(async (fastify, opts) => {
         Case.hasMany(UserSymptom, { foreignKey: 'case_id' });
         UserSymptom.belongsTo(Case, { foreignKey: 'case_id' });
 
-        return { Case, Network, Users, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom }
+        return { Case, Network, Users, UsersData, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom }
     })
 })

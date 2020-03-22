@@ -14,12 +14,64 @@ module.exports = async (fastify, opts) => {
             const token = await this.facebookOAuth2.getAccessTokenFromAuthorizationCodeFlow(request)
             const { data: { id, name, email }, status } = await fastify.axios.get('https://graph.facebook.com/v3.0/me?fields=id,name,email', { headers: { Authorization: `Bearer ${token.access_token}` } })
             
+            // Let's generate the hashes
             const hashes = tools.generateFacebookHashes(id);
-            console.log(hashes);
-            
-            await fastify.models().Users.upsert({ id, ip: request.ip, facebook_id: id, timestamp: new Date(), unix_ts: Date.now(), info: tools.buildAndStringifyInfo(name, email) }, { fields: ['unix_ts', 'info'] })
-            const jwt = await fastify.jwt.sign({ payload: { id, name }, roles: ['user'] });
+
+            // Let's look for a user in the health data model
+            let user = await fastify.models().Users.findOne({
+                where: { external_id: hashes.health }
+            });
+
+            if (!user) {
+                user = await fastify.models().Users.create({ 
+                    external_id: hashes.health, 
+                    external_id_provider_id: 1,
+                    last_login: new Date()
+                }, { fields: ['external_id', 'external_id_provider_id', 'last_login'] }
+                );
+            } 
+            else {
+                // Update the user info
+                user.last_login = new Date();
+                await user.save();
+            }
+
+            // Now let's look for the user in the personal data model
+            let personal = await fastify.models().UsersData.findOne({
+                where: { external_id: hashes.personal }
+            });
+
+            if (!personal) {
+                personal = await fastify.models().UsersData.create({ 
+                    external_id: hashes.personal, 
+                    external_id_provider_id: 1, 
+                    name: name,
+                    email: email,
+                    last_login: new Date()
+                }, { fields: ['external_id', 'external_id_provider_id', 'name', 'email', 'last_login'] }
+                );
+            }
+            else {
+                // Update the personal info
+                personal.name = name;
+                personal.email = email;
+                personal.last_login = new Date();
+                await personal.save();
+            }
+
+            // Generate the JWT token
+            const jwt = await fastify.jwt.sign({ 
+                payload: { 
+                    id: user.id,
+                    id_data: personal.id, 
+                    name: name
+                }, 
+                roles: ['user']
+            });
+
+            // send redirect
             reply.redirect(`${process.env.AFTER_LOGIN_CALLBACK_URL}/#/post-code?code=${jwt}`);
+
         } catch (error) {
             request.log.error(error)
             reply.status(500).send({ error: 'Could not authenticate correctly' })
