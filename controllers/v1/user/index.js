@@ -11,7 +11,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
+      const publicAttributes = { attributes: ['id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
@@ -25,38 +25,52 @@ module.exports = async (fastify, opts) => {
         ...publicAttributes
       });
 
-      // Get last submitted case
-      if (user.cases.length > 0) {
-        const acase = user.cases.reduce((acc, item) => {
-          if (acc.unix_ts < item.unix_ts) {
-            return item;
-          }
-          else {
-            return acc;
-          }
-        });
+      // Now let's look for the user in the personal data model
+      const personal = await fastify.models().UsersData.findOne({
+          where: { id: request.user.payload.id_data }
+      });
 
-        // Check for symptoms
-        const syms = await acase.getUser_symptoms();
-        const has_symptoms = syms.reduce((acc, item) => {
-          return acc || item.symptom_id !== 1;
-        }, false);
-
-        // Save current state in the user object
-        user.has_symptoms = has_symptoms;
-        user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
-        user.confinement_state = acase.confinement_state;
+      if (!user || !personal) {
+        reply.status(404).send("Not found");
       }
-
-      user.info = tools.parseInfo(user.info);
-      user.facebook_id = user.facebook_id ? user.facebook_id.toString() : null
-      reply.send(user);
+      else {
+        // Get last submitted case
+        if (user.cases.length > 0) {
+          const acase = user.cases.reduce((acc, item) => {
+            if (acc.unix_ts < item.unix_ts) {
+              return item;
+            }
+            else {
+              return acc;
+            }
+          });
+          // Check for symptoms
+          const syms = await acase.getUser_symptoms();
+          const has_symptoms = syms.reduce((acc, item) => {
+            return acc || item.symptom_id !== 1;
+          }, false);
+          
+          // Save current state in the user object
+          user.has_symptoms = has_symptoms;
+          user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
+          user.confinement_state = acase.confinement_state;
+        }
+        user.name = personal.name;
+        user.email = personal.email;
+        user.phone = personal.phone;
+        user.show_onboarding = personal.show_onboarding;
+        user.info = tools.buildInfo(personal.name, personal.email, personal.phone);
+        
+        reply.send(user);
+      }
+      
     } catch (error) {
       request.log.error(error)
       reply.status(500).send({
         error
       });
     }
+  
   })
 
   fastify.put('/user', {
@@ -66,24 +80,57 @@ module.exports = async (fastify, opts) => {
       body: fastify.schemas().updateUser
     }
   }, async (request, reply) => {
+
+    // Create a transaction
+    const t = await fastify.sequelize.transaction();
+
     try {
       const { year, postalCode, geo, phone, email, name, patientToken, showOnboarding } = request.body;
       const user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
       });
 
-      // Fill info
-      const uinfo = tools.parseInfo(user.info);
-      const info = tools.updateInfo(uinfo, name, email, phone)
-      const strinfo = tools.stringifyInfo(info);
+      // Now let's look for the user in the personal data model
+      const personal = await fastify.models().UsersData.findOne({
+          where: { id: request.user.payload.id_data }
+      });
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(postalCode);
+      if (!user || !personal) {
+        reply.status(404).send("Not found");
+      }
+      else {
+        // Decode postal code
+        const postparts = tools.splitPostalCode(postalCode);
 
-      await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
-      reply.send({ status: 'ok' });
+        // Update user
+        user.year = year;
+        user.postalcode1 = postparts[0];
+        user.postalcode2 = postparts[1]; 
+        user.latitude = geo.lat;
+        user.longitude = geo.lon;
+        user.patient_token = patientToken; 
+        await user.save({transaction: t});
+
+        personal.show_onboarding = showOnboarding;
+        personal.name = name;
+        personal.email = email;
+        personal.phone = phone;
+        await personal.save({transaction: t});
+
+        // Commit the transaction
+        await t.commit();
+
+        //await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
+        reply.send({ status: 'ok' });
+      }
+      
     } catch (error) {
+      
       request.log.error(error)
+
+      // Rollback the transaction
+      await t.rollback();
+
       reply.status(500).send({
         error
       });
