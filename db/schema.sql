@@ -242,7 +242,7 @@ ALTER SEQUENCE public.external_id_providers_id_seq OWNED BY public.external_id_p
 --
 
 CREATE TABLE public.users_data (
-    id bigint NOT NULL,
+    id character varying(64) not null,
     external_id character varying(64) not null,
     external_id_provider_id integer not null,
     "name" character varying(500),
@@ -264,20 +264,6 @@ CREATE TABLE public.users_data (
 );
 
 ALTER TABLE public.users_data OWNER TO postgres;
-
-CREATE SEQUENCE public.users_data_id_seq
-    AS bigint
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-ALTER TABLE public.users_data_id_seq OWNER TO postgres;
-
-ALTER SEQUENCE public.users_data_id_seq OWNED BY public.users_data.id;
-
-ALTER TABLE ONLY public.users_data ALTER COLUMN id SET DEFAULT nextval('public.users_data_id_seq'::regclass);
 
 --
 --

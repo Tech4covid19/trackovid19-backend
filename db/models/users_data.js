@@ -5,10 +5,9 @@ const tools = require('../../tools/tools')
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('users_data', {
 		id: {
-			type: DataTypes.BIGINT,
+			type: DataTypes.STRING,
 			allowNull: false,
-			primaryKey: true,
-			autoIncrement: true
+			primaryKey: true
 		},
 		external_id: {
 			type: DataTypes.STRING,

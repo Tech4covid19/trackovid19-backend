@@ -1,6 +1,7 @@
 'use strict'
 
-const tools = require('../../../tools/tools')
+const uuidv4 = require('uuid/v4');
+const tools = require('../../../tools/tools');
 
 module.exports = async (fastify, opts) => {
 
@@ -42,13 +43,15 @@ module.exports = async (fastify, opts) => {
             });
 
             if (!personal) {
+                const personal_id = uuidv4();
                 personal = await fastify.models().UsersData.create({ 
+                    id: personal_id,
                     external_id: hashes.personal, 
                     external_id_provider_id: 1, 
                     name: name,
                     email: email,
                     last_login: new Date()
-                }, { fields: ['external_id', 'external_id_provider_id', 'name', 'email', 'last_login'] }
+                }, { fields: ['id', 'external_id', 'external_id_provider_id', 'name', 'email', 'last_login'] }
                 );
             }
             else {
@@ -71,10 +74,10 @@ module.exports = async (fastify, opts) => {
 
             // send redirect
             reply.redirect(`${process.env.AFTER_LOGIN_CALLBACK_URL}/#/post-code?code=${jwt}`);
-
         } catch (error) {
             request.log.error(error)
             reply.status(500).send({ error: 'Could not authenticate correctly' })
         }
+        
     })
 }
