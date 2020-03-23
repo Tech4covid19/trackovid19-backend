@@ -46,7 +46,7 @@ fastify.register(
 fastify.register(
   require('fastify-helmet'), {
   hidePoweredBy: {
-    setTo: 'Trackovid-19 Server'
+    setTo: 'Covidografia API Server'
   }
 })
 
@@ -66,10 +66,12 @@ fastify.register(AutoLoad, {
 
 fastify.register(require('fastify-axios'))
 
-fastify.register(require('fastify-cors'), {
-  'access-control-allow-origin': 'https://www.covidografia.pt/',
-  'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST',
-})
+const corsOptions = {
+  origin: ['https://app.covidografia.pt', 'https://www.app.covidografia.pt'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 200 // to support some legacy browsers
+}
+fastify.use(require('cors')(corsOptions))
 
 fastify.register(oauthPlugin, {
   name: 'facebookOAuth2',
