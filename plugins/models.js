@@ -5,12 +5,15 @@ module.exports = fp(async (fastify, opts) => {
         const Case = fastify.sequelize.import('../db/models/history.js');
         const Network = fastify.sequelize.import('../db/models/network.js');
         const Users = fastify.sequelize.import('../db/models/users.js');
+        const UsersData = fastify.sequelize.import('../db/models/users_data.js');
         const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
         const UserSymptom = fastify.sequelize.import('../db/models/user_symptoms.js');
         const ConfinementState = fastify.sequelize.import('../db/models/confinement_states.js');
         const Condition = fastify.sequelize.import('../db/models/user_status.js');
         const StatusByPostalCode = fastify.sequelize.import('../db/models/status_by_postalcode.js');
         const ConfinementStateByPostalCode = fastify.sequelize.import('../db/models/confinement_state_by_postalcode.js');
+        const VideoShares = fastify.sequelize.import('../db/models/video_shares.js');
+        const Videos = fastify.sequelize.import('../db/models/videos.js');
 
         //relationships
         Case.belongsTo(Users, { foreignKey: 'user_id' });
@@ -23,6 +26,10 @@ module.exports = fp(async (fastify, opts) => {
         Case.hasMany(UserSymptom, { foreignKey: 'case_id' });
         UserSymptom.belongsTo(Case, { foreignKey: 'case_id' });
 
-        return { Case, Network, Users, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom }
+        VideoShares.belongsTo(Videos, { foreignKey: 'video_id' });
+        Videos.hasMany(VideoShares, { foreignKey: 'video_id' });
+
+        return { Case, Network, Users, UsersData, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom, Videos, VideoShares };
+        
     })
 })

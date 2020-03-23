@@ -1,6 +1,61 @@
+const crypto = require('crypto');
+
+//
+// Crypto functions
+//
+
+//
+// Hash with salt
+makeHash = (plaintext, salt) => {
+    return crypto.createHmac('sha256', salt).update(plaintext).digest('hex');
+};
+
+//
+// Make the salt for the given message.
+// We'll use only a part of the message letters for the salt by starting
+// at index 'start', and advancing 'step' positions between each letter.
+// Ex. use start=0 and step=2 for picking all odd letters
+//     use start=1 and step=2 for picking all even letters
+//
+makeSalt = (message, start, step) => {
+
+    var salt = "";
+    const letters = message.split("");
+    for (var i = start; i < letters.length; i += step) {
+        salt = salt.concat(letters[i]);
+    }
+
+    return salt;
+};
+
+//
+// Make sure we avoid clashes with ids from other providers
+//
+facebookMessageToHash = (fbid) => {
+    return `facebook:${fbid}`;
+}
+
+//
+// Generates two hashes: one to be used for the personal info and another one 
+// for the healh info
+//
+generateFacebookHashes = (fbid) => {
+    
+    // Personal hash
+    const salt_personal = makeSalt(fbid, 0, 2);
+    const personal = makeHash(facebookMessageToHash(fbid), salt_personal);
+    
+    // Health hash
+    const salt_health = makeSalt(fbid, 1, 2);
+    const health = makeHash(facebookMessageToHash(fbid), salt_health);
+
+    return {personal: personal, health: health};
+};
 
 
-
+//
+//
+//
 stringifyInfo = (info) => {
     return JSON.stringify(info);
 };
@@ -48,6 +103,7 @@ buildPostalCode = (postalcode1, postalcode2) => {
 
 
 // Exports
+exports.generateFacebookHashes = generateFacebookHashes;
 exports.stringifyInfo = stringifyInfo;
 exports.parseInfo = parseInfo;
 exports.buildInfo = buildInfo;

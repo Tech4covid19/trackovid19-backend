@@ -21,6 +21,11 @@ module.exports = async (fastify, opts) => {
       const { postalCode, geo, condition, confinementState, symptoms } = request.body;
       const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
 
+      // Now let's look for the user in the personal data model
+      const personal = await fastify.models().UsersData.findOne({
+          where: { id: request.user.payload.id_data }
+      });
+
       // Decode postal code
       const postparts = tools.splitPostalCode(postalCode);
 
@@ -35,6 +40,10 @@ module.exports = async (fastify, opts) => {
           ]
         }
       )
+
+      // save the date in the personal model
+      personal.symptoms_updated_at = new Date();
+      await personal.save({transaction: t});
 
       // Commit the transaction
       await t.commit();

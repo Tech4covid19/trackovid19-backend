@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
 			autoIncrement: true
 		},
 		user_id: {
-			type: DataTypes.STRING,
+			type: DataTypes.BIGINT,
 			allowNull: true,
 			references: {
 				model: 'users',
