@@ -71,6 +71,18 @@ const schemas = {
             },
             showOnboarding: {
                 type: 'boolean'
+            },
+            optin_download_use: {
+                type: 'boolean'
+            },
+            optin_privacy: {
+                type: 'boolean'
+            },
+            optin_health_geo: {
+                type: 'boolean'
+            },
+            optin_push: {
+                type: 'boolean'
             }
         }
     },
