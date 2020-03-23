@@ -1,10 +1,6 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const uuid = require('uuid');
-const crypto = require('crypto');
-const lockfile = require('proper-lockfile');
-const fs = require('fs');
 const cryptoRandomString = require('crypto-random-string');
 
 module.exports = fp(async (fastify, opts) => {
@@ -19,7 +15,7 @@ module.exports = fp(async (fastify, opts) => {
     for (let i = 0; i < 9; i++) {
       sum += s.charCodeAt(i);
     }
-    const integrityChar = sum % 10;
+    let integrityChar = sum % 10;
     /*
       If integrity char is 0 we change it to 1.
       This is to avoid confusion between 0 and O.

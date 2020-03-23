@@ -22,13 +22,13 @@
     "sequelize": "^5.21.5"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "crypto-random-string": "^3.2.0",
+    "datauri": "^2.0.0",
     "dotenv": "^8.2.0",
     "fastify": "^2.13.0",
     "fastify-autoload": "^1.0.0",
     "fastify-axios": "^1.1.1",
-    "fastify-compress": "^2.0.1",
-    "fastify-cors": "^3.0.2",
     "fastify-helmet": "^3.0.2",
     "fastify-jwt": "^1.2.1",
     "fastify-oas": "^2.5.2",
@@ -38,7 +38,6 @@
     "fastify-sequelize": "^1.0.4",
     "pdfjs": "^2.3.5",
     "pg": "6.4.2",
-    "proper-lockfile": "^4.1.1",
     "sequelize-auto": "^0.4.29",
     "serverless-http": "^2.3.2",
     "uuid": "^7.0.2"

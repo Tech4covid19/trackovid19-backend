@@ -138,14 +138,10 @@ module.exports = async (fastify, opts) => {
 
         reply.send({ status: 'ok' });
       }
-      
     } catch (error) {
-      
       request.log.error(error)
-
       // Rollback the transaction
       await t.rollback();
-
       reply.status(500).send({
         error
       });
