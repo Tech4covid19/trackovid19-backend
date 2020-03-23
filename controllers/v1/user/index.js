@@ -118,28 +118,51 @@ module.exports = async (fastify, opts) => {
         }
         user.year = year;
         user.patient_token = patientToken;  
+        
+        // Process opt-ins
         user.optin_download_use = optin_download_use;
-        user.optin_download_use_ts = new Date();
+        if (optin_download_use) {
+          user.optin_download_use_ts = new Date();
+        }
         user.optin_privacy = optin_privacy;
-        user.optin_privacy_ts = new Date();
+        if (optin_privacy) {
+          user.optin_privacy_ts = new Date();
+        }
         user.optin_health_geo = optin_health_geo;
-        user.optin_health_geo_ts = new Date();
+        if (optin_health_geo) {
+          user.optin_health_geo_ts = new Date();
+        }
         user.optin_push = optin_push;
-        user.optin_push_ts = new Date();
+        if (optin_push) {
+          user.optin_push_ts = new Date();
+        }
+        
         await user.save({transaction: t});
 
+        // Update personal info
         personal.show_onboarding = showOnboarding;
         personal.name = name;
         personal.email = email;
         personal.phone = phone;
+
+        // Process opt-ins
         personal.optin_download_use = optin_download_use;
-        personal.optin_download_use_ts = new Date();
+        if (optin_download_use) {
+          personal.optin_download_use_ts = new Date();
+        }
         personal.optin_privacy = optin_privacy;
-        personal.optin_privacy_ts = new Date();
+        if (optin_privacy) {
+          personal.optin_privacy_ts = new Date();
+        }
         personal.optin_health_geo = optin_health_geo;
-        personal.optin_health_geo_ts = new Date();
+        if (optin_health_geo) {
+          personal.optin_health_geo_ts = new Date();
+        }
         personal.optin_push = optin_push;
-        personal.optin_push_ts = new Date();
+        if (optin_push) {
+          personal.optin_push_ts = new Date();
+        }
+
         await personal.save({transaction: t});
 
         // Commit the transaction
