@@ -11,7 +11,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'year', 'facebook_id', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', ['timestamp', 'createdAt'], ['unix_ts', 'lastLogin']] };
+      const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_download_use', 'optin_privacy', 'optin_health_geo', 'optin_push', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
@@ -25,38 +25,57 @@ module.exports = async (fastify, opts) => {
         ...publicAttributes
       });
 
-      // Get last submitted case
-      if (user.cases.length > 0) {
-        const acase = user.cases.reduce((acc, item) => {
-          if (acc.unix_ts < item.unix_ts) {
-            return item;
-          }
-          else {
-            return acc;
-          }
-        });
+      // Now let's look for the user in the personal data model
+      const personal = await fastify.models().UsersData.findOne({
+          where: { id: request.user.payload.id_data }
+      });
 
-        // Check for symptoms
-        const syms = await acase.getUser_symptoms();
-        const has_symptoms = syms.reduce((acc, item) => {
-          return acc || item.symptom_id !== 1;
-        }, false);
-
-        // Save current state in the user object
-        user.has_symptoms = has_symptoms;
-        user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
-        user.confinement_state = acase.confinement_state;
+      if (!user || !personal) {
+        reply.status(404).send({error: "Not found"});
       }
+      else {
+        // Get last submitted case
+        if (user.cases.length > 0) {
+          const acase = user.cases.reduce((acc, item) => {
+            if (acc.unix_ts < item.unix_ts) {
+              return item;
+            }
+            else {
+              return acc;
+            }
+          });
+          // Check for symptoms
+          const syms = await acase.getUser_symptoms();
+          const has_symptoms = syms.reduce((acc, item) => {
+            return acc || item.symptom_id !== 1;
+          }, false);
+          
+          // Save current state in the user object
+          user.has_symptoms = has_symptoms;
+          user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
+          user.confinement_state = acase.confinement_state;
+        }
+        user.name = personal.name;
+        user.email = personal.email;
+        user.phone = personal.phone;
+        user.show_onboarding = personal.show_onboarding;
+        user.info = tools.buildInfo(personal.name, personal.email, personal.phone);
+        user.health_hash = user.external_id;
+        user.personal_hash = personal.external_id;
 
-      user.info = tools.parseInfo(user.info);
-      user.facebook_id = user.facebook_id ? user.facebook_id.toString() : null
-      reply.send(user);
+        // Clear the result from unwanted info
+        user.external_id = undefined;
+        
+        reply.send(user);
+      }
+      
     } catch (error) {
       request.log.error(error)
       reply.status(500).send({
         error
       });
     }
+  
   })
 
   fastify.put('/user', {
@@ -66,24 +85,96 @@ module.exports = async (fastify, opts) => {
       body: fastify.schemas().updateUser
     }
   }, async (request, reply) => {
+
+    // Create a transaction
+    const t = await fastify.sequelize.transaction();
+
     try {
-      const { year, postalCode, geo, phone, email, name, patientToken, showOnboarding } = request.body;
+      const { year, postalCode, geo, phone, email, name, patientToken, showOnboarding, optin_download_use, optin_privacy, optin_health_geo, optin_push } = request.body;
       const user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
       });
 
-      // Fill info
-      const uinfo = tools.parseInfo(user.info);
-      const info = tools.updateInfo(uinfo, name, email, phone)
-      const strinfo = tools.stringifyInfo(info);
+      // Now let's look for the user in the personal data model
+      const personal = await fastify.models().UsersData.findOne({
+          where: { id: request.user.payload.id_data }
+      });
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(postalCode);
+      if (!user || !personal) {
+        reply.status(404).send({error: "Not found"});
+      }
+      else {
+        
+        // Update user
+        if (postalCode) {
+          // Decode postal code
+          const postparts = tools.splitPostalCode(postalCode);
+          user.postalcode1 = postparts[0];
+          user.postalcode2 = postparts[1]; 
+        }
+        if (geo) {
+          user.latitude = geo.lat;
+          user.longitude = geo.lon;
+        }
+        user.year = year;
+        user.patient_token = patientToken;  
+        
+        // Process opt-ins
+        user.optin_download_use = optin_download_use;
+        if (optin_download_use) {
+          user.optin_download_use_ts = new Date();
+        }
+        user.optin_privacy = optin_privacy;
+        if (optin_privacy) {
+          user.optin_privacy_ts = new Date();
+        }
+        user.optin_health_geo = optin_health_geo;
+        if (optin_health_geo) {
+          user.optin_health_geo_ts = new Date();
+        }
+        user.optin_push = optin_push;
+        if (optin_push) {
+          user.optin_push_ts = new Date();
+        }
+        
+        await user.save({transaction: t});
 
-      await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
-      reply.send({ status: 'ok' });
+        // Update personal info
+        personal.show_onboarding = showOnboarding;
+        personal.name = name;
+        personal.email = email;
+        personal.phone = phone;
+
+        // Process opt-ins
+        personal.optin_download_use = optin_download_use;
+        if (optin_download_use) {
+          personal.optin_download_use_ts = new Date();
+        }
+        personal.optin_privacy = optin_privacy;
+        if (optin_privacy) {
+          personal.optin_privacy_ts = new Date();
+        }
+        personal.optin_health_geo = optin_health_geo;
+        if (optin_health_geo) {
+          personal.optin_health_geo_ts = new Date();
+        }
+        personal.optin_push = optin_push;
+        if (optin_push) {
+          personal.optin_push_ts = new Date();
+        }
+
+        await personal.save({transaction: t});
+
+        // Commit the transaction
+        await t.commit();
+
+        reply.send({ status: 'ok' });
+      }
     } catch (error) {
+      console.log(error);
       request.log.error(error)
+      // Rollback the transaction
+      await t.rollback();
       reply.status(500).send({
         error
       });
