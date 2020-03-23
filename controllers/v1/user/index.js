@@ -11,7 +11,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'created_at', 'updated_at'] };
+      const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_download_use', 'optin_privacy', 'optin_health_geo', 'optin_push', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
@@ -31,7 +31,7 @@ module.exports = async (fastify, opts) => {
       });
 
       if (!user || !personal) {
-        reply.status(404).send("Not found");
+        reply.status(404).send({error: "Not found"});
       }
       else {
         // Get last submitted case
@@ -60,6 +60,11 @@ module.exports = async (fastify, opts) => {
         user.phone = personal.phone;
         user.show_onboarding = personal.show_onboarding;
         user.info = tools.buildInfo(personal.name, personal.email, personal.phone);
+        user.health_hash = user.external_id;
+        user.personal_hash = personal.external_id;
+
+        // Clear the result from unwanted info
+        user.external_id = undefined;
         
         reply.send(user);
       }
@@ -96,7 +101,7 @@ module.exports = async (fastify, opts) => {
       });
 
       if (!user || !personal) {
-        reply.status(404).send("Not found");
+        reply.status(404).send({error: "Not found"});
       }
       else {
         // Decode postal code
