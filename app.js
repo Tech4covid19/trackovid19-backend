@@ -64,6 +64,11 @@ fastify.register(AutoLoad, {
   options: Object.assign({}, { prefix: '/api/v1' })
 })
 
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, 'public'),
+  prefix: '/public/',
+})
+
 fastify.register(require('fastify-axios'))
 
 fastify.register(require('fastify-cors'), {

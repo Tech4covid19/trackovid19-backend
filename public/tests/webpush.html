@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Envio web push notifications</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<h1>Envio de web push notifications</h1>
+
+<h3>1º O utilizador tem que aceitar as notificações</h3>
+<p>
+  A aceitação deve ser solicitada pelo utilizador
+  <br>
+  <i>This is not only best practice — you should not be spamming users with notifications they didn't agree to — but going forward browsers will explicitly disallow notifications not triggered in response to a user gesture. Firefox is already doing this from version 72, for example.</i>
+  <br/>
+  https://developer.mozilla.org/en-US/docs/Web/API/Push_API
+</p>
+<button id="subscribeButton">Aceitar notificações</button>
+<span id="subscribe" style="color: green"></span>
+
+
+<!-- <button id="doIt">Solicitar notificação</button> -->
+
+<p>Referências:</p>
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Push_API" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Push_API</a></li>
+  <li><a href="https://serviceworke.rs" target="_blank">https://serviceworke.rs</a></li>
+</ul>
+
+
+<script type="text/javascript" src="./webpush.js" charset="utf-8"></script>
+
+</body>
+</html>
