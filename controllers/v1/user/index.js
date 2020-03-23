@@ -85,7 +85,7 @@ module.exports = async (fastify, opts) => {
     const t = await fastify.sequelize.transaction();
 
     try {
-      const { year, postalCode, geo, phone, email, name, patientToken, showOnboarding } = request.body;
+      const { year, postalCode, geo, phone, email, name, patientToken, showOnboarding, optin_download_use, optin_privacy, optin_health_geo, optin_push } = request.body;
       const user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
       });
@@ -108,19 +108,34 @@ module.exports = async (fastify, opts) => {
         user.postalcode2 = postparts[1]; 
         user.latitude = geo.lat;
         user.longitude = geo.lon;
-        user.patient_token = patientToken; 
+        user.patient_token = patientToken;  
+        user.optin_download_use = optin_download_use;
+        user.optin_download_use_ts = new Date();
+        user.optin_privacy = optin_privacy;
+        user.optin_privacy_ts = new Date();
+        user.optin_health_geo = optin_health_geo;
+        user.optin_health_geo_ts = new Date();
+        user.optin_push = optin_push;
+        user.optin_push_ts = new Date();
         await user.save({transaction: t});
 
         personal.show_onboarding = showOnboarding;
         personal.name = name;
         personal.email = email;
         personal.phone = phone;
+        personal.optin_download_use = optin_download_use;
+        personal.optin_download_use_ts = new Date();
+        personal.optin_privacy = optin_privacy;
+        personal.optin_privacy_ts = new Date();
+        personal.optin_health_geo = optin_health_geo;
+        personal.optin_health_geo_ts = new Date();
+        personal.optin_push = optin_push;
+        personal.optin_push_ts = new Date();
         await personal.save({transaction: t});
 
         // Commit the transaction
         await t.commit();
 
-        //await fastify.models().Users.update({ year, postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, info: strinfo, unix_ts: Date.now(), patient_token: patientToken, show_onboarding: showOnboarding }, { where: { id: request.user.payload.id }, fields: ['year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'unix_ts', 'info', 'patient_token', 'show_onboarding'] })
         reply.send({ status: 'ok' });
       }
       
