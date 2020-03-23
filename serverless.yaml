@@ -47,7 +47,7 @@ custom:
     prd: https://api.covidografia.pt/api/v1
   AFTER_LOGIN_CALLBACK_URL:
     dev: http://localhost:4200
-    prd: https://www.covidografia.pt
+    prd: https://app.covidografia.pt
   DB_HOST:
     dev: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
     prd: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com

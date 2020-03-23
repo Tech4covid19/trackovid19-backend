@@ -1,10 +1,6 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const uuid = require('uuid');
-const crypto = require('crypto');
-const lockfile = require('proper-lockfile');
-const fs = require('fs');
 const cryptoRandomString = require('crypto-random-string');
 
 module.exports = fp(async (fastify, opts) => {
