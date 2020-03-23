@@ -173,14 +173,8 @@ ALTER TABLE public.latest_status OWNER TO postgres;
 
 CREATE TABLE public.network (
     id integer NOT NULL,
-<<<<<<< HEAD
-    user_id character varying(20),
-    met_with character varying(20),
-    facebook_id bytea,
-=======
     user_id bigint,
     met_with bigint,
->>>>>>> master
     latitude numeric,
     longitude numeric,
     info character varying(500),
@@ -276,13 +270,9 @@ ALTER TABLE public.users_data OWNER TO postgres;
 --
 
 CREATE TABLE public.users (
-<<<<<<< HEAD
-    id character varying(20) NOT NULL,
-=======
     id bigint NOT NULL,
     external_id character varying(64) not null,
     external_id_provider_id integer not null,
->>>>>>> master
     hash bytea,
     patient_token character varying(256),
     year integer,
