@@ -104,15 +104,19 @@ module.exports = async (fastify, opts) => {
         reply.status(404).send({error: "Not found"});
       }
       else {
-        // Decode postal code
-        const postparts = tools.splitPostalCode(postalCode);
-
+        
         // Update user
+        if (postalCode) {
+          // Decode postal code
+          const postparts = tools.splitPostalCode(postalCode);
+          user.postalcode1 = postparts[0];
+          user.postalcode2 = postparts[1]; 
+        }
+        if (geo) {
+          user.latitude = geo.lat;
+          user.longitude = geo.lon;
+        }
         user.year = year;
-        user.postalcode1 = postparts[0];
-        user.postalcode2 = postparts[1]; 
-        user.latitude = geo.lat;
-        user.longitude = geo.lon;
         user.patient_token = patientToken;  
         user.optin_download_use = optin_download_use;
         user.optin_download_use_ts = new Date();
@@ -144,6 +148,7 @@ module.exports = async (fastify, opts) => {
         reply.send({ status: 'ok' });
       }
     } catch (error) {
+      console.log(error);
       request.log.error(error)
       // Rollback the transaction
       await t.rollback();
