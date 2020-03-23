@@ -154,6 +154,24 @@ module.exports = function(sequelize, DataTypes) {
 			get () { 
 				return this.getDataValue('show_onboarding');
 			}
+		},
+		personal_hash: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('personal_hash', valueToBeSet);
+			},
+			get () { 
+				return this.getDataValue('personal_hash');
+			}
+		},
+		health_hash: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('health_hash', valueToBeSet);
+			},
+			get () { 
+				return this.getDataValue('health_hash');
+			}
 		}
 	  
 	}, {
