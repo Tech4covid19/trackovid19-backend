@@ -56,16 +56,14 @@ module.exports = async (fastify, opts) => {
                             external_id: hashes.personal,
                             external_id_provider_id: 1,
                             name: name,
-                            email: email,
-                            last_login: new Date()
-                        }, { fields: ['id', 'external_id', 'external_id_provider_id', 'name', 'email', 'last_login'] }
+                            email: email
+                        }, { fields: ['id', 'external_id', 'external_id_provider_id', 'name', 'email'] }
                         );
                     }
                     else {
                         // Update the personal info
                         personal.name = name;
                         personal.email = email;
-                        personal.last_login = new Date();
                         await personal.save();
                     }
 
