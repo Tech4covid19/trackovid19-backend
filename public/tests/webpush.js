@@ -73,8 +73,13 @@ async function subscribe(registration) {
       reject(new Error('No service worker registration, unable to subscribe to web push'));
     }
 
+    var token = document.getElementById('oauth').value;
     // Get the server's public key
-    fetch('/api/v1/push/web/vapidPublicKey')
+    fetch('/api/v1/push/web/vapidPublicKey', {
+      headers: {
+        'Authorization': 'Bearer ' + token
+      }
+    })
     .then((response) => {
       return response.json();
     })
@@ -96,10 +101,12 @@ async function subscribe(registration) {
 }
 
 function register(subscription) {
+  var token = document.getElementById('oauth').value;
   fetch('/api/v1/push/web/register', {
     method: 'post',
     headers: {
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + token
     },
     body: JSON.stringify({
       subscription: subscription
