@@ -19,6 +19,7 @@ provider:
     FB_CALLBACK_URL: ${self:custom.FB_CALLBACK_URL.${opt:stage, 'dev'}}
     AFTER_LOGIN_CALLBACK_URL: ${self:custom.AFTER_LOGIN_CALLBACK_URL.${opt:stage, 'dev'}}
     JWT_SECRET: ${self:custom.JWT_SECRET.${opt:stage, 'dev'}}
+    HOME_URL: ${self:custom.HOME_URL.${opt:stage, 'dev'}}
 
 functions:
   app:
@@ -35,37 +36,52 @@ functions:
 custom:
   stages:
     - dev
+    - staging
     - prd
   FB_APP_ID:
-    dev: 254808762195063
+    dev: 142877133789647
+    staging: 139971950784932
     prd: 246657783167062
   FB_APP_SECRET:
     dev: ${opt:fb_secret, 'FB_SECRET_DEV'}
+    staging: ${opt:fb_secret, 'FB_SECRET_STAGING'}
     prd: ${opt:fb_secret, 'FB_SECRET_PROD'}
   FB_CALLBACK_URL:
-    dev: https://2ceesuwr5l.execute-api.eu-west-1.amazonaws.com/dev/api/v1
+    dev: https://dev.api.covidografia.pt/api/v1
+    staging: https://staging.api.covidografia.pt/api/v1
     prd: https://api.covidografia.pt/api/v1
   AFTER_LOGIN_CALLBACK_URL:
     dev: http://localhost:4200
+    staging: https://staging.app.covidografia.pt
     prd: https://app.covidografia.pt
   DB_HOST:
-    dev: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
-    prd: db-1-ireland.chq033ncjfv4.eu-west-1.rds.amazonaws.com
+    dev: staging.db.covidografia.pt
+    staging: staging.db.covidografia.pt
+    prd: db.covidografia.pt
   DB_NAME:
     dev: postgres
+    staging: postgres
     prd: postgres
   DB_USER:
     dev: postgres
+    staging: postgres
     prd: postgres
   DB_PASS:
     dev: ${opt:db_pass, 'PASSWORD_DEV'}
+    staging: ${opt:db_pass, 'PASSWORD_STAGING'}
     prd: ${opt:db_pass, 'PASSWORD_PRD'}
   DB_PORT:
     dev: "54320"
+    staging: "54320"
     prd: "54320"
   JWT_SECRET:
     dev: ${opt:jwt_secret, 'JWT_SECRET_DEV'}
+    staging: ${opt:jwt_secret, 'JWT_SECRET_STAGING'}
     prd: ${opt:jwt_secret, 'JWT_SECRET_PROD'}
+  HOME_URL:
+    dev: http://localhost:4200
+    staging: https://www.covidografia.pt
+    prd: https://www.covidografia.pt
 
 # Plugins
 plugins:
