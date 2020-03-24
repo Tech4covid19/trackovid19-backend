@@ -54,6 +54,14 @@ fastify
   .register(fsequelize, sequelizeConfig)
   .ready()
 
+const corsOptions = {
+  origin: ['https://app.covidografia.pt', 'https://www.app.covidografia.pt'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 200 // to support some legacy browsers
+}
+
+fastify.use(require('cors')(corsOptions))
+
 fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'plugins'),
   //options: Object.assign({}, opts)
@@ -65,13 +73,6 @@ fastify.register(AutoLoad, {
 })
 
 fastify.register(require('fastify-axios'))
-
-const corsOptions = {
-  origin: ['https://app.covidografia.pt', 'https://www.app.covidografia.pt'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  optionsSuccessStatus: 200 // to support some legacy browsers
-}
-fastify.use(require('cors')(corsOptions))
 
 fastify.register(oauthPlugin, {
   name: 'facebookOAuth2',
