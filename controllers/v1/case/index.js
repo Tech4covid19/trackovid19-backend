@@ -41,8 +41,8 @@ module.exports = async (fastify, opts) => {
         }
       )
 
-      // save the date in the personal model
-      personal.symptoms_updated_at = new Date();
+      // save the date in the personal model (only the date, to prevent correlation)
+      personal.symptoms_updated_at = new Date((new Date).toDateString());
       await personal.save({transaction: t});
 
       // Commit the transaction

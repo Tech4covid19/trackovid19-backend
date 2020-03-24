@@ -253,14 +253,9 @@ CREATE TABLE public.users_data (
     optin_download_use_ts timestamp without time zone,
     optin_privacy boolean DEFAULT false,
     optin_privacy_ts timestamp without time zone,
-    optin_health_geo boolean DEFAULT false,
-    optin_health_geo_ts timestamp without time zone,
     optin_push boolean DEFAULT false,
     optin_push_ts timestamp without time zone,
-    symptoms_updated_at timestamp without time zone,
-    last_login timestamp without time zone,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone  
+    symptoms_updated_at timestamp without time zone
 );
 
 ALTER TABLE public.users_data OWNER TO postgres;
@@ -281,14 +276,8 @@ CREATE TABLE public.users (
     latitude numeric,
     longitude numeric,
     info character varying(500),
-    optin_download_use boolean DEFAULT false,
-    optin_download_use_ts timestamp without time zone,
-    optin_privacy boolean DEFAULT false,
-    optin_privacy_ts timestamp without time zone,
     optin_health_geo boolean DEFAULT false,
     optin_health_geo_ts timestamp without time zone,
-    optin_push boolean DEFAULT false,
-    optin_push_ts timestamp without time zone,
     last_login timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone

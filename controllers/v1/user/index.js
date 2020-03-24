@@ -11,7 +11,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
-      const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_download_use', 'optin_privacy', 'optin_health_geo', 'optin_push', 'created_at', 'updated_at'] };
+      const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_health_geo', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
@@ -62,6 +62,10 @@ module.exports = async (fastify, opts) => {
         user.info = tools.buildInfo(personal.name, personal.email, personal.phone);
         user.health_hash = user.external_id;
         user.personal_hash = personal.external_id;
+
+        user.optin_download_use = personal.optin_download_use;
+        user.optin_privacy = personal.optin_privacy;
+        user.optin_push = personal.optin_push;
 
         // Clear the result from unwanted info
         user.external_id = undefined;
@@ -120,21 +124,9 @@ module.exports = async (fastify, opts) => {
         user.patient_token = patientToken;  
         
         // Process opt-ins
-        user.optin_download_use = optin_download_use;
-        if (optin_download_use) {
-          user.optin_download_use_ts = new Date();
-        }
-        user.optin_privacy = optin_privacy;
-        if (optin_privacy) {
-          user.optin_privacy_ts = new Date();
-        }
         user.optin_health_geo = optin_health_geo;
         if (optin_health_geo) {
           user.optin_health_geo_ts = new Date();
-        }
-        user.optin_push = optin_push;
-        if (optin_push) {
-          user.optin_push_ts = new Date();
         }
         
         await user.save({transaction: t});
@@ -153,10 +145,6 @@ module.exports = async (fastify, opts) => {
         personal.optin_privacy = optin_privacy;
         if (optin_privacy) {
           personal.optin_privacy_ts = new Date();
-        }
-        personal.optin_health_geo = optin_health_geo;
-        if (optin_health_geo) {
-          personal.optin_health_geo_ts = new Date();
         }
         personal.optin_push = optin_push;
         if (optin_push) {
