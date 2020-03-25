@@ -55,15 +55,6 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			defaultValue: 'timezone(utc)'
 		},
-		optin_health_geo: {
-			type: DataTypes.BOOLEAN,
-			allowNull: true
-		},
-		optin_health_geo_ts: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			defaultValue: 'timezone(utc)'
-		},
 		optin_push: {
 			type: DataTypes.BOOLEAN,
 			allowNull: true
@@ -77,16 +68,9 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.DATE,
 			allowNull: true,
 			defaultValue: 'timezone(utc)'
-		},
-		last_login: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			defaultValue: 'timezone(utc)'
 		}
 	}, {
 		tableName: 'users_data',
-		timestamps: true,
-		createdAt: 'created_at',
-		updatedAt: 'updated_at'
+		timestamps: false
 	});
 };

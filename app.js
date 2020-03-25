@@ -54,6 +54,14 @@ fastify
   .register(fsequelize, sequelizeConfig)
   .ready()
 
+const corsOptions = {
+  origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  optionsSuccessStatus: 200 // to support some legacy browsers
+}
+
+fastify.use(require('cors')(corsOptions))
+
 fastify.register(AutoLoad, {
   dir: path.join(__dirname, 'plugins'),
   //options: Object.assign({}, opts)
@@ -71,13 +79,6 @@ fastify.register(require('fastify-static'), {
 
 fastify.register(require('fastify-axios'))
 
-const corsOptions = {
-  origin: ['https://app.covidografia.pt', 'https://www.app.covidografia.pt'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  optionsSuccessStatus: 200 // to support some legacy browsers
-}
-fastify.use(require('cors')(corsOptions))
-
 fastify.register(oauthPlugin, {
   name: 'facebookOAuth2',
   credentials: {
@@ -86,6 +87,13 @@ fastify.register(oauthPlugin, {
       secret: process.env.FB_APP_SECRET
     },
     auth: oauthPlugin.FACEBOOK_CONFIGURATION
+  },
+  generateStateFunction: function(){
+      //return require('uuid/v4')();
+      return require('crypto').randomBytes(10).toString('hex')
+  },
+  checkStateFunction: function(state, callback){
+      callback()
   },
   startRedirectPath: '/login/facebook',
   callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`,

@@ -60,24 +60,7 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: true
 		},
-		optin_download_use: {
-			type: DataTypes.BOOLEAN,
-			allowNull: true
-		},
-		optin_download_use_ts: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			defaultValue: 'timezone(utc)'
-		},
-		optin_privacy: {
-			type: DataTypes.BOOLEAN,
-			allowNull: true
-		},
-		optin_privacy_ts: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			defaultValue: 'timezone(utc)'
-		},
+
 		optin_health_geo: {
 			type: DataTypes.BOOLEAN,
 			allowNull: true
@@ -87,14 +70,32 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			defaultValue: 'timezone(utc)'
 		},
-		optin_push: {
-			type: DataTypes.BOOLEAN,
-			allowNull: true
+		optin_download_use: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('optin_download_use', valueToBeSet);
+			},
+			get () { 
+				return this.getDataValue('optin_download_use');
+			}
 		},
-		optin_push_ts: {
-			type: DataTypes.DATE,
-			allowNull: true,
-			defaultValue: 'timezone(utc)'
+		optin_privacy: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('optin_privacy', valueToBeSet);
+			},
+			get () { 
+				return this.getDataValue('optin_privacy');
+			}
+		},		
+		optin_push: {
+			type: DataTypes.VIRTUAL,
+			set (valueToBeSet) { 
+				this.setDataValue('optin_push', valueToBeSet);
+			},
+			get () { 
+				return this.getDataValue('optin_push');
+			}
 		},
 		last_login: {
 			type: DataTypes.DATE,
