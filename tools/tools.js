@@ -4,6 +4,48 @@ const crypto = require('crypto');
 // Crypto functions
 //
 
+generate_keys_hex = () => {
+    return {
+        key: crypto.randomBytes(32).toString('hex'),
+        iv: crypto.randomBytes(16).toString('hex')
+    };
+}
+
+read_keys = () => {
+    let key = Buffer.from(`${process.env.AES_256_KEY}`, 'hex'); 
+    let iv = Buffer.from(`${process.env.AES_256_IV}`, 'hex'); 
+    return {
+        key: key,
+        iv: iv
+    };
+};
+
+encrypt = (plaintext, key, iv) => { 
+    let cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv); 
+    let encrypted = cipher.update(plaintext); 
+    encrypted = Buffer.concat([encrypted, cipher.final()]); 
+    
+    return encrypted.toString('hex');
+};
+
+decrypt = (encrypted, key, iv) => { 
+    let encryptedText = Buffer.from(encrypted, 'hex'); 
+    let decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv); 
+    let decrypted = decipher.update(encryptedText); 
+    decrypted = Buffer.concat([decrypted, decipher.final()]); 
+    return decrypted.toString(); 
+}; 
+
+encrypt_payload = (payload) => {
+    let keys = read_keys();
+    return encrypt(JSON.stringify(payload || {}), keys.key, keys.iv);
+};
+
+decrypt_payload = (payload) => {
+    let keys = read_keys();
+    return JSON.parse(decrypt(payload, keys.key, keys.iv));
+};
+
 //
 // Hash with salt
 makeHash = (plaintext, salt) => {
@@ -111,3 +153,6 @@ exports.buildAndStringifyInfo = buildAndStringifyInfo;
 exports.updateInfo = updateInfo;
 exports.splitPostalCode = splitPostalCode;
 exports.buildPostalCode = buildPostalCode;
+exports.encrypt_payload = encrypt_payload;
+exports.decrypt_payload = decrypt_payload;
+exports.generate_keys_hex = generate_keys_hex;
