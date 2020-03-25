@@ -75,13 +75,15 @@ module.exports = async (fastify, opts) => {
                     }
 
                     // Generate the JWT token
+                    let iv = tools.generate_iv();
                     let payload = tools.encrypt_payload({
                         id: user.id,
                         id_data: personal.id,
                         name: name
-                    });
+                    }, iv);
                     const jwt = await fastify.jwt.sign({
                         payload: payload,
+                        session: iv,
                         roles: ['user']
                     });
                     // send redirect

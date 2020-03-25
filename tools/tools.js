@@ -6,14 +6,17 @@ const crypto = require('crypto');
 
 generate_keys_hex = () => {
     return {
-        key: crypto.randomBytes(32).toString('hex'),
-        iv: crypto.randomBytes(16).toString('hex')
+        key: crypto.randomBytes(32).toString('hex')
     };
-}
+};
 
-read_keys = () => {
+generate_iv = () => {
+    return crypto.randomBytes(16).toString('hex');
+};
+
+read_keys = (iv) => {
     let key = Buffer.from(`${process.env.AES_256_KEY}`, 'hex'); 
-    let iv = Buffer.from(`${process.env.AES_256_IV}`, 'hex'); 
+    iv = Buffer.from(iv, 'hex'); 
     return {
         key: key,
         iv: iv
@@ -36,13 +39,13 @@ decrypt = (encrypted, key, iv) => {
     return decrypted.toString(); 
 }; 
 
-encrypt_payload = (payload) => {
-    let keys = read_keys();
+encrypt_payload = (payload, iv) => {
+    let keys = read_keys(iv);
     return encrypt(JSON.stringify(payload || {}), keys.key, keys.iv);
 };
 
-decrypt_payload = (payload) => {
-    let keys = read_keys();
+decrypt_payload = (payload, iv) => {
+    let keys = read_keys(iv);
     return JSON.parse(decrypt(payload, keys.key, keys.iv));
 };
 
@@ -156,3 +159,4 @@ exports.buildPostalCode = buildPostalCode;
 exports.encrypt_payload = encrypt_payload;
 exports.decrypt_payload = decrypt_payload;
 exports.generate_keys_hex = generate_keys_hex;
+exports.generate_iv = generate_iv;
