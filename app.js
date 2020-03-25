@@ -83,6 +83,13 @@ fastify.register(oauthPlugin, {
     },
     auth: oauthPlugin.FACEBOOK_CONFIGURATION
   },
+  generateStateFunction: function(){
+      //return require('uuid/v4')();
+      return require('crypto').randomBytes(10).toString('hex')
+  },
+  checkStateFunction: function(state, callback){
+      callback()
+  },
   startRedirectPath: '/login/facebook',
   callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`,
   scope: 'email,public_profile'

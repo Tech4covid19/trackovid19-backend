@@ -3,6 +3,8 @@
 const uuidv4 = require('uuid/v4');
 const tools = require('../../../tools/tools');
 
+var state = 0;
+
 module.exports = async (fastify, opts) => {
 
     fastify.get('/login/facebook/callback', {
@@ -12,6 +14,11 @@ module.exports = async (fastify, opts) => {
     }, function (request, reply) {
         try {
             this.facebookOAuth2.getAccessTokenFromAuthorizationCodeFlow(request, async (err, token) => {
+
+                if (err) {
+                    console.log("ERROR: ", err);
+                    reply.redirect(`${process.env.HOME_URL}`);
+                }
 
                 if (!token) {
                     let msg = `There was an error authenticating the user: ${JSON.stringify(err || {})}`;
