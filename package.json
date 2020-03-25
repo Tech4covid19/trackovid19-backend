@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon $NODE_DEBUG_OPTION --watch . --ext js",
-    "generate-db": "node ./db/generate.js"
+    "generate-db": "node ./db/generate.js",
+    "genkeys": "node ./tools/genkeys.js"
   },
   "keywords": [
     "trackovid19",
