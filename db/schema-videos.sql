@@ -13,7 +13,7 @@ ALTER SEQUENCE public.videos_id_seq
 
 CREATE TABLE public.videos
 (
-    id integer NOT NULL DEFAULT nextval('videos_id_seq'::regclass),
+    id integer NOT NULL DEFAULT nextval('public.videos_id_seq'::regclass),
     title character varying(100) NOT NULL,
     description character varying(500) NOT NULL,
     video character varying(500) NOT NULL,
@@ -45,7 +45,7 @@ ALTER SEQUENCE public.video_shares_id_seq
 
 CREATE TABLE public.video_shares
 (
-    id integer NOT NULL DEFAULT nextval('video_shares_id_seq'::regclass),
+    id integer NOT NULL DEFAULT nextval('public.video_shares_id_seq'::regclass),
     video_id integer NOT NULL,
     target character varying(50) NOT NULL,
     share_link character varying(500) NOT NULL,
