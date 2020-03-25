@@ -20,6 +20,12 @@ provider:
     AFTER_LOGIN_CALLBACK_URL: ${self:custom.AFTER_LOGIN_CALLBACK_URL.${opt:stage, 'dev'}}
     JWT_SECRET: ${self:custom.JWT_SECRET.${opt:stage, 'dev'}}
     HOME_URL: ${self:custom.HOME_URL.${opt:stage, 'dev'}}
+    GCM_API_KEY: ${self:custom.GCM_API_KEY.${opt:stage, 'dev'}}
+    VAPID_PRIVATE_KEY: ${self:custom.VAPID_PRIVATE_KEY.${opt:stage, 'dev'}}
+    VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}} 
+    VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}} 
+    AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}} 
+    AES_256_IV: ${self:custom.AES_256_IV.${opt:stage, 'dev'}} 
 
 functions:
   app:
@@ -82,6 +88,30 @@ custom:
     dev: http://localhost:4200
     staging: https://www.covidografia.pt
     prd: https://www.covidografia.pt
+  GCM_API_KEY:
+    dev: ${opt:gcm_api_key, 'GCM_API_KEY_DEV'} 
+    staging: ${opt:gcm_api_key, 'GCM_API_KEY_STAGING'}
+    prd: ${opt:gcm_api_key, 'GCM_API_KEY_PROD'}
+  VAPID_PUBLIC_KEY:
+    dev: BA5Tr13lfJCBPb9ZaXlTKUetDORnHROGI_S7cumwdDR9f-ZxYI-4Y2OvIC4WgZxcanE9znpKufP6wLA5kdIG2Ak
+    staging: BA5Tr13lfJCBPb9ZaXlTKUetDORnHROGI_S7cumwdDR9f-ZxYI-4Y2OvIC4WgZxcanE9znpKufP6wLA5kdIG2Ak
+    prd: BBEe8XE4MAZu390e-VzBCzjK_QyY4Zra0R6kY-wARxKxWbHOM-KgxSURL6FOzftYG9ht1UvMvONBzpKRxWaIJhU
+  VAPID_PRIVATE_KEY:
+    dev: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_DEV'} 
+    staging: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_STAGING'}
+    prd: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_PROD'}
+  VAPID_SUBJECT:
+    dev: http://localhost:4200
+    staging: https://staging.app.covidografia.pt
+    prd: https://app.covidografia.pt
+  AES_256_KEY: 
+    dev: ${opt:aes_key, 'AES_256_KEY_DEV'} 
+    staging: ${opt:aes_key, 'AES_256_KEY_STAGING'}
+    prd: ${opt:aes_key, 'AES_256_KEY_PROD'}
+  AES_256_IV:
+    dev: ${opt:aes_iv, 'AES_256_IV_DEV'} 
+    staging: ${opt:aes_iv, 'AES_256_IV_STAGING'}
+    prd: ${opt:aes_iv, 'AES_256_IV_PROD'}
 
 # Plugins
 plugins:
