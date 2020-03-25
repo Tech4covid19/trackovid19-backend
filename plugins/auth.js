@@ -14,13 +14,11 @@ module.exports = fp(async (fastify, opts) => {
         try {
             await request.jwtVerify()
             if (request.user && request.user.payload) {
-                console.log(request.user);
                 if (!request.user.payload.id) {
                     // Make sure we don't blow up in the face of users that had signed in with the previous method
-                    request.user.payload = tools.decrypt_payload(request.user.payload);
+                    request.user.payload = tools.decrypt_payload(request.user.payload, request.user.session);
                 }
             }
-            
         } catch (err) {
             reply.send(err)
         }

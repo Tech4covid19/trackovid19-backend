@@ -2,5 +2,5 @@
 
 const tools = require('./tools');
 
-console.log('Generating AES key and iv');
+console.log('Generating random AES key');
 console.log(generate_keys_hex());
