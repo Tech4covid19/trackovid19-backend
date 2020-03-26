@@ -38,11 +38,13 @@ const sequelizeConfig = {
   logging: false
 }
 
+/*
 fastify.register(
   require('fastify-rate-limit'), {
   max: 60,
   timeWindow: '1 minute'
 })
+*/
 
 fastify.register(
   require('fastify-helmet'), {
