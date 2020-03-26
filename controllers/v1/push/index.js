@@ -60,7 +60,7 @@ module.exports = async (fastify, opts) => {
 
     subscription = request.body.subscription;
     console.log(subscription);
-    return {};
+    reply.send({ status: 'ok' });
   });
 
   fastify.post('/push/web', {

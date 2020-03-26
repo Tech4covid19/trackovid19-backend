@@ -168,4 +168,47 @@ module.exports = async (fastify, opts) => {
       });
     }
   })
+
+  fastify.delete('/user', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['user'],
+    }
+  }, async (request, reply) => {
+
+    let trans; // transaction
+    try {
+      const user = await fastify.models().Users.findOne({
+        where: { id: request.user.payload.id },
+      });
+
+      const personal = await fastify.models().UsersData.findOne({
+        where: { id: request.user.payload.id_data }
+      });
+
+      if (!user || !personal) {
+        reply.status(404).send({error: "Not found"});
+      }
+      else {
+        trans = await fastify.sequelize.transaction();
+
+        const rr = await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
+          {replacements: { p_user_id: request.user.payload.id, p_user_data_id: request.user.payload.id_data }});
+
+        await trans.commit();
+        reply.send({ status: 'ok' });
+      }
+      
+    } catch (error) {
+      request.log.error(error);
+      if (trans) {
+        await trans.rollback();
+      }
+      reply.status(500).send({
+        error
+      });
+    }
+  
+  })
+
 }
