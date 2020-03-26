@@ -34,14 +34,17 @@ const sequelizeConfig = {
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
-  password: process.env.DB_PASS
+  password: process.env.DB_PASS,
+  logging: false
 }
 
+/*
 fastify.register(
   require('fastify-rate-limit'), {
   max: 60,
   timeWindow: '1 minute'
 })
+*/
 
 fastify.register(
   require('fastify-helmet'), {

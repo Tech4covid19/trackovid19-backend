@@ -1,6 +1,7 @@
 const fp = require('fastify-plugin')
 const { readFileSync } = require('fs')
 const path = require('path')
+const tools = require('./../tools/tools')
 
 module.exports = fp(async (fastify, opts) => {
     fastify.register(require('fastify-jwt'), {
@@ -12,6 +13,12 @@ module.exports = fp(async (fastify, opts) => {
     fastify.decorate('authenticate', async (request, reply) => {
         try {
             await request.jwtVerify()
+            if (request.user && request.user.payload) {
+                if (!request.user.payload.id) {
+                    // Make sure we don't blow up in the face of users that had signed in with the previous method
+                    request.user.payload = tools.decrypt_payload(request.user.payload, request.user.session);
+                }
+            }
         } catch (err) {
             reply.send(err)
         }
