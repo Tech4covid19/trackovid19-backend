@@ -1,6 +1,7 @@
 'use strict'
 
-const tools = require('../../../tools/tools')
+const tools = require('../../../tools/tools');
+const aws = require('../../../services/aws-service');
 
 module.exports = async (fastify, opts) => {
 
@@ -176,9 +177,13 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
 
+    // delete user data from database
+
+    let user;
+
     let trans; // transaction
     try {
-      const user = await fastify.models().Users.findOne({
+      user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
       });
 
@@ -188,18 +193,18 @@ module.exports = async (fastify, opts) => {
 
       if (!user || !personal) {
         reply.status(404).send({error: "Not found"});
+        return;
       }
       else {
         trans = await fastify.sequelize.transaction();
 
-        const rr = await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
+        await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
           {replacements: { p_user_id: request.user.payload.id, p_user_data_id: request.user.payload.id_data }});
-
         await trans.commit();
-        reply.send({ status: 'ok' });
       }
-      
+
     } catch (error) {
+      console.log(error);
       request.log.error(error);
       if (trans) {
         await trans.rollback();
@@ -207,7 +212,32 @@ module.exports = async (fastify, opts) => {
       reply.status(500).send({
         error
       });
+      return;
     }
+
+    // send audit trail info to AWS SNS
+
+    const message = JSON.stringify({
+      user_id: request.user.payload.id,
+      user_data_id: request.user.payload.id_data,
+      request_date: new Date(),
+      authenticationProvider: tools.authenticationProviders.nameById(user.external_id_provider_id)
+    });
+
+    try {
+      const data = await aws.SNS.publish(message);
+      request.log.info({
+        action: 'user-data-removal-audit-to-aws-sns',
+        data: {
+          data
+        }
+      });
+    }
+    catch(err) {
+      console.log(error);
+      request.log.error(error);
+    }
+    reply.send({ status: 'ok' });
   
   })
 

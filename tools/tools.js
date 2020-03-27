@@ -146,6 +146,15 @@ buildPostalCode = (postalcode1, postalcode2) => {
     return `${pc1}-${pc2}`;
 } ;
 
+const authenticationProviders = {
+  facebook: 1
+}
+authenticationProviders.nameById = (id) => {
+  if (id === 1) {
+    return 'facebook';
+  }
+  return 'unknown';
+} ;
 
 // Exports
 exports.generateFacebookHashes = generateFacebookHashes;
@@ -160,3 +169,4 @@ exports.encrypt_payload = encrypt_payload;
 exports.decrypt_payload = decrypt_payload;
 exports.generate_keys_hex = generate_keys_hex;
 exports.generate_iv = generate_iv;
+exports.authenticationProviders = authenticationProviders;
