@@ -18,9 +18,7 @@ module.exports = async (fastify, opts) => {
       };
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not web push key'));
     }
   });
 
@@ -53,9 +51,7 @@ module.exports = async (fastify, opts) => {
       }
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not register subscription'));
     }
 
     subscription = request.body.subscription;
@@ -110,9 +106,7 @@ module.exports = async (fastify, opts) => {
       }
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not push message'));
     }
 
   });

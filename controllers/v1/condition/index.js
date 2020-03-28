@@ -12,9 +12,7 @@ module.exports = async (fastify, opts) => {
       return conditions;
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get conditions'));
     }
   })
 }

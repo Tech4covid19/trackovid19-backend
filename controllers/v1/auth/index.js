@@ -91,9 +91,8 @@ module.exports = async (fastify, opts) => {
                 }
             })
         } catch (error) {
-            console.log(error);
             request.log.error(error);
-            reply.status(500).send({ error: 'Could not authenticate correctly' });
+            reply.status(500).send(sanitize_log(error, 'Could not authenticate correctly'));
         }
 
     })
