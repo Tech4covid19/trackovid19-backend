@@ -75,9 +75,7 @@ module.exports = async (fastify, opts) => {
       
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get user details'));
     }
   
   })
@@ -159,13 +157,10 @@ module.exports = async (fastify, opts) => {
         reply.send({ status: 'ok' });
       }
     } catch (error) {
-      console.log(error);
       request.log.error(error)
       // Rollback the transaction
       await t.rollback();
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not update user details'));
     }
   })
 }
