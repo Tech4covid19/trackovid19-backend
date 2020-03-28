@@ -25,7 +25,6 @@ provider:
     VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}} 
     VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}} 
     AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}} 
-    AES_256_IV: ${self:custom.AES_256_IV.${opt:stage, 'dev'}} 
 
 functions:
   app:
@@ -108,10 +107,6 @@ custom:
     dev: ${opt:aes_key, 'AES_256_KEY_DEV'} 
     staging: ${opt:aes_key, 'AES_256_KEY_STAGING'}
     prd: ${opt:aes_key, 'AES_256_KEY_PROD'}
-  AES_256_IV:
-    dev: ${opt:aes_iv, 'AES_256_IV_DEV'} 
-    staging: ${opt:aes_iv, 'AES_256_IV_STAGING'}
-    prd: ${opt:aes_iv, 'AES_256_IV_PROD'}
 
 # Plugins
 plugins:
