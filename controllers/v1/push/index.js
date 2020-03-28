@@ -1,8 +1,6 @@
 'use strict'
 
-const webpush = require('web-push');
-
-let subscription;
+const webPush = require('../../../services/web-push-service');
 
 module.exports = async (fastify, opts) => {
 
@@ -27,7 +25,7 @@ module.exports = async (fastify, opts) => {
   fastify.post('/push/web/register', {
     preValidation: [fastify.authenticate]
   }, async (request, reply) => {
-    subscription = request.body.subscription;
+    const subscription = request.body.subscription;
 
     if (!subscription || !subscription.endpoint || !subscription.keys) {
       reply.status(500).send({
@@ -36,10 +34,15 @@ module.exports = async (fastify, opts) => {
       return;
     }
 
-    let pushSubscription;
-
     try {
-      pushSubscription = await getUserPushSubscription(request.user.payload.id, subscription.endpoint);
+      // get user subscription
+      let pushSubscription = await fastify.models().PushSubscriptions.findOne({
+        where: { 
+          user_id: request.user.payload.id, 
+          push_type: 'web-push', 
+          endpoint: subscription.endpoint 
+        }
+      });
 
       if (!pushSubscription) {
         pushSubscription = await fastify.models().PushSubscriptions.create({ 
@@ -58,9 +61,7 @@ module.exports = async (fastify, opts) => {
       });
     }
 
-    subscription = request.body.subscription;
-    console.log(subscription);
-    return {};
+    reply.send({ status: 'ok' });
   });
 
   fastify.post('/push/web', {
@@ -91,10 +92,18 @@ module.exports = async (fastify, opts) => {
             keys: JSON.parse(pushSub.keys)
           };
           try {
-            await sendNotification(subscription, request.body.title, request.body.body);
+            await webPush.sendNotification(subscription, request.body.title, request.body.body);
+            console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
             sends.push(subscription.endpoint);
           } catch (error) {
+            console.log('ERROR in sending Notification to ' + subscription.endpoint);
+            console.log(error);
+            request.log.error(error)
             // to update or not update the send_error_count in push_subscriptions table ?!
+            reply.status(500).send({
+              error: 'Error in sending Notification'
+            });
+            return;
           }
         }
         return {
@@ -104,9 +113,7 @@ module.exports = async (fastify, opts) => {
           }
         }
       } else {
-        reply.status(200).send({
-          message: 'No subscriptions for user'
-        });
+        reply.status(404).send({ error: "No subscriptions for user" });
       }
     } catch (error) {
       request.log.error(error)
@@ -117,48 +124,4 @@ module.exports = async (fastify, opts) => {
 
   });
 
-  function sendNotification(subscription, title, body) {
-    return new Promise(function(resolve, reject) {
-      try {
-        const payload = JSON.stringify({
-          title: title,
-          body: body
-        });
-  
-        webpush.setGCMAPIKey(process.env.GCM_API_KEY);
-        //console.log(webpush.generateVAPIDKeys());
-        webpush.setVapidDetails(
-          process.env.VAPID_SUBJECT,
-          process.env.VAPID_PUBLIC_KEY,
-          process.env.VAPID_PRIVATE_KEY
-        );
-  
-        // const options = {
-        //   TTL: 0 // Time to live 
-        // };
-  
-        webpush.sendNotification(subscription, payload) //, options)
-        .then(function() {
-          console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
-          resolve();
-        }).catch(function(e) {
-          console.log('ERROR in sending Notification to ' + subscription.endpoint);
-          // delete subscriptions[subscription.endpoint];
-          reject(e);
-        });
-      } catch(e) {
-        reject(e);
-      }
-    });
-  }
-
-  async function getUserPushSubscription(userId, endpoint) {
-    return await fastify.models().PushSubscriptions.findOne({
-      where: { 
-        user_id: userId, 
-        push_type: 'web-push', 
-        endpoint: endpoint 
-      }
-    });
-  }
 }
