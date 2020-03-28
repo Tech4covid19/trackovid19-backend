@@ -2,13 +2,10 @@
 
 const webpush = require('web-push');
 
-function sendNotification(subscription, title, body) {
+function sendNotification(subscription, notification, options) {
   return new Promise(function(resolve, reject) {
     try {
-      const payload = JSON.stringify({
-        title: title,
-        body: body
-      });
+      const payload = JSON.stringify(notification);
 
       webpush.setGCMAPIKey(process.env.GCM_API_KEY);
       //console.log(webpush.generateVAPIDKeys());
@@ -22,7 +19,7 @@ function sendNotification(subscription, title, body) {
       //   TTL: 0 // Time to live 
       // };
 
-      webpush.sendNotification(subscription, payload) //, options)
+      webpush.sendNotification(subscription, payload, options)
       .then(function() {
         resolve();
       }).catch(function(e) {

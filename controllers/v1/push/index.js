@@ -75,24 +75,32 @@ module.exports = async (fastify, opts) => {
       return;
     }
 
-    let sends = [];
-    let pushSubscriptions;
     try {
-      pushSubscriptions = await fastify.models().PushSubscriptions.findAll({
+      const pushSubscriptions = await fastify.models().PushSubscriptions.findAll({
         where: { 
           user_id: request.body.user_id, 
           push_type: 'web-push'
         }
       });
 
-      if (pushSubscriptions) {
+      if (pushSubscriptions && pushSubscriptions.length > 0) {
+        let sends = [];
+
         for (const pushSub of pushSubscriptions) {
           const subscription = {
             endpoint: pushSub.endpoint,
             keys: JSON.parse(pushSub.keys)
           };
           try {
-            await webPush.sendNotification(subscription, request.body.title, request.body.body);
+            const notification = {
+              title: request.body.title,
+              body: request.body.body,
+              icon: request.body.icon,
+              badge: request.body.badge,
+              image: request.body.image
+            }
+            
+          await webPush.sendNotification(subscription, notification);
             console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
             sends.push(subscription.endpoint);
           } catch (error) {
