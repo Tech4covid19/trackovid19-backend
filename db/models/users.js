@@ -26,6 +26,14 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
+		latest_status_id: {
+			type: DataTypes.BIGINT,
+			allowNull: true,
+			references: {
+				model: 'history',
+				key: 'id'
+			}
+		},
 		patient_token: {
 			type: DataTypes.STRING,
 			allowNull: true
