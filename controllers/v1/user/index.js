@@ -194,7 +194,7 @@ module.exports = async (fastify, opts) => {
         trans = await fastify.sequelize.transaction();
 
         await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
-          {replacements: { p_user_id: request.user.payload.id, p_user_data_id: request.user.payload.id_data }});
+          {replacements: { p_user_id: parseInt(request.user.payload.id), p_user_data_id: request.user.payload.id_data }});
         await trans.commit();
       }
 
@@ -204,9 +204,7 @@ module.exports = async (fastify, opts) => {
       if (trans) {
         await trans.rollback();
       }
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not delete user data'));
       return;
     }
 

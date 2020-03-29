@@ -2,7 +2,7 @@ CREATE PROCEDURE delete_user(p_user_id bigint, p_user_data_id character varying(
 LANGUAGE SQL
 AS $$
 
-delete from push_subscriptions where id = p_user_id;
+delete from push_subscriptions where user_id = p_user_id;
 delete from user_symptoms where history_id in (
 	select history.id
 	from history, users
