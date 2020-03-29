@@ -61,7 +61,7 @@ module.exports = async (fastify, opts) => {
                         personal = await fastify.models().UsersData.create({
                             id: personal_id,
                             external_id: hashes.personal,
-                            external_id_provider_id: 1,
+                            external_id_provider_id: tools.authenticationProviders.facebook,
                             name: name,
                             email: email
                         }, { fields: ['id', 'external_id', 'external_id_provider_id', 'name', 'email'] }
