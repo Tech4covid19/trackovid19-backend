@@ -55,9 +55,7 @@ module.exports = async (fastify, opts) => {
       // Rollback the transaction
       await t.rollback();
 
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not update user state'));
     }
   })
 
@@ -69,6 +67,7 @@ module.exports = async (fastify, opts) => {
   }, async (request, reply) => {
     try {
       const cases = await fastify.models().Case.findAll({
+        where: { user_id: request.user.payload.id },
         include: [
           {
             model: fastify.models().UserSymptom
@@ -78,9 +77,7 @@ module.exports = async (fastify, opts) => {
       return cases;
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get user states'));
     }
   })
 
@@ -131,9 +128,7 @@ module.exports = async (fastify, opts) => {
       return cases;
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get conditions by postal code'));
     }
   });
 
@@ -171,9 +166,7 @@ module.exports = async (fastify, opts) => {
       return cases;
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get confinement states by postal code'));
     }
   });
 }
