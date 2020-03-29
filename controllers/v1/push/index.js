@@ -63,6 +63,11 @@ module.exports = async (fastify, opts) => {
   fastify.post('/push/web', {
     preValidation: [fastify.authenticate]
   }, async (request, reply) => {
+
+    if (process.env.PRODUCTION == '1') {
+      reply.status(501).send();
+      return;
+    }
     
     if (!request.body || !request.body.user_id || !request.body.title || !request.body.body) {
       reply.status(500).send({

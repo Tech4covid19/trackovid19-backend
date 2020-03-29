@@ -145,6 +145,16 @@ sanitize_log = (error, message) => {
     };
 }
 
+const authenticationProviders = {
+  facebook: 1
+}
+authenticationProviders.nameById = (id) => {
+  if (id === 1) {
+    return 'facebook';
+  }
+  return 'unknown';
+} ;
+
 
 // Exports
 exports.generateFacebookHashes = generateFacebookHashes;
@@ -157,3 +167,4 @@ exports.generate_keys_hex = generate_keys_hex;
 exports.generate_iv = generate_iv;
 exports.generate_random = generate_random;
 exports.sanitize_log = sanitize_log;
+exports.authenticationProviders = authenticationProviders;

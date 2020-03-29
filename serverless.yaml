@@ -25,6 +25,11 @@ provider:
     VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}} 
     VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}} 
     AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}} 
+    PRODUCTION: ${self:custom.PRODUCTION.${opt:stage, 'dev'}}
+    AWS_REGION: ${self:custom.AWS_REGION.${opt:stage, 'dev'}}  
+    AWS_SNS_ACCESS_KEY_ID: ${self:custom.AWS_SNS_ACCESS_KEY_ID.${opt:stage, 'dev'}}  
+    AWS_SNS_SECRET_ACCESS_KEY: ${self:custom.AWS_SNS_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}  
+    AWS_SNS_TOPICARN: ${self:custom.AWS_SNS_TOPICARN.${opt:stage, 'dev'}}  
 
 functions:
   app:
@@ -107,6 +112,26 @@ custom:
     dev: ${opt:aes_key, 'AES_256_KEY_DEV'} 
     staging: ${opt:aes_key, 'AES_256_KEY_STAGING'}
     prd: ${opt:aes_key, 'AES_256_KEY_PROD'}
+  PRODUCTION: 
+    dev: 0
+    staging: 0
+    prd: 1
+  AWS_REGION:
+    dev: eu-west-1
+    staging: eu-west-1
+    prd: eu-west-1
+  AWS_SNS_ACCESS_KEY_ID: 
+    dev: AKIA3PHZAWHE536M366R
+    staging: AKIA3PHZAWHE536M366R
+    prd: AKIA3PHZAWHE536M366R
+  AWS_SNS_SECRET_ACCESS_KEY: 
+    dev: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_DEV'}
+    staging: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_STAGING'}
+    prd: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_PROD'}
+  AWS_SNS_TOPICARN: 
+    dev: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_DEV'}
+    staging: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_STAGING'}
+    prd: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_PROD'}
 
 # Plugins
 plugins:

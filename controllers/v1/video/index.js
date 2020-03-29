@@ -3,6 +3,7 @@
 module.exports = async (fastify, opts) => {
 
   fastify.get('/video/all', {
+    preValidation: [fastify.authenticate],
     schema: {
       tags: ['video']
     }
