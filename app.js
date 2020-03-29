@@ -55,7 +55,11 @@ fastify.register(
 
 fastify
   .register(fsequelize, sequelizeConfig)
-  .ready()
+  .ready((err) => {
+    if (!err) {
+      fastify.setupModels();
+    }
+  })
 
 const corsOptions = {
   origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
