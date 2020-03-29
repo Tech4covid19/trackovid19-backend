@@ -22,33 +22,53 @@ module.exports = async (fastify, opts) => {
       const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
 
       // Now let's look for the user in the personal data model
+      const user = await fastify.models().Users.findOne({
+        where: { id: request.user.payload.id },
+      });
+
       const personal = await fastify.models().UsersData.findOne({
           where: { id: request.user.payload.id_data }
       });
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(postalCode);
+      if (!user || !personal) {
+        
+        // Commit the transaction
+        await t.commit();
 
-      await fastify.models().Case.create(
-        {postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
-        {
-          transaction: t,
-          include: [
-            {
-              model: fastify.models().UserSymptom
-            }
-          ]
-        }
-      )
+        reply.status(404).send({error: "Not found"});
+      }
+      else {
 
-      // save the date in the personal model (only the date, to prevent correlation)
-      personal.symptoms_updated_at = new Date((new Date).toDateString());
-      await personal.save({transaction: t});
+        // Decode postal code
+        const postparts = tools.splitPostalCode(postalCode);
 
-      // Commit the transaction
-      await t.commit();
+        const acase = await fastify.models().Case.create(
+          {postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
+          {
+            transaction: t,
+            include: [
+              {
+                model: fastify.models().UserSymptom
+              }
+            ]
+          }
+        );
 
-      reply.send({ status: 'success' })
+        // save the date in the personal model (only the date, to prevent correlation)
+        personal.symptoms_updated_at = new Date((new Date).toDateString());
+        
+        // Set this update as the latest one for the user
+        user.latest_status_id = acase.id;
+
+        await user.save({transaction: t});
+        await personal.save({transaction: t});
+
+        // Commit the transaction
+        await t.commit();
+
+        reply.send({ status: 'success' })
+      }
+      
     } catch (error) {
       request.log.error(error)
 
