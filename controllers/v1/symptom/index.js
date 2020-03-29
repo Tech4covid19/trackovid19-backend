@@ -3,6 +3,7 @@
 module.exports = async (fastify, opts) => {
 
   fastify.get('/symptom/all', {
+    preValidation: [fastify.authenticate],
     schema: {
       tags: ['symptom']
     }
