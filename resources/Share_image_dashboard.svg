@@ -114,20 +114,20 @@
             <g id="header" transform="translate(0.000000, 91.000000)">
                 <text x="240" y="30" id="city_name" font-family="Archivo-Bold, Archivo" font-size="34"
                       font-weight="bold" fill="#000000" text-anchor="middle">
-                    Porto
+                    Vila nova de Gaia
                 </text>
                 <g id="codigo_postal" transform="translate(211.000000, 40.000000)">
                     <path
                         d="M12.366,13.705 C15.054,11.018 15.054,6.66 12.366,3.972 C9.678,1.285 5.321,1.285 2.633,3.972 C-0.055,6.66 -0.055,11.018 2.633,13.705 L7.5,18.572 L12.366,13.705 Z M10.035,8.839 C10.035,10.239 8.9,11.374 7.5,11.374 C6.099,11.374 4.964,10.239 4.964,8.839 C4.964,7.438 6.099,6.303 7.5,6.303 C8.9,6.303 10.035,7.438 10.035,8.839 Z"
                         id="location_icon" fill="#6A00FF"></path>
                     <text id="postal_code" font-family="Archivo-Regular, Archivo" font-size="17" font-weight="normal"
-                          fill="#3F3D56" x="21.596" y="15">
-                        4445
+                          fill="#3F3D56">
+                        <tspan x="21.596" y="15">1071</tspan>
                     </text>
                 </g>
-                <text id="last_update" font-family="Archivo-Regular, Archivo" font-size="12"
+                <text id="Estado-em-27-de-Març" font-family="Archivo-Regular, Archivo" font-size="12"
                       font-weight="normal" fill="#979797" x="240" y="74" text-anchor="middle">
-                    Estado em 29 de Março de 2020, às 14:20
+                    Estado em 27 de Março de 2020, às 12:20
                 </text>
             </g>
             <g id="main" transform="translate(1.000000, 191.000000)">
@@ -136,7 +136,7 @@
                     id="Path" fill="#FFFFFF" fill-rule="nonzero"></path>
                 <g id="stats" transform="translate(40.000000, 41.000000)">
                     <g id="saude_group">
-                        <text id="saude" font-family="Archivo-Regular, Archivo" font-size="23" font-weight="normal"
+                        <text id="Saúde" font-family="Archivo-Regular, Archivo" font-size="23" font-weight="normal"
                               fill="#63717E" x="156.7535" y="20">
                             Saúde
                         </text>
@@ -146,7 +146,7 @@
                         </text>
                         <text id="infectados_value" font-family="Archivo-Medium, Archivo" font-size="44"
                               font-weight="400" fill="#000000" x="168" y="170">
-                            45
+                            23
                         </text>
                         <g id="infectados_icon" transform="translate(141.529000, 139.676000)" fill="#6B68FC">
                             <path
@@ -271,11 +271,11 @@
                                 d="M1.1269868,14.1229868 C3.6189868,18.8089868 9.4369868,20.5879868 14.1229868,18.0969868 C18.8089868,15.6049868 20.5879868,9.7859868 18.0969868,5.0999868 C15.6049868,0.413986801 9.7859868,-1.3650132 5.0999868,1.1269868 C0.413986801,3.6189868 -1.3650132,9.4369868 1.1269868,14.1229868 Z M16.9869868,5.6909868 C19.1519868,9.7639868 17.6059868,14.8209868 13.5329868,16.9869868 C9.4599868,19.1519868 4.4029868,17.6059868 2.2369868,13.5329868 C0.0709868012,9.4599868 1.6179868,4.4029868 5.6909868,2.2369868 C9.7639868,0.0709868012 14.8209868,1.6179868 16.9869868,5.6909868 Z"
                                 id="Shape"></path>
                         </g>
-                        <text id="isolados_title" font-family="Archivo-Medium, Archivo" x="300" y="108" font-size="12"
+                        <text id="em_casa_title" font-family="Archivo-Medium, Archivo" x="300" y="108" font-size="12"
                               font-weight="400" fill="#444053">
                             Isolados
                         </text>
-                        <text id="isolamento" font-family="Archivo-Regular, Archivo" x="136.7535" y="20" font-size="23"
+                        <text id="Isolamento" font-family="Archivo-Regular, Archivo" x="136.7535" y="20" font-size="23"
                               font-weight="normal" fill="#63717E">
                             Isolamento
                         </text>
