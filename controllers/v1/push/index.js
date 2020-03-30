@@ -86,39 +86,53 @@ module.exports = async (fastify, opts) => {
 
       if (pushSubscriptions && pushSubscriptions.length > 0) {
         let sends = [];
+        let expired = [];
 
-        for (const pushSub of pushSubscriptions) {
-          const subscription = {
-            endpoint: pushSub.endpoint,
-            keys: JSON.parse(pushSub.keys)
-          };
-          try {
-            const notification = {
-              title: request.body.title,
-              body: request.body.body,
-              icon: request.body.icon,
-              badge: request.body.badge,
-              image: request.body.image
+        try {
+          for (const pushSub of pushSubscriptions) {
+            const subscription = {
+              endpoint: pushSub.endpoint,
+              keys: JSON.parse(pushSub.keys)
+            };
+            try {
+              const notification = {
+                title: request.body.title,
+                body: request.body.body,
+                icon: request.body.icon,
+                badge: request.body.badge,
+                image: request.body.image
+              };
+              
+              await webPush.sendNotification(subscription, notification);
+
+              console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
+              sends.push(subscription.endpoint);
             }
-            
-          await webPush.sendNotification(subscription, notification);
-            console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
-            sends.push(subscription.endpoint);
-          } catch (error) {
-            console.log('ERROR in sending Notification to ' + subscription.endpoint);
-            console.log(error);
-            request.log.error(error)
-            // to update or not update the send_error_count in push_subscriptions table ?!
-            reply.status(500).send({
-              error: 'Error in sending Notification'
-            });
-            return;
+            catch (error) {
+              console.log('ERROR in sending Notification to ' + subscription.endpoint);
+              console.log(error);
+              request.log.error(error)
+              
+              if (error.statusCode === 410) {
+                // push subscription has unsubscribed or expired
+                expired.push(subscription.endpoint);
+                await pushSub.destroy();
+              }
+            }
           }
         }
+        catch (error) {
+          console.log(error);
+          request.log.error(error)
+          reply.status(500).send(sanitize_log(error, 'Error in sending Notification'));
+          return;
+        }
+
         return {
           notifications: {
             available: pushSubscriptions.length,
-            sent: sends.length
+            sent: sends.length,
+            expired: expired.length
           }
         }
       } else {
