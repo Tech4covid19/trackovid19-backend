@@ -55,7 +55,11 @@ fastify.register(
 
 fastify
   .register(fsequelize, sequelizeConfig)
-  .ready()
+  .ready((err) => {
+    if (!err) {
+      fastify.setupModels();
+    }
+  })
 
 const corsOptions = {
   origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
@@ -75,10 +79,12 @@ fastify.register(AutoLoad, {
   options: Object.assign({}, { prefix: '/api/v1' })
 })
 
-fastify.register(require('fastify-static'), {
-  root: path.join(__dirname, 'public'),
-  prefix: '/public/',
-})
+if (process.env.PRODUCTION != '1') {
+  fastify.register(require('fastify-static'), {
+    root: path.join(__dirname, 'public'),
+    prefix: '/public/',
+  });
+}
 
 fastify.register(require('fastify-axios'))
 

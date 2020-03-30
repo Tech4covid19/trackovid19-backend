@@ -20,17 +20,39 @@
   <br/>
   https://developer.mozilla.org/en-US/docs/Web/API/Push_API
 </p>
-<button id="subscribeButton" style="background-color: #ffffff;padding: 8px 12px;border: 1px solid #0000ff;color: #0000ff;font-weight: bold;">Aceitar notificações</button>
+<button id="subscribeButton" style="background-color: #ffffff;padding: 8px 12px;border: 1px solid #0000ff;color: #0000ff;font-weight: bold;">Register subscription to accept notifications</button>
 <span id="subscribe" style="color: green;display: inline-block;padding: 8px 12px;"></span>
 
 
+<h3>Testing in browser</h3>
+<p>Local (without api), to preview notification.</p>
+<p>Image and badge have limited support, check here <a href="https://documentation.onesignal.com/docs/web-push-notification-icons" target="_blank">https://documentation.onesignal.com/docs/web-push-notification-icons</a></p>
+<p>
+<label>Title</label>
+<input type="text" id="not_title" value="Notification title" style="width: 400px" placeholder="Input notification title" />
+<br/>
+<label>Body</label>
+<input type="text" id="not_body" value="Notification body" style="width: 400px" placeholder="Input notification body" />
+<br/>
+<label>Icon</label>
+<input type="text" id="not_icon" value="https://app.covidografia.pt/assets/img/favicon/favicon-32x32.png" style="width: 400px" placeholder="Input notification icon" />
+<br/>
+<label>Image</label>
+<input type="text" id="not_image" value="https://app.covidografia.pt/assets/img/favicon/favicon-32x32.png" style="width: 400px" placeholder="Input notification image" />
+<br/>
+<label>Bagde</label>
+<input type="text" id="not_badge" value="https://app.covidografia.pt/assets/img/favicon/favicon-32x32.png" style="width: 400px" placeholder="Input notification badge" />
+</p>
+<button id="sendNotificationButton" style="background-color: #ffffff;padding: 8px 12px;border: 1px solid #0000ff;color: #0000ff;font-weight: bold;">Send notification</button>
+
 <!-- <button id="doIt">Solicitar notificação</button> -->
 
-<p>Referências:</p>
+<p>References</p>
 <ul>
   <li><a href="https://github.com/web-push-libs/web-push" target="_blank">https://github.com/web-push-libs/web-push</a></li>
   <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Push_API" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Push_API</a></li>
   <li><a href="https://serviceworke.rs" target="_blank">https://serviceworke.rs</a></li>
+  <li><a href="https://developers.google.com/web/fundamentals/push-notifications/display-a-notification" target="_blank">https://developers.google.com/web/fundamentals/push-notifications/display-a-notification</a></li>
 </ul>
 
 
