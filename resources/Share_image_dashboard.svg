@@ -128,6 +128,7 @@
                 <text id="last_update" font-family="Archivo-Regular, Archivo" font-size="12"
                       font-weight="normal" fill="#979797" x="240" y="74" text-anchor="middle">
                     Estado em 29 de Março de 2020, às 14:20
+
                 </text>
             </g>
             <g id="main" transform="translate(1.000000, 191.000000)">
@@ -137,6 +138,7 @@
                 <g id="stats" transform="translate(40.000000, 41.000000)">
                     <g id="saude_group">
                         <text id="saude" font-family="Archivo-Regular, Archivo" font-size="23" font-weight="normal"
+
                               fill="#63717E" x="156.7535" y="20">
                             Saúde
                         </text>
@@ -147,6 +149,7 @@
                         <text id="infectados_value" font-family="Archivo-Medium, Archivo" font-size="44"
                               font-weight="400" fill="#000000" x="168" y="170">
                             45
+
                         </text>
                         <g id="infectados_icon" transform="translate(141.529000, 139.676000)" fill="#6B68FC">
                             <path
