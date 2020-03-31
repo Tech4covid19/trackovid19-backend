@@ -17,7 +17,7 @@ function generateImage (svg, data) {
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
-                throw Error(`Error: field ${field} is missing`)
+                throw(`Error: field ${field} is missing`)
             }
         }
         const finalSvg = $.xml()
@@ -53,6 +53,7 @@ function generateImage (svg, data) {
  * const data = {
  *     city_name: string
  *     postal_code: string
+ *     last_update: string
  *     infectados_value: string
  *     recuperados_value: string
  *     suspeitos_value: string
@@ -88,6 +89,8 @@ async function generateDashboard (data) {
         city_name: data.city_name,
         // postal_code
         postal_code: data.postal_code,
+        // last_update
+        last_update: data.last_update,
         // saude
         saude: data.saude || 'Saúde',
         // infectados_title
