@@ -5,7 +5,7 @@ const webpush = require('web-push');
 function sendNotification(subscription, notification, options) {
   return new Promise(function(resolve, reject) {
     try {
-      const payload = JSON.stringify(notification);
+      const payload = JSON.stringify({ notification: notification });
 
       webpush.setGCMAPIKey(process.env.GCM_API_KEY);
       //console.log(webpush.generateVAPIDKeys());
