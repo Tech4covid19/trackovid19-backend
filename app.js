@@ -53,17 +53,21 @@ fastify.register(
   }
 })
 
+
 fastify
   .register(fsequelize, sequelizeConfig)
   .ready((err) => {
     if (!err) {
       fastify.setupModels();
+    }else{
+      console.log("ERROR registering sequelize ", err);
+      throw err;
     }
   })
 
 const corsOptions = {
   origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE',
   optionsSuccessStatus: 200 // to support some legacy browsers
 }
 
