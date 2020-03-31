@@ -42,7 +42,6 @@ function generateImage (svg, data) {
         console.log(e)
     }
 
-
 }
 
 /**
