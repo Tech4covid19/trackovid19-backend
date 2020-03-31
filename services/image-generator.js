@@ -17,7 +17,7 @@ function generateImage (svg, data) {
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
-                throw Error(`Error: field ${field} is missing`)
+                throw(`Error: field ${field} is missing`)
             }
         }
         const finalSvg = $.xml()
