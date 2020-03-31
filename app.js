@@ -110,7 +110,28 @@ fastify.register(oauthPlugin, {
   },
   startRedirectPath: '/login/facebook',
   callbackUri: `${process.env.FB_CALLBACK_URL}/login/facebook/callback`,
-  scope: 'email,public_profile'
+  scope: process.env.FB_APP_SCOPE // 'email,public_profile'
+})
+
+fastify.register(oauthPlugin, {
+  name: 'googleOAuth2',
+  credentials: {
+    client: {
+      id: process.env.GOOGLE_APP_ID,
+      secret: process.env.GOOGLE_APP_SECRET
+    },
+    auth: oauthPlugin.GOOGLE_CONFIGURATION
+  },
+  generateStateFunction: function(){
+      //return require('uuid/v4')();
+      return require('crypto').randomBytes(10).toString('hex')
+  },
+  checkStateFunction: function(state, callback){
+      callback()
+  },
+  startRedirectPath: '/login/google',
+  callbackUri: `${process.env.GOOGLE_CALLBACK_URL}/login/google/callback`,
+  scope: process.env.GOOGLE_APP_SCOPE // 'profile email openid'
 })
 
 // Support for AWS Lambda
