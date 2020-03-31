@@ -1,6 +1,7 @@
 'use strict'
 
 const g = require('./services/image-generator')
+
 const date = new Date()
 const data = {
     city_name: 'Porto',
