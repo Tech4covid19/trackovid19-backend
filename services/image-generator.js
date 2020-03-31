@@ -4,34 +4,43 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const svg2img = require('svg2img')
 
-async function generateImage (svg, data) {
-    // based on the data change the svg
-    const $ = cheerio.load(svg)
-    for (let field in data) {
-        if (data.hasOwnProperty(field)) {
-            $(filed).text(data[field])
-        } else {
-            throw Error(`Error: field ${field} is missing`)
-        }
+function generateImage (svg, data) {
+    console.log('Started generating image')
+    try {
+        // based on the data change the svg
+        const $ = cheerio.load(svg, {xml: true})
+        console.log('cheerio loaded')
 
+        for (let field in data) {
+            if (data.hasOwnProperty(field)) {
+                console.log(`Field: ${field} with data: ${data[field]}`)
+                let f = `#${field}`
+                $(f).text(data[field])
+            } else {
+                throw Error(`Error: field ${field} is missing`)
+            }
+        }
+        const finalSvg = $.xml()
+        console.log('Final SVG: ', finalSvg)
+        // generate an image based on updated svg source.
+        // TODO: extract to function and add option for multiple formats
+        svg2img(finalSvg.toString(), function (error, buffer) {
+            if (error) {
+                console.log(error)
+                throw error
+            }
+            fs.writeFileSync('./resources/dashboard.png', buffer)
+            //returns a Buffer
+        })
+
+        // call S3 to store image
+        // temporary to test image generations first
+
+        // return image URL
+        return './resources/dashboard.png'
+    } catch (e) {
+        console.log(e)
     }
-    const finalSvg = $.xml()
-    // generate an image based on updated svg source.
-    // TODO: extract to function and add option for multiple formats
-    let buffer = svg2img(finalSvg, function (error, buffer) {
-        if (error) {
-            throw error
-        }
-        //returns a Buffer
-        return buffer
-    })
-
-    // call S3 to store image
-    // temporary to test image generations first
-    fs.writeFileSync('/resources/dashboard.png', buffer)
-
-    // return image URL
-    return '/resources/dashboard.png'
 
 }
 
@@ -69,14 +78,9 @@ async function generateImage (svg, data) {
  * generateDashboard(data);
  */
 async function generateDashboard (data) {
-    const img = '/resources/Share_image_dashboard.svg'
+    const img = './resources/Share_image_dashboard.svg'
 
-    const svg = await fs.readFile(img, (err, data) => {
-        if (err) {
-            throw err
-        }
-        return data.toString()
-    })
+    const svg = fs.readFileSync(img).toString()
 
     // Add the required fields for data validation
     const fields = {
@@ -123,7 +127,9 @@ async function generateDashboard (data) {
         isolamento: data.isolamento || 'Isonamento',
     }
 
-    return await generateImage(svg, fields)
+    // console.log('Fields: ', fields);
+
+    return generateImage(svg, fields)
 }
 
 module.exports = {
