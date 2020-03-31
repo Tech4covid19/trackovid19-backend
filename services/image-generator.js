@@ -17,7 +17,7 @@ function generateImage (svg, data) {
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
-                throw(`Error: field ${field} is missing`)
+                throw Error(`Error: field ${field} is missing`)
             }
         }
         const finalSvg = $.xml()
@@ -79,11 +79,9 @@ function generateImage (svg, data) {
  * generateDashboard(data);
  */
 async function generateDashboard (data) {
-
-    const img = './resources/Share_image_dashboard.svg'
+    const img = '/resources/Share_image_dashboard.svg'
 
     const svg = fs.readFileSync(img).toString()
-
 
     // Add the required fields for data validation
     const fields = {
