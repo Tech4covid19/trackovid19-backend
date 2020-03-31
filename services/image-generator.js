@@ -79,7 +79,7 @@ function generateImage (svg, data) {
  * generateDashboard(data);
  */
 async function generateDashboard (data) {
-    const img = '/resources/Share_image_dashboard.svg'
+    const img = './resources/Share_image_dashboard.svg'
 
     const svg = fs.readFileSync(img).toString()
 
