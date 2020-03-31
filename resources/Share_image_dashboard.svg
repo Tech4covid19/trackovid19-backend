@@ -114,7 +114,7 @@
             <g id="header" transform="translate(0.000000, 91.000000)">
                 <text x="240" y="30" id="city_name" font-family="Archivo-Bold, Archivo" font-size="34"
                       font-weight="bold" fill="#000000" text-anchor="middle">
-                    Vila nova de Gaia
+                    Porto
                 </text>
                 <g id="codigo_postal" transform="translate(211.000000, 40.000000)">
                     <path
@@ -146,7 +146,7 @@
                         </text>
                         <text id="infectados_value" font-family="Archivo-Medium, Archivo" font-size="44"
                               font-weight="400" fill="#000000" x="168" y="170">
-                            23
+                            45
                         </text>
                         <g id="infectados_icon" transform="translate(141.529000, 139.676000)" fill="#6B68FC">
                             <path
