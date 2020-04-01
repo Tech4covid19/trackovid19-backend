@@ -17,15 +17,8 @@ module.exports = async (fastify, opts) => {
         where: { id: request.user.payload.id },
         include: [
           {
-            model: fastify.models().Network
-          },
-          {
             model: fastify.models().Case,
             as: 'latest_status'
-          },
-          {
-            model: fastify.models().Case,
-            as: 'cases'
           }
         ],
         ...publicAttributes
@@ -41,25 +34,10 @@ module.exports = async (fastify, opts) => {
       }
       else {
 
-        // Temporary code to avoid disruptions while the database script is not run for
-        // updating all users
-        let acase = user.latest_status;
-        if (!acase && user.cases.length > 0) {
-          acase = user.cases.reduce((acc, item) => {
-            if (acc.unix_ts < item.unix_ts) {
-              return item;
-            }
-            else {
-              return acc;
-            }
-          });
-        }
-        // End temporary code
-
         // Fill latest status info
-        if (acase) {
+        if (user.latest_status) {
           // Check for symptoms
-          const syms = await acase.getUser_symptoms();
+          const syms = await user.latest_status.getUser_symptoms();
           const has_symptoms = syms.reduce((acc, item) => {
             return acc || item.symptom_id !== 1;
           }, false);
@@ -67,7 +45,7 @@ module.exports = async (fastify, opts) => {
           // Save current state in the user object
           user.has_symptoms = has_symptoms;
           user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
-          user.confinement_state = acase.confinement_state;
+          user.confinement_state = user.latest_status.confinement_state;
         }
 
         user.name = personal.name;
