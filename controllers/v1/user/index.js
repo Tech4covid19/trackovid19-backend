@@ -228,7 +228,7 @@ module.exports = async (fastify, opts) => {
       user_id: request.user.payload.id,
       user_data_id: request.user.payload.id_data,
       request_date: new Date(),
-      authenticationProvider: tools.authenticationProviders.nameById(user.external_id_provider_id)
+      identityProvider: tools.identityProviders.nameById(user.external_id_provider_id)
     });
 
     try {

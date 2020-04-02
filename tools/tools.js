@@ -78,28 +78,29 @@ makeSalt = (message, start, step) => {
 };
 
 //
-// Make sure we avoid clashes with ids from other providers
-//
-facebookMessageToHash = (fbid) => {
-    return `facebook:${fbid}`;
-}
-
-//
 // Generates two hashes: one to be used for the personal info and another one 
 // for the healh info
 //
-generateFacebookHashes = (fbid) => {
-    
-    // Personal hash
-    const salt_personal = makeSalt(fbid, 0, 2);
-    const personal = makeHash(facebookMessageToHash(fbid), salt_personal);
-    
-    // Health hash
-    const salt_health = makeSalt(fbid, 1, 2);
-    const health = makeHash(facebookMessageToHash(fbid), salt_health);
 
-    return {personal: personal, health: health};
+generateIdentityProviderHashes = (provider, id) => {
+  // Personal hash
+  const salt_personal = makeSalt(id, 0, 2);
+  const personal = makeHash(identityProviderMessageToHash(provider, id), salt_personal);
+
+  // Health hash
+  const salt_health = makeSalt(id, 1, 2);
+  const health = makeHash(identityProviderMessageToHash(provider, id), salt_health);
+
+  return {personal: personal, health: health};
 };
+
+//
+// Make sure we avoid clashes with ids from other providers
+//
+
+identityProviderMessageToHash = (provider, id) => {
+  return `${provider}:${id}`;
+}
 
 
 //
@@ -145,19 +146,22 @@ sanitize_log = (error, message) => {
     };
 }
 
-const authenticationProviders = {
-  facebook: 1
+const identityProviders = {
+  facebook: 1,
+  google: 2
 }
-authenticationProviders.nameById = (id) => {
+identityProviders.nameById = (id) => {
   if (id === 1) {
     return 'facebook';
+  }
+  if (id === 2) {
+    return 'google';
   }
   return 'unknown';
 } ;
 
-
 // Exports
-exports.generateFacebookHashes = generateFacebookHashes;
+exports.generateIdentityProviderHashes = generateIdentityProviderHashes;
 exports.buildInfo = buildInfo;
 exports.splitPostalCode = splitPostalCode;
 exports.buildPostalCode = buildPostalCode;
@@ -167,4 +171,4 @@ exports.generate_keys_hex = generate_keys_hex;
 exports.generate_iv = generate_iv;
 exports.generate_random = generate_random;
 exports.sanitize_log = sanitize_log;
-exports.authenticationProviders = authenticationProviders;
+exports.identityProviders = identityProviders;
