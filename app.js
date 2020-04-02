@@ -59,7 +59,7 @@ fastify
   .ready((err) => {
     if (!err) {
       fastify.setupModels();
-    }else{
+    } else {
       console.log("ERROR registering sequelize ", err);
       throw err;
     }

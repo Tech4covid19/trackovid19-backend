@@ -138,8 +138,8 @@ buildPostalCode = (postalcode1, postalcode2) => {
 
 sanitize_log = (error, message) => {
     const error_id = generate_random(4);
-    const msg = `ERROR|${error_id}|${message || "-"}|${JSON.stringify(error || {})}`;
-    console.log(msg);
+    const msg = `ERROR|${error_id}|${message || "-"}|`;
+    console.log(msg, error);
     return {
         error: message || 'An unexpected error has occurred.',
         error_id: error_id
