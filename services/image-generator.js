@@ -80,10 +80,9 @@ function generateImage (svg, data) {
  */
 async function generateDashboard (data) {
 
-    const img = './resources/Share_image_dashboard.svg'
+    const img = '/resources/Share_image_dashboard.svg'
 
     const svg = fs.readFileSync(img).toString()
-
 
     // Add the required fields for data validation
     const fields = {
