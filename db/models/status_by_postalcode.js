@@ -16,7 +16,11 @@ module.exports = function(sequelize, DataTypes) {
 				model: 'user_status',
 				key: 'id'
 			}
-        },
+		},
+		postalcode_description: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
         status_text: {
 			type: DataTypes.STRING,
             allowNull: true
