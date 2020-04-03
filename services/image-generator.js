@@ -29,7 +29,7 @@ function generateImage (svg, data) {
                 console.log(error)
                 throw error
             }
-            fs.writeFileSync('./resources/dashboard.png', buffer)
+            return buffer
             //returns a Buffer
         })
 
@@ -37,7 +37,7 @@ function generateImage (svg, data) {
         // temporary to test image generations first
 
         // return image URL
-        return './resources/dashboard.png'
+        // return './resources/dashboard.png'
     } catch (e) {
         console.log(e)
     }

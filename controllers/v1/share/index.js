@@ -2,6 +2,8 @@
 
 const tools = require('../../../tools/tools')
 const crypto = require('crypto')
+const awsService = require('../../../services/aws-service')
+const imgGeneratorService = require('../../../services/image-generator')
 
 module.exports = async (fastify) => {
 
@@ -49,6 +51,21 @@ module.exports = async (fastify) => {
             }
 
             const caseHash = crypto.createHmac('sha256', cases.toString())
+            const data = {
+                city_name: cases,
+                postal_code: string,
+                last_update: string,
+                infectados_value: string,
+                recuperados_value: string,
+                suspeitos_value: string,
+                com_sintomas_value: string,
+                sem_sintomas_value: string,
+                em_casa_value: string,
+                rotina_habitual_value: string,
+                isolados_value: string,
+            }
+            let buffer = imgGeneratorService.dashboard(data)
+            let fileURL = awsService.S3.storeS3(buffer, caseHash + '.png')
 
         } catch (error) {
             request.log.error(error)
