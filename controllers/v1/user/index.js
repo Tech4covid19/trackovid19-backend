@@ -90,6 +90,24 @@ module.exports = async (fastify, opts) => {
         where: { id: request.user.payload.id },
       });
 
+      let postparts;
+      if (postalCode) {
+        // Decode postal code
+        postparts = tools.splitPostalCode(postalCode);
+
+        const postalCodeDB = await fastify.models().PostalCodes.findOne({
+          where: { postal_number: postparts[0], postal_extension: postparts[1] },
+        });
+
+        if (!postalCodeDB) {
+          // Commit the transaction
+          await t.commit();
+  
+          reply.status(400).send({error: "Invalid postal code"});
+          return
+        }
+      }
+
       // Now let's look for the user in the personal data model
       const personal = await fastify.models().UsersData.findOne({
           where: { id: request.user.payload.id_data }
@@ -102,8 +120,6 @@ module.exports = async (fastify, opts) => {
         
         // Update user
         if (postalCode) {
-          // Decode postal code
-          const postparts = tools.splitPostalCode(postalCode);
           user.postalcode1 = postparts[0];
           user.postalcode2 = postparts[1]; 
         }
