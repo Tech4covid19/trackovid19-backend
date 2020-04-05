@@ -19,6 +19,10 @@ module.exports = async (fastify, opts) => {
           {
             model: fastify.models().Case,
             as: 'latest_status'
+          },
+          {
+            model: fastify.models().PostalCodeDescriptions,
+            as: 'pc_description'
           }
         ],
         ...publicAttributes

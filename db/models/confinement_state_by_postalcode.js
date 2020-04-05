@@ -17,6 +17,10 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
+		postalcode_description: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
 		confinement_state_text: {
 			type: DataTypes.STRING,
 			allowNull: true

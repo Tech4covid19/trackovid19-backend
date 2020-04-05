@@ -14,6 +14,7 @@ provider:
     DB_PASS: ${self:custom.DB_PASS.${opt:stage, 'dev'}}
     DB_NAME: ${self:custom.DB_NAME.${opt:stage, 'dev'}}
     DB_PORT: ${self:custom.DB_PORT.${opt:stage, 'dev'}}
+    CORS_ORIGIN: ${self:custom.CORS_ORIGIN.${opt:stage, 'dev'}}
     FB_APP_ID: ${self:custom.FB_APP_ID.${opt:stage, 'dev'}}
     FB_APP_SECRET: ${self:custom.FB_APP_SECRET.${opt:stage, 'dev'}}
     FB_APP_SCOPE: ${self:custom.FB_APP_SCOPE.${opt:stage, 'dev'}}
@@ -187,6 +188,10 @@ custom:
     dev: covidografia-share-dashboard
     staging: covidografia-share-dashboard
     prd: covidografia-share-dashboard-production
+  CORS_ORIGIN:
+    dev: http://localhost
+    staging: https://staging.app.covidografia.pt
+    prd: https://app.covidografia.pt
 
 # Plugins
 plugins:

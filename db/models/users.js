@@ -50,7 +50,11 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		postalcode1: {
 			type: DataTypes.STRING,
-			allowNull: true
+			allowNull: true,
+			references: {
+				model: 'postal_code_descriptions',
+				key: 'postal_number'
+			}
 		},
 		postalcode2: {
 			type: DataTypes.STRING,
