@@ -47,6 +47,8 @@ provider:
 functions:
   app:
     handler: app.handler
+    layers:
+      - arn:aws:lambda:eu-west-1:788648735177:layer:node12_canvas_layer:2	
     events:
       - http:
           path: /

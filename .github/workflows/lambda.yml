@@ -24,7 +24,6 @@ jobs:
         node-version: '12.x'
     - name: Install serverless
       run: npm install -g serverless
-    - run: npm install -g canvas
     - name: Install serverless-stage-manager
       run: serverless plugin install --name serverless-stage-manager
     - run: npm install
