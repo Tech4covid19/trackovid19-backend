@@ -9,31 +9,31 @@ AWS.config.update({
 });
 
 async function storeS3 (file, fileName) {
-    console.log('started s3 method')
-    try {
-        AWS.config.update({region: process.env.AWS_REGION_S3})
-        const s3 = new AWS.S3({apiVersion: '2006-03-01'})
+    return new Promise(async function (resolve, reject) {
+        console.log('started s3 method')
+        try {
+            AWS.config.update({
+                region: process.env.AWS_REGION_S3,
+                accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+                secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+            })
+            const s3 = new AWS.S3({apiVersion: '2006-03-01'})
 
-        const uploadParams = {
-            Bucket: process.env.AWS_S3_BUCKET,
-            Key: fileName,
-            Body: file,
+            const uploadParams = {
+                Bucket: process.env.AWS_S3_BUCKET,
+                Key: fileName,
+                Body: file,
+            }
+
+            // call S3 to retrieve upload file to specified bucket
+            let data = await s3.upload(uploadParams).promise()
+            console.log('will resolve promise', data)
+            resolve(data.Key)
+        } catch (e) {
+            console.log('Error on storeS3:', e)
+            reject(e)
         }
-
-        // call S3 to retrieve upload file to specified bucket
-        s3.upload(uploadParams, function (err, data) {
-            if (err) {
-                console.log('Error on s3 upload: ', err)
-                return err
-            }
-            if (data) {
-                console.log('Upload Success', data.Location)
-                return data.Location
-            }
-        })
-    } catch (e) {
-        return e
-    }
+    })
 
 }
 

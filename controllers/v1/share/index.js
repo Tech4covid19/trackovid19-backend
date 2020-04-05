@@ -34,14 +34,11 @@ module.exports = async (fastify) => {
             const cases = [...cases1, ...cases2]
 
             console.log('cases: ', JSON.stringify(cases))
-            // const caseHash = crypto.createHmac('sha256', cases.toString());
-            console.log('creating hash...')
             let caseHash = crypto.createHash('sha1')
             caseHash.update(JSON.stringify(cases))
 
             const myHash = caseHash.digest('hex')
 
-            console.log('hash for image: ', myHash)
 
             let data = {}
             // postalcode
@@ -79,22 +76,26 @@ module.exports = async (fastify) => {
                     return new Date(e.latest_status_ts)
                 })))
 
-            console.log('data to generate image: \n', data)
-
-            console.log('going to generate the image')
             let buffer = await imgGeneratorService.dashboard(data)
 
-            console.log('recieved buffer: ', buffer)
-            console.log('storing it in S3')
-            let fileURL = await awsService.S3.storeS3(buffer, myHash + '.png')
+            let fileKey = await awsService.S3.storeS3(buffer, myHash + '.png')
+            const fileUrl = process.env.AWS_S3_DOMAIN + '/' + fileKey
 
-            console.log('returned url: ', fileURL)
-            return fileURL
+            fastify.models().
+                ShareImagesByPostalcode.
+                create({
+                    postalcode: data.postal_code,
+                    image_hash: myHash,
+                    image_url: fileUrl,
+                })
 
-            reply.send({status: 'success'})
+            reply.send({status: 'success', url: fileUrl})
 
         } catch (error) {
+            console.log('Error: ', error)
             request.log.error(error)
+            reply.status(500).
+                send(sanitize_log(error, 'Could not update user state'))
         }
     })
 }
