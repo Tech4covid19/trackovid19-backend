@@ -11,6 +11,12 @@ jobs:
     - uses: actions/checkout@master
     - name: yarn
       uses: Borales/actions-yarn@v2.1.0
+      with:
+        args: install
+    - name: yarn
+      uses: Borales/actions-yarn@v2.1.0
+      with:
+        args: build
     - name: serverless deploy
       uses: serverless/github-action@v1.53.0
       with:
