@@ -10,11 +10,9 @@ function generateImage (svg, data) {
     try {
         // based on the data change the svg
         const $ = cheerio.load(svg, {xml: true})
-        console.log('cheerio loaded')
 
         for (let field in data) {
             if (data.hasOwnProperty(field)) {
-                console.log(`Field: ${field} with data: ${data[field]}`)
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
@@ -22,17 +20,17 @@ function generateImage (svg, data) {
             }
         }
         const finalSvg = $.xml()
-        console.log('Final SVG: ', finalSvg)
         // generate an image based on updated svg source.
         // TODO: extract to function and add option for multiple formats
-        svg2img(finalSvg.toString(), function (error, buffer) {
+        await svg2img(finalSvg.toString(), function (error, buffer) {
+            console.log('generating PNG')
             if (error) {
                 console.log(error)
                 reject(error);
             }
-            fs.writeFileSync('./resources/dashboard.png', buffer)
+            console.log('internal buffer: ', buffer)
             //returns a Buffer
-            resolve('./resources/dashboard.png');
+            resolve(buffer);
         })
 
         // call S3 to store image
@@ -82,60 +80,64 @@ function generateImage (svg, data) {
  * generateDashboard(data);
  */
 async function generateDashboard (data) {
+    console.log('Got to generate dasboard image')
+    const img = __basedir + '/resources/Share_image_dashboard.svg'
+    try {
+        const svg = fs.readFileSync(img).toString()
 
-    const img = '/resources/Share_image_dashboard.svg'
+        // Add the required fields for data validation
+        const fields = {
+            // city_name
+            city_name: data.city_name,
+            // postal_code
+            postal_code: data.postal_code,
+            // last_update
+            last_update: data.last_update,
+            // saude
+            saude: data.saude || 'Saúde',
+            // infectados_title
+            infectados_title: data.infectados_title || 'Infectados',
+            // infectados_value
+            infectados_value: data.infectados_value,
+            // recuperados_title
+            recuperados_title: data.recuperados_title || 'Recuperados',
+            // recuperados_value
+            recuperados_value: data.recuperados_value,
+            // suspeitos_title
+            suspeitos_title: data.suspeitos_title || 'Suspeitos',
+            // suspeitos_value
+            suspeitos_value: data.suspeitos_value,
+            // com_sintomas_title
+            com_sintomas_title: data.com_sintomas_title || 'Com Sintomas',
+            // com_sintomas_value
+            com_sintomas_value: data.com_sintomas_value,
+            // sem_sintomas_title
+            sem_sintomas_title: data.sem_sintomas_title || 'Sem Sintomas',
+            // sem_sintomas_value
+            sem_sintomas_value: data.sem_sintomas_value,
+            // DO NOT USE THE TITLE IT IS DOUBLE LINE STILL TRYING TO ADJUST ON THE SVG
+            // em_casa_title
+            // em_casa_title: data.em_casa_title || '',
+            // em_casa_value
+            em_casa_value: data.em_casa_value,
+            // rotina_habitual_title
+            rotina_habitual_title: data.rotina_habitual_title ||
+                'Rotina Habitual',
+            // rotina_habitual_value
+            rotina_habitual_value: data.rotina_habitual_value,
+            // isolados_title
+            isolados_title: data.isolados_title || 'Isolados',
+            // isolados_value
+            isolados_value: data.isolados_value,
+            // isolamento
+            isolamento: data.isolamento || 'Isolamento',
+        }
+        // console.log('Fields: ', fields);
 
-    const svg = fs.readFileSync(img).toString()
-
-    // Add the required fields for data validation
-    const fields = {
-        // city_name
-        city_name: data.city_name,
-        // postal_code
-        postal_code: data.postal_code,
-        // last_update
-        last_update: data.last_update,
-        // saude
-        saude: data.saude || 'Saúde',
-        // infectados_title
-        infectados_title: data.infectados_title || 'Infectados',
-        // infectados_value
-        infectados_value: data.infectados_value,
-        // recuperados_title
-        recuperados_title: data.recuperados_title || 'Recuperados',
-        // recuperados_value
-        recuperados_value: data.recuperados_value,
-        // suspeitos_title
-        suspeitos_title: data.suspeitos_title || 'Suspeitos',
-        // suspeitos_value
-        suspeitos_value: data.suspeitos_value,
-        // com_sintomas_title
-        com_sintomas_title: data.com_sintomas_title || 'Com Sintomas',
-        // com_sintomas_value
-        com_sintomas_value: data.com_sintomas_value,
-        // sem_sintomas_title
-        sem_sintomas_title: data.sem_sintomas_title || 'Sem Sintomas',
-        // sem_sintomas_value
-        sem_sintomas_value: data.sem_sintomas_value,
-        // DO NOT USE THE TITLE IT IS DOUBLE LINE STILL TRYING TO ADJUST ON THE SVG
-        // em_casa_title
-        // em_casa_title: data.em_casa_title || '',
-        // em_casa_value
-        em_casa_value: data.em_casa_value,
-        // rotina_habitual_title
-        rotina_habitual_title: data.rotina_habitual_title || 'Rotina Habitual',
-        // rotina_habitual_value
-        rotina_habitual_value: data.rotina_habitual_value,
-        // isolados_title
-        isolados_title: data.isolados_title || 'Isolados',
-        // isolados_value
-        isolados_value: data.isolados_value,
-        // isolamento
-        isolamento: data.isolamento || 'Isolamento',
+        return await generateImage(svg, fields)
+    } catch (err) {
+        return err
     }
-    // console.log('Fields: ', fields);
-
-    return await generateImage(svg, fields);
 }
 
 module.exports = {
