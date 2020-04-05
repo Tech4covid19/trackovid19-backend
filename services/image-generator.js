@@ -4,7 +4,8 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const svg2img = require('svg2img')
 
-async function generateImage (svg, data) {
+function generateImage (svg, data) {
+  return new Promise(function(resolve, reject) {
     console.log('Started generating image')
     try {
         // based on the data change the svg
@@ -15,7 +16,7 @@ async function generateImage (svg, data) {
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
-                throw(`Error: field ${field} is missing`)
+                reject(new Error(`Error: field ${field} is missing`));
             }
         }
         const finalSvg = $.xml()
@@ -25,17 +26,23 @@ async function generateImage (svg, data) {
             console.log('generating PNG')
             if (error) {
                 console.log(error)
-                return error
+                reject(error);
             }
             console.log('internal buffer: ', buffer)
-            return buffer
             //returns a Buffer
+            resolve(buffer);
         })
-    } catch (e) {
-        console.log(e)
-        return e
-    }
 
+        // call S3 to store image
+        // temporary to test image generations first
+
+        // return image URL
+        //return './resources/dashboard.png'
+    } catch (e) {
+        console.log(e);
+        reject(e);
+    }
+  });
 }
 
 /**
@@ -123,7 +130,7 @@ async function generateDashboard (data) {
             // isolados_value
             isolados_value: data.isolados_value,
             // isolamento
-            isolamento: data.isolamento || 'Isonamento',
+            isolamento: data.isolamento || 'Isolamento',
         }
         // console.log('Fields: ', fields);
 
@@ -131,7 +138,6 @@ async function generateDashboard (data) {
     } catch (err) {
         return err
     }
-
 }
 
 module.exports = {
