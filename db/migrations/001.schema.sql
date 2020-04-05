@@ -614,6 +614,9 @@ COPY public.symptoms (id, symptom) FROM stdin;
 12	Naúseas / vómitos
 13	Diarreia
 14	Dor abdominal
+15	Perda de olfato e/ou paladar
+16	Voz rouca
+17	Perda de apetite
 \.
 
 
@@ -632,6 +635,7 @@ COPY public.user_status (id, status, status_summary, summary_order, show_in_summ
 
 COPY public.external_id_providers (id, provider, description) FROM stdin;
 1	Facebook	Facebook
+2	Google	Google
 \.
 
 --
