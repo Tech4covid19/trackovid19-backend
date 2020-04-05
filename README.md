@@ -80,7 +80,7 @@ This is to handle external dependencies for 3rd party modules, otherwise we will
 
 ## Documentation
 
-1. Login using your facebook account on: http://localhost:3000/login/facebook;
+1. Login using your Facebook account on http://localhost:3000/login/facebook or Google account on http://localhost:3000/login/google;
 2. You will receive a JWT token, use it as a Bearer Token in all the authenticated requests;
 3. Please load the `insomnia.json` file into your Insomnia Rest Client and call the routes or consult https://trackcovid19.docs.apiary.io;
 
