@@ -3,33 +3,35 @@
 // Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @zepcp @lcfb91 @jcazevedo @cchostak for the work and efforts to bootstrap this service!
 // Feel free to change / improve / delete everything you want!
 
-const fastify = require('fastify')({ logger: false });
-const path = require('path');
-const AutoLoad = require('fastify-autoload');
-const fsequelize = require('fastify-sequelize');
-const oauthPlugin = require('fastify-oauth2');
-const oas = require('fastify-oas');
-const swagger = require('./config/swagger');
+const fastify = require('fastify')({logger: false})
+const path = require('path')
+const AutoLoad = require('fastify-autoload')
+const fsequelize = require('fastify-sequelize')
+const oauthPlugin = require('fastify-oauth2')
+const oas = require('fastify-oas')
+const swagger = require('./config/swagger')
+// store application root
+global.__basedir = __dirname
 
-fastify.register(oas, swagger.options);
+fastify.register(oas, swagger.options)
 
-const dotEnv = require('dotenv').config();
+const dotEnv = require('dotenv').config()
 
 const sequelizeConfig = {
-  instance: 'sequelize',
-  autoConnect: true,
-  dialect: 'postgres',
-  timezone: 'utc',
-  dialectOptions: {
-    dateStrings: true,
-    typeCast: true
-  },
-  pool: {
-    max: 100,
-    min: 1,
-    acquire: 30000,
-    idle: 10000
-  },
+    instance: 'sequelize',
+    autoConnect: true,
+    dialect: 'postgres',
+    timezone: 'utc',
+    dialectOptions: {
+        dateStrings: true,
+        typeCast: true,
+    },
+    pool: {
+        max: 100,
+        min: 1,
+        acquire: 30000,
+        idle: 10000,
+    },
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,
