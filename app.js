@@ -68,7 +68,7 @@ fastify
   })
 
 const corsOptions = {
-  origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
+  origin: process.env.CORS_ORIGIN.split(','),
   methods: 'OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE',
   optionsSuccessStatus: 200 // to support some legacy browsers
 }

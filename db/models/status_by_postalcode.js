@@ -23,6 +23,7 @@ module.exports = function(sequelize, DataTypes) {
                 key: 'id',
             },
         },
+
         status_text: {
             type: DataTypes.STRING,
             allowNull: true,
