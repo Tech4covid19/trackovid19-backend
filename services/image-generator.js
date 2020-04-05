@@ -21,7 +21,7 @@ async function generateImage (svg, data) {
         const finalSvg = $.xml()
         // generate an image based on updated svg source.
         // TODO: extract to function and add option for multiple formats
-        await svg2img(finalSvg.toString(), function (error, buffer) {
+        svg2img(finalSvg.toString(), function (error, buffer) {
             console.log('generating PNG')
             if (error) {
                 console.log(error)
