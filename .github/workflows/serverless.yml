@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: npm install
-      uses: actions/npm@master
+    - name: yarn
+      uses: actions/yarn@master
       with:
         args: install
     - name: serverless deploy
