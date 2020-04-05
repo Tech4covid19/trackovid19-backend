@@ -64,69 +64,74 @@ function connectToDB(options) {
 }
 
 async function runJob() {
-  const sequelize = await connectToDB(sequelizeConfig);
+  try {
+    const sequelize = await connectToDB(sequelizeConfig);
 
-  const notificationCode = 'users-no-update-24h';
-  const notDB = await sequelize.query('select * from public.notifications where code = :p_code', 
-          {replacements: { p_code: notificationCode }, type: sequelize.QueryTypes.SELECT});
+    const notificationCode = 'users-no-update-24h';
+    const notDB = await sequelize.query('select * from public.notifications where code = :p_code', 
+            {replacements: { p_code: notificationCode }, type: sequelize.QueryTypes.SELECT});
 
-  if (!notDB || !notDB.length) {
-    console.log(`Notification '${notificationCode}' data not available in database.`);
-  } else {
+    if (!notDB || !notDB.length) {
+      console.log(`Notification '${notificationCode}' data not available in database.`);
+    } else {
 
-    let notification = {
-      title: notDB[0].title,
-      body: notDB[0].body
-    };
+      let notification = {
+        title: notDB[0].title,
+        body: notDB[0].body
+      };
 
-    if (notDB[0].options) {
-      notification = Object.assign(notification, JSON.parse(notDB[0].options));
-    }
+      if (notDB[0].options) {
+        notification = Object.assign(notification, JSON.parse(notDB[0].options));
+      }
 
-    const pushSubscriptions = await sequelize.query(subscriptionsToSend, { type: sequelize.QueryTypes.SELECT});
+      const pushSubscriptions = await sequelize.query(subscriptionsToSend, { type: sequelize.QueryTypes.SELECT});
 
-    let sends = [];
-    let expired = [];
+      let sends = [];
+      let expired = [];
 
-    if (pushSubscriptions) {
-      for (const pushSub of pushSubscriptions) {
-        const subscription = {
-          endpoint: pushSub.endpoint,
-          keys: JSON.parse(pushSub.keys)
-        };
-        try {
-          await webPush.sendNotification(subscription, notification);
+      if (pushSubscriptions) {
+        for (const pushSub of pushSubscriptions) {
+          const subscription = {
+            endpoint: pushSub.endpoint,
+            keys: JSON.parse(pushSub.keys)
+          };
+          try {
+            await webPush.sendNotification(subscription, notification);
 
-          console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
-          sends.push(subscription.endpoint);
-        }
-        catch (error) {
-          console.log('ERROR in sending Notification to ' + subscription.endpoint);
-          console.log(error);
-          
-          if (error.statusCode === 410) {
-            // push subscription has unsubscribed or expired
-            expired.push(subscription.endpoint);
-            // delete subscription from DB
-            await sequelize.query(`delete from push_subscriptions where id = ${pushSub.push_subscriptions_id}`);
-            console.log(`Subscription ${pushSub.push_subscriptions_id} deleted from DB because has unsubscribed or expired`);
+            console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
+            sends.push(subscription.endpoint);
+          }
+          catch (error) {
+            console.log('ERROR in sending Notification to ' + subscription.endpoint);
+            console.log(error);
+            
+            if (error.statusCode === 410) {
+              // push subscription has unsubscribed or expired
+              expired.push(subscription.endpoint);
+              // delete subscription from DB
+              await sequelize.query(`delete from push_subscriptions where id = ${pushSub.push_subscriptions_id}`);
+              console.log(`Subscription ${pushSub.push_subscriptions_id} deleted from DB because has unsubscribed or expired`);
+            }
           }
         }
       }
+
+      console.log('Result', {
+        available: pushSubscriptions.length,
+        sent: sends.length,
+        expired: expired.length
+      });
+
     }
 
-    console.log('Result', {
-      available: pushSubscriptions.length,
-      sent: sends.length,
-      expired: expired.length
-    });
+    console.info('Closing connection to database.');
+    await sequelize.close();
+    console.info('Connection closed.');
+    console.log('Job notify-users-no-update-24h completed');
 
+  } catch(err) {
+    console.log('Error running job notify-users-no-update-24h', err);
   }
-
-  console.info('Closing connection to database.');
-  await sequelize.close();
-  console.info('Connection closed.');
-  console.log('Job notify-users-no-update-24h completed');
 }
 
 // Support for AWS Lambda
@@ -135,9 +140,5 @@ if (process.env.LAMBDA_TASK_ROOT && process.env.AWS_EXECUTION_ENV) {
   module.exports.handler = serverless(runJob);
 } else {
   console.log(`Running job notify-users-no-update-24h`);
-  try {
-    runJob();
-  } catch(err) {
-    console.log('Error running job notify-users-no-update-24h', err);
-  }
+  runJob();
 }
