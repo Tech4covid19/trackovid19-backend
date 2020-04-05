@@ -14,22 +14,22 @@ const sequelizeConfig = {
   autoConnect: true,
   dialect: 'postgres',
   timezone: 'utc',
-dialectOptions: {
-  dateStrings: true,
-  typeCast: true
-},
-pool: {
-  max: 100,
-  min: 1,
-  acquire: 30000,
-  idle: 10000
-},
-host: process.env.DB_HOST,
-port: process.env.DB_PORT,
-database: process.env.DB_NAME,
-username: process.env.DB_USER,
-password: process.env.DB_PASS,
-logging: false
+  dialectOptions: {
+    dateStrings: true,
+    typeCast: true
+  },
+  pool: {
+    max: 100,
+    min: 1,
+    acquire: 30000,
+    idle: 10000
+  },
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  logging: false
 }
 
 const subscriptionsToSend = `select 
@@ -136,8 +136,7 @@ async function runJob() {
 
 // Support for AWS Lambda
 if (process.env.LAMBDA_TASK_ROOT && process.env.AWS_EXECUTION_ENV) {
-  const serverless = require('serverless-http');
-  module.exports.handler = serverless(runJob);
+  module.exports.handler = runJob;
 } else {
   console.log(`Running job notify-users-no-update-24h`);
   runJob();
