@@ -188,6 +188,10 @@ custom:
     dev: covidografia-share-dashboard
     staging: covidografia-share-dashboard
     prd: covidografia-share-dashboard-production
+  CORS_ORIGIN:
+    dev: http://localhost
+    staging: https://staging.app.covidografia.pt
+    prd: https://app.covidografia.pt
 
 # Plugins
 plugins:
