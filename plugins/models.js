@@ -7,18 +7,43 @@ module.exports = fp(async (fastify, opts) => {
         const Users = fastify.sequelize.import('../db/models/users.js');
         const UsersData = fastify.sequelize.import('../db/models/users_data.js');
         const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
-        const UserSymptom = fastify.sequelize.import('../db/models/user_symptoms.js');
-        const ConfinementState = fastify.sequelize.import('../db/models/confinement_states.js');
-        const Condition = fastify.sequelize.import('../db/models/user_status.js');
-        const StatusByPostalCode = fastify.sequelize.import('../db/models/status_by_postalcode.js');
-        const ConfinementStateByPostalCode = fastify.sequelize.import('../db/models/confinement_state_by_postalcode.js');
-        const VideoShares = fastify.sequelize.import('../db/models/video_shares.js');
-        const Videos = fastify.sequelize.import('../db/models/videos.js');
-        const PushSubscriptions = fastify.sequelize.import('../db/models/push_subscriptions.js');
-        const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js');
 
-        return { Case, Network, Users, UsersData, Symptom, ConfinementState, Condition, StatusByPostalCode, ConfinementStateByPostalCode, UserSymptom, Videos, VideoShares, PushSubscriptions, PostalCodeDescriptions };
-        
+        const UserSymptom = fastify.sequelize.import(
+            '../db/models/user_symptoms.js')
+        const ConfinementState = fastify.sequelize.import(
+            '../db/models/confinement_states.js')
+        const Condition = fastify.sequelize.import(
+            '../db/models/user_status.js')
+        const StatusByPostalCode = fastify.sequelize.import(
+            '../db/models/status_by_postalcode.js')
+        const ConfinementStateByPostalCode = fastify.sequelize.import(
+            '../db/models/confinement_state_by_postalcode.js')
+        const VideoShares = fastify.sequelize.import(
+            '../db/models/video_shares.js')
+        const Videos = fastify.sequelize.import('../db/models/videos.js')
+        const PushSubscriptions = fastify.sequelize.import(
+            '../db/models/push_subscriptions.js')
+        const ShareImagesByPostalcode = fastify.sequelize.import(
+            '../db/models/share_images_by_postalcode.js')
+
+        return {
+            Case,
+            Network,
+            Users,
+            UsersData,
+            Symptom,
+            ConfinementState,
+            Condition,
+            StatusByPostalCode,
+            ConfinementStateByPostalCode,
+            UserSymptom,
+            Videos,
+            VideoShares,
+            PushSubscriptions,
+            ShareImagesByPostalcode,
+        }
+
+
     })
 
     fastify.decorate('setupModels', () => {
@@ -41,7 +66,7 @@ module.exports = fp(async (fastify, opts) => {
         Users.belongsTo(Case, { foreignKey: 'latest_status_id', as: 'latest_status' })
         
         Users.belongsTo(PostalCodeDescriptions, { foreignKey: 'postalcode1', as: 'pc_description' })
-        
+
         Users.hasMany(Network, { foreignKey: 'user_id' });
         Network.belongsTo(Users, { foreignKey: 'user_id' });
 
