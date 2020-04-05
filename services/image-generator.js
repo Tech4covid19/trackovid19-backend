@@ -5,6 +5,7 @@ const fs = require('fs')
 const svg2img = require('svg2img')
 
 function generateImage (svg, data) {
+  return new Promise(function(resolve, reject) {
     console.log('Started generating image')
     try {
         // based on the data change the svg
@@ -17,7 +18,7 @@ function generateImage (svg, data) {
                 let f = `#${field}`
                 $(f).text(data[field])
             } else {
-                throw(`Error: field ${field} is missing`)
+                reject(new Error(`Error: field ${field} is missing`));
             }
         }
         const finalSvg = $.xml()
@@ -27,21 +28,23 @@ function generateImage (svg, data) {
         svg2img(finalSvg.toString(), function (error, buffer) {
             if (error) {
                 console.log(error)
-                throw error
+                reject(error);
             }
             fs.writeFileSync('./resources/dashboard.png', buffer)
             //returns a Buffer
+            resolve('./resources/dashboard.png');
         })
 
         // call S3 to store image
         // temporary to test image generations first
 
         // return image URL
-        return './resources/dashboard.png'
+        //return './resources/dashboard.png'
     } catch (e) {
-        console.log(e)
+        console.log(e);
+        reject(e);
     }
-
+  });
 }
 
 /**
@@ -128,11 +131,11 @@ async function generateDashboard (data) {
         // isolados_value
         isolados_value: data.isolados_value,
         // isolamento
-        isolamento: data.isolamento || 'Isonamento',
+        isolamento: data.isolamento || 'Isolamento',
     }
     // console.log('Fields: ', fields);
 
-    return generateImage(svg, fields)
+    return await generateImage(svg, fields);
 }
 
 module.exports = {
