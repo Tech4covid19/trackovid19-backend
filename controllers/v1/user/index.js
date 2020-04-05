@@ -12,6 +12,7 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
+
       const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_health_geo', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
@@ -27,6 +28,8 @@ module.exports = async (fastify, opts) => {
         ],
         ...publicAttributes
       });
+
+      
 
       // Now let's look for the user in the personal data model
       const personal = await fastify.models().UsersData.findOne({
@@ -171,7 +174,7 @@ module.exports = async (fastify, opts) => {
     // delete user data from database
 
     let user;
-
+    let email;
     let trans; // transaction
     try {
       user = await fastify.models().Users.findOne({
@@ -188,6 +191,7 @@ module.exports = async (fastify, opts) => {
       }
       else {
         trans = await fastify.sequelize.transaction();
+        email = personal.email;
 
         await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
           {replacements: { p_user_id: parseInt(request.user.payload.id), p_user_data_id: request.user.payload.id_data }});
@@ -214,7 +218,7 @@ module.exports = async (fastify, opts) => {
     });
 
     try {
-      const data = await aws.SNS.publish(message);
+      const data = await aws.SNS.publish(message, process.env.AWS_SNS_TOPICARN);
       request.log.info({
         action: 'user-data-removal-audit-to-aws-sns',
         data: {
@@ -223,9 +227,15 @@ module.exports = async (fastify, opts) => {
       });
     }
     catch(err) {
-      console.log(error);
-      request.log.error(error);
+      console.log(err);
+      request.log.error(err);
     }
+
+    // Send confirmation email
+    if (email) {
+      aws.SES.sendDeletionConfirmationEmail(email);
+    }
+
     reply.send({ status: 'ok' });
   
   })
