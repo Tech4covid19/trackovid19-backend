@@ -13,7 +13,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         image_url: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true,
         },
     }, {
