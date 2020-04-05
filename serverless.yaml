@@ -6,7 +6,43 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: eu-west-1
-  stage: ${opt:stage, 'dev'} 
+  stage: ${opt:stage, 'dev'}
+  environment:
+    AWS_EXECUTION_ENV: ${opt:stage, 'dev'}
+    DB_HOST: ${self:custom.DB_HOST.${opt:stage, 'dev'}}
+    DB_USER: ${self:custom.DB_USER.${opt:stage, 'dev'}}
+    DB_PASS: ${self:custom.DB_PASS.${opt:stage, 'dev'}}
+    DB_NAME: ${self:custom.DB_NAME.${opt:stage, 'dev'}}
+    DB_PORT: ${self:custom.DB_PORT.${opt:stage, 'dev'}}
+    CORS_ORIGIN: ${self:custom.CORS_ORIGIN.${opt:stage, 'dev'}}
+    FB_APP_ID: ${self:custom.FB_APP_ID.${opt:stage, 'dev'}}
+    FB_APP_SECRET: ${self:custom.FB_APP_SECRET.${opt:stage, 'dev'}}
+    FB_APP_SCOPE: ${self:custom.FB_APP_SCOPE.${opt:stage, 'dev'}}
+    FB_CALLBACK_URL: ${self:custom.FB_CALLBACK_URL.${opt:stage, 'dev'}}
+    FB_USER_INFO_URL: ${self:custom.FB_USER_INFO_URL.${opt:stage, 'dev'}}
+    GOOGLE_APP_ID: ${self:custom.GOOGLE_APP_ID.${opt:stage, 'dev'}}
+    GOOGLE_APP_SECRET: ${self:custom.GOOGLE_APP_SECRET.${opt:stage, 'dev'}}
+    GOOGLE_APP_SCOPE: ${self:custom.GOOGLE_APP_SCOPE.${opt:stage, 'dev'}}
+    GOOGLE_CALLBACK_URL: ${self:custom.GOOGLE_CALLBACK_URL.${opt:stage, 'dev'}}
+    GOOGLE_USER_INFO_URL: ${self:custom.GOOGLE_USER_INFO_URL.${opt:stage, 'dev'}}
+    AFTER_LOGIN_CALLBACK_URL: ${self:custom.AFTER_LOGIN_CALLBACK_URL.${opt:stage, 'dev'}}
+    JWT_SECRET: ${self:custom.JWT_SECRET.${opt:stage, 'dev'}}
+    HOME_URL: ${self:custom.HOME_URL.${opt:stage, 'dev'}}
+    GCM_API_KEY: ${self:custom.GCM_API_KEY.${opt:stage, 'dev'}}
+    VAPID_PRIVATE_KEY: ${self:custom.VAPID_PRIVATE_KEY.${opt:stage, 'dev'}}
+    VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}} 
+    VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}} 
+    AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}} 
+    PRODUCTION: ${self:custom.PRODUCTION.${opt:stage, 'dev'}}
+    AWS_REGION_SNS: ${self:custom.AWS_REGION_SNS.${opt:stage, 'dev'}}  
+    AWS_SNS_ACCESS_KEY_ID: ${self:custom.AWS_SNS_ACCESS_KEY_ID.${opt:stage, 'dev'}}  
+    AWS_SNS_SECRET_ACCESS_KEY: ${self:custom.AWS_SNS_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}  
+    AWS_SNS_TOPICARN: ${self:custom.AWS_SNS_TOPICARN.${opt:stage, 'dev'}}  
+    AWS_REGION_S3: ${self:custom.AWS_REGION_S3.${opt:stage, 'dev'}}  
+    AWS_S3_ACCESS_KEY_ID: ${self:custom.AWS_S3_ACCESS_KEY_ID.${opt:stage, 'dev'}}  
+    AWS_S3_SECRET_ACCESS_KEY: ${self:custom.AWS_S3_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}  
+    AWS_S3_BUCKET: ${self:custom.AWS_S3_BUCKET.${opt:stage, 'dev'}}  
+    AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}  
 
 functions:
   app:
