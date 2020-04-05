@@ -10,11 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: yarn
-      uses: actions/yarn@master
-      with:
-        args: install
+      uses: Borales/actions-yarn@v2.1.0
     - name: serverless deploy
-      uses: serverless/github-action@master
+      uses: serverless/github-action@v1.53.0
       with:
         args: deploy --stage 'staging' --db_pass '${{ secrets.STAGING_DB_PASS }}' --fb_secret '${{ secrets.STAGING_FB_SECRET }}' --jwt_secret '${{ secrets.STAGING_JWT_SECRET }}'  --gcm_api_key '${{ secrets.STAGING_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.STAGING_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.STAGING_AES_KEY }}'  --aws_sns_secret '${{ secrets.STAGING_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.STAGING_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.STAGING_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.STAGING_AWS_S3_SECRET }}' 
       env:
