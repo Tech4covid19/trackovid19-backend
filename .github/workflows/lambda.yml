@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-    - run: yarn
+    - run: yarn instal
     - name: Install serverless
       run: npm install -g serverless
     - name: Install serverless-stage-manager
