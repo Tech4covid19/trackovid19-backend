@@ -63,7 +63,7 @@ function connectToDB(options) {
   })
 }
 
-async function runJob() {
+async function runJob(event, context, callback) {
   try {
     const sequelize = await connectToDB(sequelizeConfig);
 
