@@ -7,7 +7,6 @@ module.exports = fp(async (fastify, opts) => {
         const Users = fastify.sequelize.import('../db/models/users.js');
         const UsersData = fastify.sequelize.import('../db/models/users_data.js');
         const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
-
         const UserSymptom = fastify.sequelize.import(
             '../db/models/user_symptoms.js')
         const ConfinementState = fastify.sequelize.import(
@@ -28,6 +27,8 @@ module.exports = fp(async (fastify, opts) => {
             '../db/models/share_images_by_postalcode.js')
         const PostalCodeDescriptions = fastify.sequelize.import(
             '../db/models/postal_code_descriptions.js')
+        const PostalCodes = fastify.sequelize.import('../db/models/postal_codes.js');
+
 
         return {
             Case,
@@ -45,9 +46,9 @@ module.exports = fp(async (fastify, opts) => {
             PushSubscriptions,
             PostalCodeDescriptions,
             ShareImagesByPostalcode,
-            PostalCodeDescriptions
+            PostalCodeDescriptions,
+            PostalCodes
         }
-
 
     })
 
@@ -62,6 +63,7 @@ module.exports = fp(async (fastify, opts) => {
         const PushSubscriptions = fastify.sequelize.import('../db/models/push_subscriptions.js');
         const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js');
         const ShareImagesByPostalcode = fastify.sequelize.import('../db/models/share_images_by_postalcode.js')
+        const PostalCodes = fastify.sequelize.import('../db/models/postal_codes.js');
 
         console.log('Initializing models');
 
