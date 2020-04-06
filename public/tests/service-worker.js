@@ -7,7 +7,7 @@ self.addEventListener('push', function(event) {
 
   if (event.data) {
     try {
-      notification = event.data.json();
+      notification = event.data.json().notification;
     }
     catch(e) {
       console.log('Error on parse json from push message', e);
