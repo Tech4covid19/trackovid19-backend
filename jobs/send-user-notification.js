@@ -1,6 +1,6 @@
 
-
-
-export function Send(event, context, callback) {
+function Send(event, context, callback) {
     console.log('testing send')
 }
+
+module.exports = Send
