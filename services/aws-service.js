@@ -78,7 +78,7 @@ function send(to, subject, message) {
 
 function sendDeletionConfirmationEmail(to) {
     const subject = 'Confirmação de eliminação de dados';
-    const message = 'Obrigado por ter usado a Covidografia.<br/>Como requerido por si, procedemos à eliminação de todos os seus dados. O seu email será eliminado imediatamente após o envio desta mensagem.<br/><br/>Se tiver alguma sugestão de melhoria da Covidografia, agradecemos se nos puder enviar por email para <a href="info@covidografia.pt">info@covidografia.pt</a>.<br/><br/>Obrigado,<br/>A equipa da Covidografia';
+    const message = 'Obrigado por ter usado a Covidografia.<br/><br/>Como requerido por si, procedemos à eliminação de todos os seus dados. O seu email será eliminado imediatamente após o envio desta mensagem.<br/><br/>Se tiver alguma sugestão de melhoria da Covidografia, agradecemos se nos puder enviar por email para <a href="info@covidografia.pt">info@covidografia.pt</a>.<br/><br/>Obrigado,<br/>A equipa da Covidografia';
     let promise = send(to, subject, message);
 
     console.log('Sending email...');
