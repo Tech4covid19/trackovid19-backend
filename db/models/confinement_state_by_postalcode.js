@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: 'timezone(utc)',
         },
     }, {
-		tableName: 'confinement_states_by_postalcode',
-		timestamps: false
-	});
+        tableName: 'confinement_states_by_postalcode',
+        timestamps: false,
+    });
 };

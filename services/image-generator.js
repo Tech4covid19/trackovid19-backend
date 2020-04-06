@@ -5,44 +5,44 @@ const fs = require('fs')
 const svg2img = require('svg2img')
 
 function generateImage (svg, data) {
-  return new Promise(function(resolve, reject) {
-    console.log('Started generating image')
-    try {
-        // based on the data change the svg
-        const $ = cheerio.load(svg, {xml: true})
+    return new Promise(function (resolve, reject) {
+        console.log('Started generating image')
+        try {
+            // based on the data change the svg
+            const $ = cheerio.load(svg, {xml: true})
 
-        for (let field in data) {
-            if (data.hasOwnProperty(field)) {
-                let f = `#${field}`
-                $(f).text(data[field])
-            } else {
-                reject(new Error(`Error: field ${field} is missing`));
+            for (let field in data) {
+                if (data.hasOwnProperty(field)) {
+                    let f = `#${field}`
+                    $(f).text(data[field])
+                } else {
+                    reject(new Error(`Error: field ${field} is missing`))
+                }
             }
+            const finalSvg = $.xml()
+            // generate an image based on updated svg source.
+            // TODO: extract to function and add option for multiple formats
+            svg2img(finalSvg.toString(), function (error, buffer) {
+                console.log('generating PNG')
+                if (error) {
+                    console.log(error)
+                    reject(error)
+                }
+                console.log('internal buffer: ', buffer)
+                //returns a Buffer
+                resolve(buffer)
+            })
+
+            // call S3 to store image
+            // temporary to test image generations first
+
+            // return image URL
+            //return './resources/dashboard.png'
+        } catch (e) {
+            console.log(e)
+            reject(e)
         }
-        const finalSvg = $.xml()
-        // generate an image based on updated svg source.
-        // TODO: extract to function and add option for multiple formats
-        svg2img(finalSvg.toString(), function (error, buffer) {
-            console.log('generating PNG')
-            if (error) {
-                console.log(error)
-                reject(error);
-            }
-            console.log('internal buffer: ', buffer)
-            //returns a Buffer
-            resolve(buffer);
-        })
-
-        // call S3 to store image
-        // temporary to test image generations first
-
-        // return image URL
-        //return './resources/dashboard.png'
-    } catch (e) {
-        console.log(e);
-        reject(e);
-    }
-  });
+    })
 }
 
 /**

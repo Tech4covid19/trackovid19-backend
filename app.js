@@ -22,16 +22,16 @@ const sequelizeConfig = {
     autoConnect: true,
     dialect: 'postgres',
     timezone: 'utc',
-  dialectOptions: {
-    dateStrings: true,
-    typeCast: true
-  },
-  pool: {
-    max: 100,
-    min: 1,
-    acquire: 30000,
-    idle: 10000
-  },
+    dialectOptions: {
+        dateStrings: true,
+        typeCast: true,
+    },
+    pool: {
+        max: 100,
+        min: 1,
+        acquire: 30000,
+        idle: 10000,
+    },
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   database: process.env.DB_NAME,

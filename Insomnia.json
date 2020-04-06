@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2020-03-28T14:49:20.648Z",
+    "__export_date": "2020-04-05T17:26:24.421Z",
     "__export_source": "insomnia.desktop.app:v7.1.1",
     "resources": [
         {
@@ -12,7 +12,7 @@
             },
             "body": {
                 "mimeType": "application/json",
-                "text": "{\r\n  \"postalCode\": \"4200-192\",\r\n  \"geo\": {\r\n    \"lat\": 10.34,\r\n    \"lon\": 2.8\r\n  },\r\n  \"phone\": \"+351960123122\",\r\n  \"email\": \"jane@doe.com\",\r\n  \"name\": \"John Doe\",\r\n  \"patientToken\": \"QWERTY\",\r\n  \"showOnboarding\": false\r\n}"
+                "text": "{\n  \"postalCode\": \"4425-192\",\n  \"geo\": {\n    \"lat\": 10.34,\n    \"lon\": 2.8\n  },\n  \"phone\": \"+351960123122\",\n  \"email\": \"jane@doe.com\",\n  \"name\": \"John Doe\",\n  \"patientToken\": \"QWERTY\",\n  \"showOnboarding\": false\n}"
             },
             "created": 1584813902546,
             "description": "",
@@ -27,7 +27,7 @@
             "isPrivate": false,
             "metaSortKey": -1584813902546,
             "method": "PUT",
-            "modified": 1584829120955,
+            "modified": 1586017241274,
             "name": "update-user",
             "parameters": [],
             "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
@@ -100,7 +100,7 @@
             "isPrivate": false,
             "metaSortKey": -1584813902561,
             "method": "GET",
-            "modified": 1584829107727,
+            "modified": 1586017460610,
             "name": "case-conditions-by-postalcode",
             "parameters": [],
             "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
@@ -110,7 +110,7 @@
             "settingRebuildPath": true,
             "settingSendCookies": true,
             "settingStoreCookies": true,
-            "url": "{{ base_url  }}/case/condition/4200-192",
+            "url": "{{ base_url  }}/case/condition/4425-192",
             "_type": "request"
         },
         {
@@ -240,7 +240,7 @@
             "isPrivate": false,
             "metaSortKey": -1584813902584,
             "method": "GET",
-            "modified": 1584829039499,
+            "modified": 1585880199765,
             "name": "all-cases",
             "parameters": [],
             "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
@@ -256,7 +256,7 @@
         {
             "_id": "req_81137cfbc661458b8d3b80b3b6175cb9",
             "authentication": {
-                "token": "",
+                "token": "AQDVA_UpIRbqTLOhJ4hUgUesWZ3EUa_gZCT0ZZD7ek6N8ZroUydEA8_DY3JT1xGNCJ7O3BJmEyjioksp_dIv_RsMlTcUbje3IvtSSEBl1BJcDCEGiwqhJpTm6rneIu8U0_RDCh4X5fRWyTVj8D8l4IteN4IsC-HYEnPr-Bee8RIgLuSVAh4G5rnUuN7Efo-AEmWyeqdLvegwCmhPccAVVtl2L0TZbsFDlN4AjSHB_xwVvz-YPHUaZkQxWJ-uxgaa6jGODARW-Porv3U0XWFRyer3ojvupre1if8l8304FTaLt62WlxqS51CIKjoHhkhSdyZbUroDBf-Wnm56kXh6EWYQ2PCrJwnHGo61zbV5veR0xQ&state=c14d93602baac10fd7ef",
                 "type": "bearer"
             },
             "body": {},
@@ -266,7 +266,7 @@
             "isPrivate": false,
             "metaSortKey": -1584813902587,
             "method": "GET",
-            "modified": 1584829014579,
+            "modified": 1585880106139,
             "name": "login",
             "parameters": [],
             "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
@@ -420,6 +420,32 @@
             "_type": "request"
         },
         {
+            "_id": "req_495fa6ba6646468b8b53fb79c2023a78",
+            "authentication": {
+                "token": "{{ bearer_token  }}",
+                "type": "bearer"
+            },
+            "body": {},
+            "created": 1586024757029,
+            "description": "",
+            "headers": [],
+            "isPrivate": false,
+            "metaSortKey": -1586024757029,
+            "method": "GET",
+            "modified": 1586025052956,
+            "name": "share_image_by_postalcode",
+            "parameters": [],
+            "parentId": "fld_d17a33fe0ef742dab8aa78c5a570ef5f",
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingFollowRedirects": "global",
+            "settingRebuildPath": true,
+            "settingSendCookies": true,
+            "settingStoreCookies": true,
+            "url": "{{ base_url  }}/share/status/4425-192",
+            "_type": "request"
+        },
+        {
             "_id": "env_2fb0733ff3f6695909ad7f5614108dc516ce22da",
             "color": null,
             "created": 1584813902629,
@@ -476,7 +502,7 @@
             "created": 1584813958858,
             "data": {
                 "base_url": "http://localhost:3000/api/v1",
-                "bearer_token": ""
+                "bearer_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiMmIyZDE3MDlhZDJiYThiYmQ4OWY4NzU0MmU2NTE5MWM2MDZiMjhiZjY3NWFmOTJhODkzMGMxNTM3MzM5ZmUzOTRlZGI0ODlkMzQ4M2FkM2FkN2U4MjY2MDU5YzNiNDU4NWIzY2ZlMGExMjcyZmJmMDUyNmY3OGM5MmMzNGU2MzIxYTI0YThhNzllNzRhZWVjNTNlMTk1OTc4MWRmYWJjNTRmZGU1YWJlOTdlM2QwY2IzZWJhYTNlNTBhMTRlZmViODYwYTg0ZDNiOGViODE5N2JiMjI5MDIwMGI4YmI1YTIiLCJzZXNzaW9uIjoiNWU5N2ZkNTc0MzE4M2EyY2VlOGY3YTQ4NWM0NzdjNzAiLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTU4NjEwNDgxNCwiZXhwIjoxNTg2MTkxMjE0fQ.gRmwFOV9brb4GUeJdmkYj7I1B1yJLl_vXKk5jOhST5w"
             },
             "dataPropertyOrder": {
                 "&": [
@@ -486,7 +512,7 @@
             },
             "isPrivate": false,
             "metaSortKey": 1584813958858,
-            "modified": 1585406945016,
+            "modified": 1586104845454,
             "name": "LOCAL",
             "parentId": "env_2fb0733ff3f6695909ad7f5614108dc516ce22da",
             "_type": "environment"
@@ -518,7 +544,7 @@
             "created": 1585143421996,
             "data": {
                 "base_url": "https://staging.api.covidografia.pt/api/v1",
-                "bearer_token": ""
+                "bearer_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiOTM1ODY2NzY4NzA4NDExYTNlMTcxYzcxZjk1OWU2OTAwNTVjY2M1NTIxOGJmNTRhZGNjM2M1MTY4YzU1NjM0NDg4YzllZjMxZTI4NGE3NDA5ZDE0OGQyMTA5ZGM4MWYyZWI4OTYzZGQyMDMxMzM0MjM3YzE0MDdmNWNkNzY3N2U1ZGZkNWY5OGJlZWUwZGE3ODhlMTAwODJkZTJkM2NlMTkyYTgzMDk2YzM1NDUxMTExYzA0YTAyYzg3ZjkzMWVlMjgxZmFiNDQ0OTU1MGE0NTY3MGZiODdkM2Y2N2RlYWIiLCJzZXNzaW9uIjoiNWRmZTVhZjA5MmE1ODkxY2VlYzUyMjVkYWI4ZWViOGUiLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTU4NjAxNzA2MywiZXhwIjoxNTg2MTAzNDYzfQ.v8CJjl13fYbTYMpssibn2HUEP3e6xKAq5abAdWqZlng"
             },
             "dataPropertyOrder": {
                 "&": [
@@ -528,7 +554,7 @@
             },
             "isPrivate": false,
             "metaSortKey": 1584813958958,
-            "modified": 1585342016495,
+            "modified": 1586017143787,
             "name": "STAGING",
             "parentId": "env_2fb0733ff3f6695909ad7f5614108dc516ce22da",
             "_type": "environment"
