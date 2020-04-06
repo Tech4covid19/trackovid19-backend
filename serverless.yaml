@@ -58,7 +58,7 @@ functions:
           path: /{proxy+}
           method: ANY
   notifications:
-    handler: jobs/send-user-notification.Send
+    handler: jobs/notify-users-no-update-24h.handler
     events:
       - schedule: rate(10 minutes)
 

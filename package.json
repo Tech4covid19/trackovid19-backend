@@ -7,7 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon $NODE_DEBUG_OPTION --watch . --ext js",
     "generate-db": "node ./db/generate.js",
-    "genkeys": "node ./tools/genkeys.js"
+    "genkeys": "node ./tools/genkeys.js",
+    "notify-users-no-update-24h": "node ./jobs/notify-users-no-update-24h.js"
   },
   "keywords": [
     "trackovid19",
