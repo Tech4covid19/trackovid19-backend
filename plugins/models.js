@@ -25,8 +25,6 @@ module.exports = fp(async (fastify, opts) => {
         const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js')
         const ShareImagesByPostalcode = fastify.sequelize.import(
             '../db/models/share_images_by_postalcode.js')
-        const PostalCodeDescriptions = fastify.sequelize.import(
-            '../db/models/postal_code_descriptions.js')
         const PostalCodes = fastify.sequelize.import('../db/models/postal_codes.js');
 
 
@@ -46,7 +44,6 @@ module.exports = fp(async (fastify, opts) => {
             PushSubscriptions,
             PostalCodeDescriptions,
             ShareImagesByPostalcode,
-            PostalCodeDescriptions,
             PostalCodes
         }
 
