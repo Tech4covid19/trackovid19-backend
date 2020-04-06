@@ -46,21 +46,21 @@ provider:
     AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}}
 
 functions:
-    app:
-        handler: app.handler
-        layers:
-            - arn:aws:lambda:eu-west-1:788648735177:layer:canvas-lib64-layer:1
-        events:
-            -   http:
-                    path: /
-                    method: ANY
-            -   http:
-                    path: /{proxy+}
-                    method: ANY
-    notifications:
-        handler: jobs/send-user-notification.Send
-        events:
-            -   schedule: rate(10 minutes)
+  app:
+    handler: app.handler
+    layers:
+      - arn:aws:lambda:eu-west-1:788648735177:layer:canvas-lib64-layer:1		
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+  notifications:
+    handler: jobs/notify-users-no-update-24h.handler
+    events:
+      - schedule: rate(10 minutes)
 
 # Custom Variables
 custom:
