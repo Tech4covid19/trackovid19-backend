@@ -5,6 +5,7 @@
     <title>Dashboard</title>
     <desc>Created with Sketch.</desc>
     <defs>
+        <style type="text/css">@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500&display=swap');</style>
         <pattern id="pattern-1" width="95.2" height="60.8" x="-95.2" y="-60.8" patternUnits="userSpaceOnUse">
             <use xlink:href="#image-2" transform="scale(0.1,0.1)"></use>
         </pattern>
