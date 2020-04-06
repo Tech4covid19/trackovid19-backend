@@ -25,6 +25,8 @@ module.exports = fp(async (fastify, opts) => {
             '../db/models/push_subscriptions.js')
         const ShareImagesByPostalcode = fastify.sequelize.import(
             '../db/models/share_images_by_postalcode.js')
+        const PostalCodeDescriptions = fastify.sequelize.import(
+            '../db/models/postal_code_descriptions.js')
 
         return {
             Case,
@@ -41,6 +43,7 @@ module.exports = fp(async (fastify, opts) => {
             VideoShares,
             PushSubscriptions,
             ShareImagesByPostalcode,
+            PostalCodeDescriptions
         }
 
 
@@ -56,6 +59,7 @@ module.exports = fp(async (fastify, opts) => {
         const Videos = fastify.sequelize.import('../db/models/videos.js');
         const PushSubscriptions = fastify.sequelize.import('../db/models/push_subscriptions.js');
         const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js');
+        const ShareImagesByPostalcode = fastify.sequelize.import('../db/models/share_images_by_postalcode.js')
 
         console.log('Initializing models');
 
