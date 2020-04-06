@@ -60,7 +60,7 @@ functions:
   notifications:
     handler: jobs/send-user-notification.Send
     events:
-      - schedule: rate(1 minutes)
+      - schedule: rate(10 minutes)
 
 # Custom Variables
 custom:
