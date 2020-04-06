@@ -30,26 +30,26 @@ provider:
     HOME_URL: ${self:custom.HOME_URL.${opt:stage, 'dev'}}
     GCM_API_KEY: ${self:custom.GCM_API_KEY.${opt:stage, 'dev'}}
     VAPID_PRIVATE_KEY: ${self:custom.VAPID_PRIVATE_KEY.${opt:stage, 'dev'}}
-    VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}}
-    VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}}
-    AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}}
+    VAPID_PUBLIC_KEY: ${self:custom.VAPID_PUBLIC_KEY.${opt:stage, 'dev'}} 
+    VAPID_SUBJECT: ${self:custom.VAPID_SUBJECT.${opt:stage, 'dev'}} 
+    AES_256_KEY: ${self:custom.AES_256_KEY.${opt:stage, 'dev'}} 
     PRODUCTION: ${self:custom.PRODUCTION.${opt:stage, 'dev'}}
-    AWS_REGION_SNS: ${self:custom.AWS_REGION_SNS.${opt:stage, 'dev'}}
-    AWS_SNS_ACCESS_KEY_ID: ${self:custom.AWS_SNS_ACCESS_KEY_ID.${opt:stage, 'dev'}}
-    AWS_SNS_SECRET_ACCESS_KEY: ${self:custom.AWS_SNS_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}
-    AWS_SNS_TOPICARN: ${self:custom.AWS_SNS_TOPICARN.${opt:stage, 'dev'}}
-    AWS_REGION_S3: ${self:custom.AWS_REGION_S3.${opt:stage, 'dev'}}
-    AWS_S3_ACCESS_KEY_ID: ${self:custom.AWS_S3_ACCESS_KEY_ID.${opt:stage, 'dev'}}
-    AWS_S3_SECRET_ACCESS_KEY: ${self:custom.AWS_S3_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}
-    AWS_S3_BUCKET: ${self:custom.AWS_S3_BUCKET.${opt:stage, 'dev'}}
-    AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}
-    AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}}
+    AWS_REGION_SNS: ${self:custom.AWS_REGION_SNS.${opt:stage, 'dev'}}  
+    AWS_SNS_ACCESS_KEY_ID: ${self:custom.AWS_SNS_ACCESS_KEY_ID.${opt:stage, 'dev'}}  
+    AWS_SNS_SECRET_ACCESS_KEY: ${self:custom.AWS_SNS_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}  
+    AWS_SNS_TOPICARN: ${self:custom.AWS_SNS_TOPICARN.${opt:stage, 'dev'}}  
+    AWS_REGION_S3: ${self:custom.AWS_REGION_S3.${opt:stage, 'dev'}}  
+    AWS_S3_ACCESS_KEY_ID: ${self:custom.AWS_S3_ACCESS_KEY_ID.${opt:stage, 'dev'}}  
+    AWS_S3_SECRET_ACCESS_KEY: ${self:custom.AWS_S3_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}  
+    AWS_S3_BUCKET: ${self:custom.AWS_S3_BUCKET.${opt:stage, 'dev'}}  
+    AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}  
+    AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}} 
 
 functions:
   app:
     handler: app.handler
     layers:
-      - arn:aws:lambda:eu-west-1:788648735177:layer:canvas-lib64-layer:1
+      - arn:aws:lambda:eu-west-1:788648735177:layer:canvas-lib64-layer:1		
     events:
       - http:
           path: /
@@ -80,31 +80,31 @@ custom:
     dev: https://dev.api.covidografia.pt/api/v1
     staging: https://staging.api.covidografia.pt/api/v1
     prd: https://api.covidografia.pt/api/v1
-  FB_APP_SCOPE:
+  FB_APP_SCOPE: 
     dev: email,public_profile
     staging: email,public_profile
     prd: email,public_profile
-  FB_USER_INFO_URL:
+  FB_USER_INFO_URL: 
     dev: https://graph.facebook.com/v3.0/me?fields=id,name,email
     staging: https://graph.facebook.com/v3.0/me?fields=id,name,email
     prd: https://graph.facebook.com/v3.0/me?fields=id,name,email
-  GOOGLE_APP_ID:
+  GOOGLE_APP_ID: 
     dev: 229617499859-jhpv1jbtq3fdnntsa7m8c9s9ug4v4mh2.apps.googleusercontent.com
     staging: 521794831407-kgvjkksomko9rg6um8i7s076l0a9ltjh.apps.googleusercontent.com
     prd: 921023977289-prbb3f1mseoni2sscgurodbmsqm2p87e.apps.googleusercontent.com
-  GOOGLE_APP_SECRET:
+  GOOGLE_APP_SECRET: 
     dev: ${opt:google_secret, 'GOOGLE_SECRET_DEV'}
     staging: ${opt:google_secret, 'GOOGLE_SECRET_STAGING'}
     prd: ${opt:google_secret, 'GOOGLE_SECRET_PROD'}
-  GOOGLE_APP_SCOPE:
+  GOOGLE_APP_SCOPE: 
     dev: profile email openid
     staging: profile email openid
     prd: profile email openid
-  GOOGLE_CALLBACK_URL:
+  GOOGLE_CALLBACK_URL: 
     dev: https://dev.api.covidografia.pt/api/v1
     staging: https://staging.api.covidografia.pt/api/v1
     prd: https://api.covidografia.pt/api/v1
-  GOOGLE_USER_INFO_URL:
+  GOOGLE_USER_INFO_URL: 
     dev: https://www.googleapis.com/oauth2/v1/userinfo
     staging: https://www.googleapis.com/oauth2/v1/userinfo
     prd: https://www.googleapis.com/oauth2/v1/userinfo
@@ -141,7 +141,7 @@ custom:
     staging: https://www.covidografia.pt
     prd: https://www.covidografia.pt
   GCM_API_KEY:
-    dev: ${opt:gcm_api_key, 'GCM_API_KEY_DEV'}
+    dev: ${opt:gcm_api_key, 'GCM_API_KEY_DEV'} 
     staging: ${opt:gcm_api_key, 'GCM_API_KEY_STAGING'}
     prd: ${opt:gcm_api_key, 'GCM_API_KEY_PROD'}
   VAPID_PUBLIC_KEY:
@@ -149,30 +149,30 @@ custom:
     staging: BA5Tr13lfJCBPb9ZaXlTKUetDORnHROGI_S7cumwdDR9f-ZxYI-4Y2OvIC4WgZxcanE9znpKufP6wLA5kdIG2Ak
     prd: BBEe8XE4MAZu390e-VzBCzjK_QyY4Zra0R6kY-wARxKxWbHOM-KgxSURL6FOzftYG9ht1UvMvONBzpKRxWaIJhU
   VAPID_PRIVATE_KEY:
-    dev: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_DEV'}
+    dev: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_DEV'} 
     staging: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_STAGING'}
     prd: ${opt:vapid_priv_key, 'VAPID_PRIVATE_KEY_PROD'}
   VAPID_SUBJECT:
     dev: http://localhost:4200
     staging: https://staging.app.covidografia.pt
     prd: https://app.covidografia.pt
-  AES_256_KEY:
-    dev: ${opt:aes_key, 'AES_256_KEY_DEV'}
+  AES_256_KEY: 
+    dev: ${opt:aes_key, 'AES_256_KEY_DEV'} 
     staging: ${opt:aes_key, 'AES_256_KEY_STAGING'}
     prd: ${opt:aes_key, 'AES_256_KEY_PROD'}
-  PRODUCTION:
+  PRODUCTION: 
     dev: 0
     staging: 0
     prd: 1
-  AWS_SNS_ACCESS_KEY_ID:
+  AWS_SNS_ACCESS_KEY_ID: 
     dev: AKIA3PHZAWHE536M366R
     staging: AKIA3PHZAWHE536M366R
     prd: AKIA3PHZAWHE536M366R
-  AWS_SNS_SECRET_ACCESS_KEY:
+  AWS_SNS_SECRET_ACCESS_KEY: 
     dev: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_DEV'}
     staging: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_STAGING'}
     prd: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_PROD'}
-  AWS_SNS_TOPICARN:
+  AWS_SNS_TOPICARN: 
     dev: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit-staging
     staging: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit-staging
     prd: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit
