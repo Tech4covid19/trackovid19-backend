@@ -29,7 +29,7 @@ jobs:
     - run: export NODE_ENV=production
     - run: npm install
     - name: serverless deploy to dev
-      run: sls deploy --dev 'dev' --db_pass '${{ secrets.DEV_DB_PASS }}' --fb_secret '${{ secrets.DEV_FB_SECRET }}' --jwt_secret '${{ secrets.DEV_JWT_SECRET }}'  --gcm_api_key '${{ secrets.DEV_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.DEV_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.DEV_AES_KEY }}'  --aws_sns_secret '${{ secrets.DEV_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.DEV_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.DEV_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.DEV_AWS_S3_SECRET }}' 
+      run: sls deploy --stage 'dev' --db_pass '${{ secrets.DEV_DB_PASS }}' --fb_secret '${{ secrets.DEV_FB_SECRET }}' --jwt_secret '${{ secrets.DEV_JWT_SECRET }}'  --gcm_api_key '${{ secrets.DEV_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.DEV_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.DEV_AES_KEY }}'  --aws_sns_secret '${{ secrets.DEV_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.DEV_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.DEV_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.DEV_AWS_S3_SECRET }}' 
       env:
         AWS_REGION: eu-west-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
