@@ -1,0 +1,37 @@
+on:
+    push:
+        branches:
+            - production
+name: Deploy master branch
+jobs:
+    deploy:
+        name: deploy
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@master
+            -   run: sudo apt-get update
+            -   run: sudo apt-get install -y libuuid1
+            -   run: sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+            -   uses: actions/setup-python@v1
+                with:
+                    python-version: '2.7' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+            -   name: Install dependencies
+                run: |
+                    python -m pip install --upgrade pip
+            -   name: node
+                uses: actions/setup-node@v1
+                with:
+                    node-version: '12.x'
+            -   name: Install serverless
+                run: npm install -g serverless
+            -   name: Install serverless-stage-manager
+                run: serverless plugin install --name serverless-stage-manager
+            -   run: export NODE_ENV=production
+            -   run: npm install
+            -   name: serverless deploy to production
+                run: sls deploy --stage 'prd' --db_pass '${{ secrets.PROD_DB_PASS }}' --fb_secret '${{ secrets.PROD_FB_SECRET }}' --jwt_secret '${{ secrets.PROD_JWT_SECRET }}'  --gcm_api_key '${{ secrets.PROD_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.PROD_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.PROD_AES_KEY }}'  --aws_sns_secret '${{ secrets.PROD_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.PROD_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.PROD_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.PROD_AWS_S3_SECRET }}'
+                env:
+                    AWS_REGION: eu-west-1
+                    AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                    AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                    AWS_EXECUTION_ENV: prd

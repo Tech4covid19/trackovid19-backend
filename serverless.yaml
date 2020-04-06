@@ -43,18 +43,24 @@ provider:
     AWS_S3_SECRET_ACCESS_KEY: ${self:custom.AWS_S3_SECRET_ACCESS_KEY.${opt:stage, 'dev'}}
     AWS_S3_BUCKET: ${self:custom.AWS_S3_BUCKET.${opt:stage, 'dev'}}
     AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}
-
+    AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}}
 
 functions:
     app:
         handler: app.handler
+        layers:
+            - arn:aws:lambda:eu-west-1:788648735177:layer:canvas-lib64-layer:1
         events:
             -   http:
                     path: /
                     method: ANY
             -   http:
-            path: /{proxy+}
-            method: ANY
+                    path: /{proxy+}
+                    method: ANY
+    notifications:
+        handler: jobs/send-user-notification.Send
+        events:
+            -   schedule: rate(10 minutes)
 
 # Custom Variables
 custom:
@@ -167,9 +173,9 @@ custom:
       staging: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_STAGING'}
       prd: ${opt:aws_sns_secret, 'AWS_SNS_SECRET_ACCESS_KEY_PROD'}
   AWS_SNS_TOPICARN:
-      dev: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_DEV'}
-      staging: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_STAGING'}
-      prd: ${opt:aws_sns_topicarn, 'AWS_SNS_TOPICARN_PROD'}
+      dev: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit-staging
+      staging: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit-staging
+      prd: arn:aws:sns:eu-west-1:788648735177:user-data-removal-audit
   AWS_REGION_SNS:
       dev: eu-west-1
       staging: eu-west-1
@@ -198,6 +204,10 @@ custom:
       dev: http://localhost
       staging: https://staging.app.covidografia.pt
       prd: https://app.covidografia.pt
+  AWS_SNS_FAIL_EMAIL_TOPICARN:
+      dev: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error-staging
+      staging: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error-staging
+      prd: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error
 
 # Plugins
 plugins:

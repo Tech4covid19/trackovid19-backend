@@ -18,29 +18,45 @@ module.exports = async (fastify, opts) => {
     // Do the magic...
     try {
 
-      const { postalCode, geo, condition, confinementState, symptoms } = request.body;
-      const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
+        const {postalCode, geo, condition, confinementState, symptoms} = request.body
+        const symptoms_list = symptoms.map(
+            id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}))
 
-      // Now let's look for the user in the personal data model
-      const user = await fastify.models().Users.findOne({
-        where: { id: request.user.payload.id },
-      });
+        // Decode postal code
+        const postparts = tools.splitPostalCode(postalCode)
 
-      const personal = await fastify.models().UsersData.findOne({
-          where: { id: request.user.payload.id_data }
-      });
+        const postalCodeDB = await fastify.models().PostalCodes.findOne({
+            where: {
+                postal_number: postparts[0],
+                postal_extension: postparts[1],
+            },
+        })
+
+        if (!postalCodeDB) {
+            // Commit the transaction
+            await t.commit()
+
+            reply.status(400).send({error: 'Invalid postal code'})
+            return
+        }
+
+        // Now let's look for the user in the personal data model
+        const user = await fastify.models().Users.findOne({
+            where: {id: request.user.payload.id},
+        })
+
+        const personal = await fastify.models().UsersData.findOne({
+            where: {id: request.user.payload.id_data},
+        })
 
       if (!user || !personal) {
-        
+
         // Commit the transaction
         await t.commit();
 
         reply.status(404).send({error: "Not found"});
       }
       else {
-
-        // Decode postal code
-        const postparts = tools.splitPostalCode(postalCode);
 
         const acase = await fastify.models().Case.create(
           {postalcode1: postparts[0], postalcode2: postparts[1], latitude: geo.lat, longitude: geo.lon, status: condition, confinement_state: confinementState, user_id: request.user.payload.id, timestamp: Date(), unix_ts: Date.now(), user_symptoms: symptoms_list },
@@ -56,7 +72,7 @@ module.exports = async (fastify, opts) => {
 
         // save the date in the personal model (only the date, to prevent correlation)
         personal.symptoms_updated_at = new Date((new Date).toDateString());
-        
+
         // Set this update as the latest one for the user
         user.latest_status_id = acase.id;
 
@@ -68,7 +84,7 @@ module.exports = async (fastify, opts) => {
 
         reply.send({ status: 'success' })
       }
-      
+
     } catch (error) {
       request.log.error(error)
 
