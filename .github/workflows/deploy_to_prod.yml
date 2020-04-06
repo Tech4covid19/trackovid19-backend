@@ -28,8 +28,8 @@ jobs:
       run: serverless plugin install --name serverless-stage-manager
     - run: export NODE_ENV=production
     - run: npm install
-    - name: serverless deploy to dev
-      run: sls deploy --dev 'prd' --db_pass '${{ secrets.PROD_DB_PASS }}' --fb_secret '${{ secrets.PROD_FB_SECRET }}' --jwt_secret '${{ secrets.PROD_JWT_SECRET }}'  --gcm_api_key '${{ secrets.PROD_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.PROD_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.PROD_AES_KEY }}'  --aws_sns_secret '${{ secrets.PROD_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.PROD_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.PROD_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.PROD_AWS_S3_SECRET }}' 
+    - name: serverless deploy to production
+      run: sls deploy --stage 'prd' --db_pass '${{ secrets.PROD_DB_PASS }}' --fb_secret '${{ secrets.PROD_FB_SECRET }}' --jwt_secret '${{ secrets.PROD_JWT_SECRET }}'  --gcm_api_key '${{ secrets.PROD_GCM_API_KEY }}' --vapid_priv_key '${{ secrets.PROD_VAPID_PRIV_KEY }}' --aes_key '${{ secrets.PROD_AES_KEY }}'  --aws_sns_secret '${{ secrets.PROD_AWS_SNS_SECRET }}' --aws_sns_topicarn '${{ secrets.PROD_AWS_SNS_TOPICARN }}' --google_secret '${{ secrets.PROD_GOOGLE_SECRET }}'  --aws_s3_secret '${{ secrets.PROD_AWS_S3_SECRET }}' 
       env:
         AWS_REGION: eu-west-1
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
