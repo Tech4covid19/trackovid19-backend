@@ -1,6 +1,7 @@
 'use strict'
 
-const tools = require('../../../tools/tools')
+const tools = require('../../../tools/tools');
+const aws = require('../../../services/aws-service');
 
 module.exports = async (fastify, opts) => {
 
@@ -11,19 +12,24 @@ module.exports = async (fastify, opts) => {
     }
   }, async (request, reply) => {
     try {
+
       const publicAttributes = { attributes: ['id', 'external_id', 'year', 'postalcode1', 'postalcode2', 'latitude', 'longitude', 'info', 'optin_health_geo', 'created_at', 'updated_at'] };
       var user = await fastify.models().Users.findOne({
         where: { id: request.user.payload.id },
         include: [
           {
-            model: fastify.models().Case
+            model: fastify.models().Case,
+            as: 'latest_status'
           },
           {
-            model: fastify.models().Network
+            model: fastify.models().PostalCodeDescriptions,
+            as: 'pc_description'
           }
         ],
         ...publicAttributes
       });
+
+      
 
       // Now let's look for the user in the personal data model
       const personal = await fastify.models().UsersData.findOne({
@@ -34,18 +40,11 @@ module.exports = async (fastify, opts) => {
         reply.status(404).send({error: "Not found"});
       }
       else {
-        // Get last submitted case
-        if (user.cases.length > 0) {
-          const acase = user.cases.reduce((acc, item) => {
-            if (acc.unix_ts < item.unix_ts) {
-              return item;
-            }
-            else {
-              return acc;
-            }
-          });
+
+        // Fill latest status info
+        if (user.latest_status) {
           // Check for symptoms
-          const syms = await acase.getUser_symptoms();
+          const syms = await user.latest_status.getUser_symptoms();
           const has_symptoms = syms.reduce((acc, item) => {
             return acc || item.symptom_id !== 1;
           }, false);
@@ -53,8 +52,9 @@ module.exports = async (fastify, opts) => {
           // Save current state in the user object
           user.has_symptoms = has_symptoms;
           user.has_symptoms_text = has_symptoms ? 'Com sintomas' : 'Sem sintomas';
-          user.confinement_state = acase.confinement_state;
+          user.confinement_state = user.latest_status.confinement_state;
         }
+
         user.name = personal.name;
         user.email = personal.email;
         user.phone = personal.phone;
@@ -75,9 +75,7 @@ module.exports = async (fastify, opts) => {
       
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get user details'));
     }
   
   })
@@ -99,6 +97,24 @@ module.exports = async (fastify, opts) => {
         where: { id: request.user.payload.id },
       });
 
+      let postparts;
+      if (postalCode) {
+        // Decode postal code
+        postparts = tools.splitPostalCode(postalCode);
+
+        const postalCodeDB = await fastify.models().PostalCodes.findOne({
+          where: { postal_number: postparts[0], postal_extension: postparts[1] },
+        });
+
+        if (!postalCodeDB) {
+          // Commit the transaction
+          await t.commit();
+  
+          reply.status(400).send({error: "Invalid postal code"});
+          return
+        }
+      }
+
       // Now let's look for the user in the personal data model
       const personal = await fastify.models().UsersData.findOne({
           where: { id: request.user.payload.id_data }
@@ -111,8 +127,6 @@ module.exports = async (fastify, opts) => {
         
         // Update user
         if (postalCode) {
-          // Decode postal code
-          const postparts = tools.splitPostalCode(postalCode);
           user.postalcode1 = postparts[0];
           user.postalcode2 = postparts[1]; 
         }
@@ -159,13 +173,87 @@ module.exports = async (fastify, opts) => {
         reply.send({ status: 'ok' });
       }
     } catch (error) {
-      console.log(error);
       request.log.error(error)
       // Rollback the transaction
       await t.rollback();
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not update user details'));
     }
   })
+
+  fastify.delete('/user', {
+    preValidation: [fastify.authenticate],
+    schema: {
+      tags: ['user'],
+    }
+  }, async (request, reply) => {
+
+    // delete user data from database
+
+    let user;
+    let email;
+    let trans; // transaction
+    try {
+      user = await fastify.models().Users.findOne({
+        where: { id: request.user.payload.id },
+      });
+
+      const personal = await fastify.models().UsersData.findOne({
+        where: { id: request.user.payload.id_data }
+      });
+
+      if (!user || !personal) {
+        reply.status(404).send({error: "Not found"});
+        return;
+      }
+      else {
+        trans = await fastify.sequelize.transaction();
+        email = personal.email;
+
+        await fastify.sequelize.query('CALL delete_user (:p_user_id, :p_user_data_id)', 
+          {replacements: { p_user_id: parseInt(request.user.payload.id), p_user_data_id: request.user.payload.id_data }});
+        await trans.commit();
+      }
+
+    } catch (error) {
+      console.log(error);
+      request.log.error(error);
+      if (trans) {
+        await trans.rollback();
+      }
+      reply.status(500).send(sanitize_log(error, 'Could not delete user data'));
+      return;
+    }
+
+    // send audit trail info to AWS SNS
+
+    const message = JSON.stringify({
+      user_id: request.user.payload.id,
+      user_data_id: request.user.payload.id_data,
+      request_date: new Date(),
+      identityProvider: tools.identityProviders.nameById(user.external_id_provider_id)
+    });
+
+    try {
+      const data = await aws.SNS.publish(message, process.env.AWS_SNS_TOPICARN);
+      request.log.info({
+        action: 'user-data-removal-audit-to-aws-sns',
+        data: {
+          data
+        }
+      });
+    }
+    catch(err) {
+      console.log(err);
+      request.log.error(err);
+    }
+
+    // Send confirmation email
+    if (email) {
+      aws.SES.sendDeletionConfirmationEmail(email);
+    }
+
+    reply.send({ status: 'ok' });
+  
+  })
+
 }

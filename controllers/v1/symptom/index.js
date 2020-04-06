@@ -3,6 +3,7 @@
 module.exports = async (fastify, opts) => {
 
   fastify.get('/symptom/all', {
+    preValidation: [fastify.authenticate],
     schema: {
       tags: ['symptom']
     }
@@ -12,9 +13,7 @@ module.exports = async (fastify, opts) => {
       return symptoms;
     } catch (error) {
       request.log.error(error)
-      reply.status(500).send({
-        error
-      });
+      reply.status(500).send(sanitize_log(error, 'Could not get symptom list'));
     }
   })
 }

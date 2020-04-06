@@ -40,9 +40,20 @@ document.getElementById('subscribeButton').addEventListener('click', function() 
   });
 });
 
+document.getElementById('sendNotificationButton').addEventListener('click', function() {
+  var title = document.getElementById('not_title').value;
+  var options = {
+    body: document.getElementById('not_body').value,
+    icon: document.getElementById('not_icon').value,
+    badge: document.getElementById('not_badge').value,
+    image: document.getElementById('not_image').value,
+  };
+  serviceWorkerRegistration.showNotification(title, options)
+});
+
 function setPushManagerSubscription(pushSubscription) {
   pushManagerSubscription = pushSubscription;
-  document.getElementById('subscribe').innerText = 'Notificações aceites!';
+  document.getElementById('subscribe').innerText = 'Has subscription!';
 }
 
 // document.getElementById('doIt').onclick = function() {

@@ -50,11 +50,15 @@
 > This code is running in a serverless environment. You cannot rely on your server being 'up' in the sense that you can/should not use in-memory sessions, web sockets, etc. You are also subject to provider specific restrictions on request/response size, duration, etc.
 
 
-## Instalation
+## Installation
 
 > You will need atleast nodejs version 12 LTS to run this server.
 
-###  Please don't forget to set JWT_SECRET environment variable
+### Make a copy of the env.local 
+
+Create a local `.env` file and copy the contents of the `env.local` template file.
+
+There you'll find a few variables that need to be set for your server to run locally, like JWT secret, database credentials and so on.
 
 ###  Install the dependencies and devDependencies and start the server:
 
@@ -62,14 +66,6 @@
 $ yarn
 $ yarn start
 ```
-
-### Generate DB Models from Remote deployed PGSQL DB at AWS:
-
-```sh
-$ yarn generate-db
-```
-
-After the task is done, you will see the models inside models folder with the current definition from the remote DB.
 
 ### Side Notes
 
@@ -84,13 +80,15 @@ This is to handle external dependencies for 3rd party modules, otherwise we will
 
 ## Documentation
 
-1. Login using your facebook account on: http://localhost:3000/login/facebook;
+1. Login using your Facebook account on http://localhost:3000/login/facebook or Google account on http://localhost:3000/login/google;
 2. You will receive a JWT token, use it as a Bearer Token in all the authenticated requests;
 3. Please load the `insomnia.json` file into your Insomnia Rest Client and call the routes or consult https://trackcovid19.docs.apiary.io;
 
 > Do not forget to set the Bearer token on insomnia environment and check other variables!
 
 ## Serverless Usage
+
+The project is designed to run into a serverless environment although it can also run locally. For deployment the project to a serverless platform, like AWS Lambda, follow the steps below. 
 
 Install the framework:
 ```sh
@@ -207,7 +205,7 @@ $ docker/database/stop.sh
 
 ## Authors
 
-Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @lcfb91 @zepcp @jcazevedo @cchostak for the work and efforts to bootstrap this service!
+Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @lcfb91 @zepcp @jcazevedo @cchostak @fernanri for the work and efforts to bootstrap this service!
 
 Feel free to change / improve / delete everything you want!
 

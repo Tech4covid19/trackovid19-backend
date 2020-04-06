@@ -26,6 +26,14 @@ module.exports = function(sequelize, DataTypes) {
 				key: 'id'
 			}
 		},
+		latest_status_id: {
+			type: DataTypes.BIGINT,
+			allowNull: true,
+			references: {
+				model: 'history',
+				key: 'id'
+			}
+		},
 		patient_token: {
 			type: DataTypes.STRING,
 			allowNull: true
@@ -42,7 +50,11 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		postalcode1: {
 			type: DataTypes.STRING,
-			allowNull: true
+			allowNull: true,
+			references: {
+				model: 'postal_code_descriptions',
+				key: 'postal_number'
+			}
 		},
 		postalcode2: {
 			type: DataTypes.STRING,
