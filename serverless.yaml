@@ -57,6 +57,10 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
+  notifications:
+    handler: jobs/send-user-notification.Send
+    events:
+      - schedule: rate(1 minutes)
 
 # Custom Variables
 custom:
