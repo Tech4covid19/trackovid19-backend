@@ -60,7 +60,7 @@ functions:
   notifications:
     handler: jobs/notify-users-no-update-24h.handler
     events:
-      - schedule: rate(10 minutes)
+      - schedule:cron(43 23 * * ? *)
 
 # Custom Variables
 custom:
