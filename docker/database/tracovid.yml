@@ -10,6 +10,7 @@ services:
       - "54320:5432"
     volumes:
       - tracovid_data:/var/lib/postgresql/data
+      - ../../db:/guestfiles
     environment:
       POSTGRES_USER: tracovid 
       POSTGRES_PASSWORD: tracovid

@@ -107,7 +107,7 @@ module.exports = async (fastify, opts) => {
             roles: ['user']
           });
           // send redirect
-          reply.redirect(`${process.env.AFTER_LOGIN_CALLBACK_URL}/#/post-code?code=${jwt}&state=${request.query.state}`);
+          reply.redirect(`${process.env.AFTER_LOGIN_CALLBACK_URL}/#/post-code?code=${jwt}&state=${request.query.state}&provider=${provider.id}`);
         }
       })
     } catch (error) {

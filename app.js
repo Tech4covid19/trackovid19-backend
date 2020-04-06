@@ -3,23 +3,25 @@
 // Special thanks to @victorfern91 @hugoduraes @ludwig801 @palminha @zepcp @lcfb91 @jcazevedo @cchostak for the work and efforts to bootstrap this service!
 // Feel free to change / improve / delete everything you want!
 
-const fastify = require('fastify')({ logger: false });
-const path = require('path');
-const AutoLoad = require('fastify-autoload');
-const fsequelize = require('fastify-sequelize');
-const oauthPlugin = require('fastify-oauth2');
-const oas = require('fastify-oas');
-const swagger = require('./config/swagger');
+const fastify = require('fastify')({logger: false})
+const path = require('path')
+const AutoLoad = require('fastify-autoload')
+const fsequelize = require('fastify-sequelize')
+const oauthPlugin = require('fastify-oauth2')
+const oas = require('fastify-oas')
+const swagger = require('./config/swagger')
+// store application root
+global.__basedir = __dirname
 
-fastify.register(oas, swagger.options);
+fastify.register(oas, swagger.options)
 
-const dotEnv = require('dotenv').config();
+const dotEnv = require('dotenv').config()
 
 const sequelizeConfig = {
-  instance: 'sequelize',
-  autoConnect: true,
-  dialect: 'postgres',
-  timezone: 'utc',
+    instance: 'sequelize',
+    autoConnect: true,
+    dialect: 'postgres',
+    timezone: 'utc',
   dialectOptions: {
     dateStrings: true,
     typeCast: true
@@ -66,7 +68,7 @@ fastify
   })
 
 const corsOptions = {
-  origin: ['https://app.covidografia.pt', 'https://staging.app.covidografia.pt', 'https://dev.app.covidografia.pt'],
+  origin: process.env.CORS_ORIGIN.split(','),
   methods: 'OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE',
   optionsSuccessStatus: 200 // to support some legacy browsers
 }
