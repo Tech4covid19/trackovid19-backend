@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - test-deploy
+      - develop
 name: Deploy master branch
 jobs:
   deploy:
