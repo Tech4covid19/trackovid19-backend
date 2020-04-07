@@ -45,6 +45,7 @@ provider:
     AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}  
     AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}} 
     FONTCONFIG_PATH: ${self:custom.FONTCONFIG_PATH.${opt:stage, 'dev'}} 
+    PANGOCAIRO_BACKEND: ${self:custom.PANGOCAIRO_BACKEND.${opt:stage, 'dev'}} 
 
 functions:
   app:
@@ -213,6 +214,10 @@ custom:
     dev: /var/task/resources/fonts
     staging: /var/task/resources/fonts
     prd: /var/task/resources/fonts
+  PANGOCAIRO_BACKEND:
+    dev: fontconfig
+    staging: fontconfig
+    prd: fontconfig
 
 # Plugins
 plugins:
