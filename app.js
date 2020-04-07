@@ -10,8 +10,12 @@ const fsequelize = require('fastify-sequelize')
 const oauthPlugin = require('fastify-oauth2')
 const oas = require('fastify-oas')
 const swagger = require('./config/swagger')
+const Canvas = require('canvas')
 // store application root
 global.__basedir = __dirname
+
+
+Canvas.registerFont('/var/task/fonts/Archivo-Regular.ttf', {family: 'Archivo'});
 
 fastify.register(oas, swagger.options)
 
