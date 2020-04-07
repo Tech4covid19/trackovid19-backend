@@ -2,11 +2,12 @@ const fp = require('fastify-plugin')
 
 module.exports = fp(async (fastify, opts) => {
     fastify.decorate('models', () => {
-        const Case = fastify.sequelize.import('../db/models/history.js');
-        const Network = fastify.sequelize.import('../db/models/network.js');
-        const Users = fastify.sequelize.import('../db/models/users.js');
-        const UsersData = fastify.sequelize.import('../db/models/users_data.js');
-        const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
+        const Case = fastify.sequelize.import('../db/models/history.js')
+        const Network = fastify.sequelize.import('../db/models/network.js')
+        const Users = fastify.sequelize.import('../db/models/users.js')
+        const UsersData = fastify.sequelize.import(
+            '../db/models/users_data.js')
+        const Symptom = fastify.sequelize.import('../db/models/symptoms.js')
         const UserSymptom = fastify.sequelize.import(
             '../db/models/user_symptoms.js')
         const ConfinementState = fastify.sequelize.import(
@@ -22,11 +23,12 @@ module.exports = fp(async (fastify, opts) => {
         const Videos = fastify.sequelize.import('../db/models/videos.js')
         const PushSubscriptions = fastify.sequelize.import(
             '../db/models/push_subscriptions.js')
-        const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js')
+        const PostalCodeDescriptions = fastify.sequelize.import(
+            '../db/models/postal_code_descriptions.js')
         const ShareImagesByPostalcode = fastify.sequelize.import(
             '../db/models/share_images_by_postalcode.js')
-        const PostalCodes = fastify.sequelize.import('../db/models/postal_codes.js');
-
+        const PostalCodes = fastify.sequelize.import(
+            '../db/models/postal_codes.js')
 
         return {
             Case,
@@ -44,33 +46,41 @@ module.exports = fp(async (fastify, opts) => {
             PushSubscriptions,
             PostalCodeDescriptions,
             ShareImagesByPostalcode,
-            PostalCodes
+            PostalCodes,
         }
 
     })
 
     fastify.decorate('setupModels', () => {
-        const Case = fastify.sequelize.import('../db/models/history.js');
-        const Network = fastify.sequelize.import('../db/models/network.js');
-        const Users = fastify.sequelize.import('../db/models/users.js');
-        const Symptom = fastify.sequelize.import('../db/models/symptoms.js');
-        const UserSymptom = fastify.sequelize.import('../db/models/user_symptoms.js');
-        const VideoShares = fastify.sequelize.import('../db/models/video_shares.js');
-        const Videos = fastify.sequelize.import('../db/models/videos.js');
-        const PushSubscriptions = fastify.sequelize.import('../db/models/push_subscriptions.js');
-        const PostalCodeDescriptions = fastify.sequelize.import('../db/models/postal_code_descriptions.js');
-        const ShareImagesByPostalcode = fastify.sequelize.import('../db/models/share_images_by_postalcode.js')
-        const PostalCodes = fastify.sequelize.import('../db/models/postal_codes.js');
+        const Case = fastify.sequelize.import('../db/models/history.js')
+        const Network = fastify.sequelize.import('../db/models/network.js')
+        const Users = fastify.sequelize.import('../db/models/users.js')
+        const Symptom = fastify.sequelize.import('../db/models/symptoms.js')
+        const UserSymptom = fastify.sequelize.import(
+            '../db/models/user_symptoms.js')
+        const VideoShares = fastify.sequelize.import(
+            '../db/models/video_shares.js')
+        const Videos = fastify.sequelize.import('../db/models/videos.js')
+        const PushSubscriptions = fastify.sequelize.import(
+            '../db/models/push_subscriptions.js')
+        const PostalCodeDescriptions = fastify.sequelize.import(
+            '../db/models/postal_code_descriptions.js')
+        const ShareImagesByPostalcode = fastify.sequelize.import(
+            '../db/models/share_images_by_postalcode.js')
+        const PostalCodes = fastify.sequelize.import(
+            '../db/models/postal_codes.js')
 
-        console.log('Initializing models');
+        console.log('Initializing models')
 
         //relationships
-        Case.belongsTo(Users, { foreignKey: 'user_id'});
-        Users.hasMany(Case, { foreignKey: 'user_id', as: 'cases' });
+        Case.belongsTo(Users, {foreignKey: 'user_id'})
+        Users.hasMany(Case, {foreignKey: 'user_id', as: 'cases'})
 
-        Users.belongsTo(Case, { foreignKey: 'latest_status_id', as: 'latest_status' })
-        
-        Users.belongsTo(PostalCodeDescriptions, { foreignKey: 'postalcode1', as: 'pc_description' })
+        Users.belongsTo(Case,
+            {foreignKey: 'latest_status_id', as: 'latest_status'})
+
+        Users.belongsTo(PostalCodeDescriptions,
+            {foreignKey: 'postalcode1', as: 'pc_description'})
 
         Users.hasMany(Network, { foreignKey: 'user_id' });
         Network.belongsTo(Users, { foreignKey: 'user_id' });

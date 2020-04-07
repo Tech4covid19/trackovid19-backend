@@ -18,35 +18,39 @@ module.exports = async (fastify, opts) => {
     // Do the magic...
     try {
 
-      const { postalCode, geo, condition, confinementState, symptoms } = request.body;
-      const symptoms_list = symptoms.map(id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}));
+        const {postalCode, geo, condition, confinementState, symptoms} = request.body
+        const symptoms_list = symptoms.map(
+            id => ({symptom_id: id, timestamp: Date(), unix_ts: Date.now()}))
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(postalCode);
+        // Decode postal code
+        const postparts = tools.splitPostalCode(postalCode)
 
-      const postalCodeDB = await fastify.models().PostalCodes.findOne({
-        where: { postal_number: postparts[0], postal_extension: postparts[1] },
-      });
+        const postalCodeDB = await fastify.models().PostalCodes.findOne({
+            where: {
+                postal_number: postparts[0],
+                postal_extension: postparts[1],
+            },
+        })
 
-      if (!postalCodeDB) {
-        // Commit the transaction
-        await t.commit();
+        if (!postalCodeDB) {
+            // Commit the transaction
+            await t.commit()
 
-        reply.status(400).send({error: "Invalid postal code"});
-        return
-      }
+            reply.status(400).send({error: 'Invalid postal code'})
+            return
+        }
 
-      // Now let's look for the user in the personal data model
-      const user = await fastify.models().Users.findOne({
-        where: { id: request.user.payload.id },
-      });
+        // Now let's look for the user in the personal data model
+        const user = await fastify.models().Users.findOne({
+            where: {id: request.user.payload.id},
+        })
 
-      const personal = await fastify.models().UsersData.findOne({
-          where: { id: request.user.payload.id_data }
-      });
+        const personal = await fastify.models().UsersData.findOne({
+            where: {id: request.user.payload.id_data},
+        })
 
       if (!user || !personal) {
-        
+
         // Commit the transaction
         await t.commit();
 
@@ -68,7 +72,7 @@ module.exports = async (fastify, opts) => {
 
         // save the date in the personal model (only the date, to prevent correlation)
         personal.symptoms_updated_at = new Date((new Date).toDateString());
-        
+
         // Set this update as the latest one for the user
         user.latest_status_id = acase.id;
 
@@ -80,7 +84,7 @@ module.exports = async (fastify, opts) => {
 
         reply.send({ status: 'success' })
       }
-      
+
     } catch (error) {
       request.log.error(error)
 
@@ -122,42 +126,8 @@ module.exports = async (fastify, opts) => {
   }, async (request, reply) => {
     try {
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(request.params.postalCode);
+      return fastify.fetchConditionsByPostalCode(request.params.postalCode);
 
-      var cases = await fastify.models().StatusByPostalCode.findAll({
-        where: { postalcode1: postparts[0] },
-        order: [['summary_order']]
-      });
-
-      // Fallback when the postal code does not have any registered case yet
-      if (cases.length == 0) {
-        const conditions = await fastify.models().Condition.findAll({
-          where: {show_in_summary: true},
-          order: [['summary_order']]
-        });
-        cases = [
-          {
-            postalcode: postparts[0],
-            status: 100,
-            status_text: 'Com sintomas',
-            hits: 0
-          },
-          {
-            postalcode: postparts[0],
-            status: 200,
-            status_text: 'Sem sintomas',
-            hits: 0
-          }
-        ].concat(conditions.map(cond => ({
-          postalcode: postparts[0],
-          status: cond.id,
-          status_text: cond.status_summary,
-          hits: 0
-        })));
-      }
-
-      return cases;
     } catch (error) {
       request.log.error(error)
       reply.status(500).send(sanitize_log(error, 'Could not get conditions by postal code'));
@@ -173,29 +143,8 @@ module.exports = async (fastify, opts) => {
   }, async (request, reply) => {
     try {
 
-      // Decode postal code
-      const postparts = tools.splitPostalCode(request.params.postalCode);
+      return fastify.fetchConfinementStatesByPostalCode(request.params.postalCode);
 
-      var cases = await fastify.models().ConfinementStateByPostalCode.findAll({
-        where: { postalcode1: postparts[0] },
-        order: [['summary_order']]
-      });
-
-      // Fallback when the postal code does not have any registered case yet
-      if (cases.length == 0) {
-        const states = await fastify.models().ConfinementState.findAll({
-          where: {show_in_summary: true},
-          order: [['summary_order']]
-        });
-        cases = states.map(state => ({
-          postalcode: postparts[0],
-          confinement_state: (state.id == 2 ? 300 : state.id),
-          confinement_state_text: state.state_summary,
-          hits: 0
-        })).filter(state => state.confinement_state != 3);
-      }
-
-      return cases;
     } catch (error) {
       request.log.error(error)
       reply.status(500).send(sanitize_log(error, 'Could not get confinement states by postal code'));

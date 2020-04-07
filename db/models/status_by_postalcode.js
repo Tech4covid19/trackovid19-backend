@@ -42,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: 'timezone(utc)',
         },
     }, {
-		tableName: 'status_by_postalcode',
-		timestamps: false
-	});
+        tableName: 'status_by_postalcode',
+        timestamps: false,
+    });
 };

@@ -20,16 +20,8 @@ module.exports = async (fastify) => {
             // Decode postal code
             const postparts = tools.splitPostalCode(request.params.postalCode)
             // get condition cases
-            var cases1 = await fastify.models().StatusByPostalCode.findAll({
-                where: {postalcode1: postparts[0]},
-                order: [['summary_order']],
-            })
-            var cases2 = await fastify.models().
-                ConfinementStateByPostalCode.
-                findAll({
-                    where: {postalcode1: postparts[0]},
-                    order: [['summary_order']],
-                })
+            var cases1 = await fastify.fetchConditionsByPostalCode(request.params.postalCode);
+            var cases2 = await fastify.fetchConfinementStatesByPostalCode(request.params.postalCode);
 
             const cases = [...cases1, ...cases2]
 
@@ -40,7 +32,10 @@ module.exports = async (fastify) => {
             const myHash = caseHash.digest('hex')
 
             let res = await fastify.models().ShareImagesByPostalcode.findOne({
-                where: {image_hash: myHash},
+                where: {
+                    image_hash: myHash, 
+                    postalcode: postparts[0]
+                },
             })
             if (!res) {
                 let data = {}
@@ -52,25 +47,25 @@ module.exports = async (fastify) => {
                 let cs = cases.find(cs => cs.status === 100)
                 data.com_sintomas_value = cs === undefined ? '0' : cs.hits
                 // suspeitos
-                let sus = cases.find(cs => cs.status === 2)
+                let sus = cases.find(sus => sus.status === 2)
                 data.suspeitos_value = sus === undefined ? '0' : sus.hits
                 // recuperados
-                let rec = cases.find(cs => cs.status === 3)
+                let rec = cases.find(rec => rec.status === 3)
                 data.recuperados_value = rec === undefined ? '0' : rec.hits
                 // infectados
-                let inf = cases.find(cs => cs.status === 1)
+                let inf = cases.find(inf => inf.status === 1)
                 data.infectados_value = inf === undefined ? '0' : inf.hits
                 // sem sintomas
-                let ss = cases.find(cs => cs.confinement_state === 200)
+                let ss = cases.find(ss => ss.status === 200)
                 data.sem_sintomas_value = ss === undefined ? '0' : ss.hits
                 // isolados
-                let iso = cases.find(cs => cs.confinement_state === 300)
+                let iso = cases.find(iso => iso.confinement_state === 300)
                 data.isolados_value = iso === undefined ? '0' : iso.hits
                 // rotina habitual
-                let tfc = cases.find(cs => cs.confinement_state === 4)
+                let tfc = cases.find(tfc => tfc.confinement_state === 4)
                 data.rotina_habitual_value = tfc === undefined ? '0' : tfc.hits
                 // Em casa preventivamente
-                let ecp = cases.find(cs => cs.confinement_state === 1)
+                let ecp = cases.find(ecp => ecp.confinement_state === 1)
                 data.em_casa_value = ecp === undefined ? '0' : ecp.hits
 
                 // get latest date in cases response
@@ -78,13 +73,12 @@ module.exports = async (fastify) => {
                     Math.max.apply(null, cases.map(function (e) {
                         return new Date(e.latest_status_ts)
                     })))
-
+                console.log('data object: ', data);
                 let buffer = await imgGeneratorService.dashboard(data)
 
-                let fileKey = await awsService.S3.storeS3(buffer,
-                    myHash + '.png')
+                let fileKey = await awsService.S3.storeS3(buffer, myHash + '.png')
                 const fileUrl = process.env.AWS_S3_DOMAIN + '/' + fileKey
-
+                
                 fastify.models().
                     ShareImagesByPostalcode.
                     create({
@@ -102,7 +96,7 @@ module.exports = async (fastify) => {
             console.log('Error: ', error)
             request.log.error(error)
             reply.status(500).
-                send(sanitize_log(error, 'Could not update user state'))
+                send(sanitize_log(error, 'Could not share image'))
         }
     })
 }
