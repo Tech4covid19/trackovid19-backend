@@ -146,20 +146,6 @@ sanitize_log = (error, message) => {
     };
 }
 
-const identityProviders = {
-  facebook: 1,
-  google: 2
-}
-identityProviders.nameById = (id) => {
-  if (id === 1) {
-    return 'facebook';
-  }
-  if (id === 2) {
-    return 'google';
-  }
-  return 'unknown';
-} ;
-
 // Exports
 exports.generateIdentityProviderHashes = generateIdentityProviderHashes;
 exports.buildInfo = buildInfo;
@@ -171,4 +157,3 @@ exports.generate_keys_hex = generate_keys_hex;
 exports.generate_iv = generate_iv;
 exports.generate_random = generate_random;
 exports.sanitize_log = sanitize_log;
-exports.identityProviders = identityProviders;

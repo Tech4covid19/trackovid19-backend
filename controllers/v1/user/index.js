@@ -1,6 +1,7 @@
 'use strict'
 
 const tools = require('../../../tools/tools');
+const identityProviders = require('../../../services/identity-providers');
 const aws = require('../../../services/aws-service');
 
 module.exports = async (fastify, opts) => {
@@ -230,7 +231,7 @@ module.exports = async (fastify, opts) => {
       user_id: request.user.payload.id,
       user_data_id: request.user.payload.id_data,
       request_date: new Date(),
-      identityProvider: tools.identityProviders.nameById(user.external_id_provider_id)
+      identityProvider: identityProviders.providers.nameById(user.external_id_provider_id)
     });
 
     try {
