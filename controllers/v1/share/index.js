@@ -20,16 +20,8 @@ module.exports = async (fastify) => {
             // Decode postal code
             const postparts = tools.splitPostalCode(request.params.postalCode)
             // get condition cases
-            var cases1 = await fastify.models().StatusByPostalCode.findAll({
-                where: {postalcode1: postparts[0]},
-                order: [['summary_order']],
-            })
-            var cases2 = await fastify.models().
-                ConfinementStateByPostalCode.
-                findAll({
-                    where: {postalcode1: postparts[0]},
-                    order: [['summary_order']],
-                })
+            var cases1 = await fastify.fetchConditionsByPostalCode(request.params.postalCode);
+            var cases2 = await fastify.fetchConfinementStatesByPostalCode(request.params.postalCode);
 
             const cases = [...cases1, ...cases2]
 
@@ -102,7 +94,7 @@ module.exports = async (fastify) => {
             console.log('Error: ', error)
             request.log.error(error)
             reply.status(500).
-                send(sanitize_log(error, 'Could not update user state'))
+                send(sanitize_log(error, 'Could not share image'))
         }
     })
 }
