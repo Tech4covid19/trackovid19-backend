@@ -8,10 +8,9 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const svg2img = require('svg2img')
 
-
-
 function generateImage (svg, data) {
     return new Promise(function (resolve, reject) {
+
         console.log('Started generating image')
         try {
             // based on the data change the svg
@@ -28,6 +27,7 @@ function generateImage (svg, data) {
             const finalSvg = $.xml()
             // generate an image based on updated svg source.
             // TODO: extract to function and add option for multiple formats
+
             svg2img(finalSvg.toString(), function (error, buffer) {
                 console.log('generating PNG')
                 if (error) {
@@ -138,7 +138,7 @@ async function generateDashboard (data) {
             // isolamento
             isolamento: data.isolamento || 'Isolamento',
         }
-        // console.log('Fields: ', fields);
+        console.log('Fields recieved by the generator: ', fields);
 
         return await generateImage(svg, fields)
     } catch (err) {
