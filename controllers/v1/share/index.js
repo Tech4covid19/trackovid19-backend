@@ -52,25 +52,25 @@ module.exports = async (fastify) => {
                 let cs = cases.find(cs => cs.status === 100)
                 data.com_sintomas_value = cs === undefined ? '0' : cs.hits
                 // suspeitos
-                let sus = cases.find(cs => cs.status === 2)
+                let sus = cases.find(sus => sus.status === 2)
                 data.suspeitos_value = sus === undefined ? '0' : sus.hits
                 // recuperados
-                let rec = cases.find(cs => cs.status === 3)
+                let rec = cases.find(rec => rec.status === 3)
                 data.recuperados_value = rec === undefined ? '0' : rec.hits
                 // infectados
-                let inf = cases.find(cs => cs.status === 1)
+                let inf = cases.find(inf => inf.status === 1)
                 data.infectados_value = inf === undefined ? '0' : inf.hits
                 // sem sintomas
-                let ss = cases.find(cs => cs.status === 200)
+                let ss = cases.find(ss => ss.status === 200)
                 data.sem_sintomas_value = ss === undefined ? '0' : ss.hits
                 // isolados
-                let iso = cases.find(cs => cs.confinement_state === 300)
+                let iso = cases.find(iso => iso.confinement_state === 300)
                 data.isolados_value = iso === undefined ? '0' : iso.hits
                 // rotina habitual
-                let tfc = cases.find(cs => cs.confinement_state === 4)
+                let tfc = cases.find(tfc => tfc.confinement_state === 4)
                 data.rotina_habitual_value = tfc === undefined ? '0' : tfc.hits
                 // Em casa preventivamente
-                let ecp = cases.find(cs => cs.confinement_state === 1)
+                let ecp = cases.find(ecp => ecp.confinement_state === 1)
                 data.em_casa_value = ecp === undefined ? '0' : ecp.hits
 
                 // get latest date in cases response
@@ -78,7 +78,7 @@ module.exports = async (fastify) => {
                     Math.max.apply(null, cases.map(function (e) {
                         return new Date(e.latest_status_ts)
                     })))
-
+                console.log('data object: ', data);
                 let buffer = await imgGeneratorService.dashboard(data)
 
                 let fileKey = await awsService.S3.storeS3(buffer,

@@ -138,7 +138,7 @@ async function generateDashboard (data) {
             // isolamento
             isolamento: data.isolamento || 'Isolamento',
         }
-        // console.log('Fields: ', fields);
+        console.log('Fields recieved by the generator: ', fields);
 
         return await generateImage(svg, fields)
     } catch (err) {
