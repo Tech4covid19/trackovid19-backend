@@ -3,9 +3,11 @@
 const cheerio = require('cheerio')
 const fs = require('fs')
 const svg2img = require('svg2img')
-
+const Canvas = require('canvas');
+Canvas.registerFont(__dirname + '/../resources/fonts/Archivo-Regular.ttf', {family: 'Archivo'});
 function generateImage (svg, data) {
     return new Promise(function (resolve, reject) {
+
         console.log('Started generating image')
         try {
             // based on the data change the svg
@@ -22,6 +24,7 @@ function generateImage (svg, data) {
             const finalSvg = $.xml()
             // generate an image based on updated svg source.
             // TODO: extract to function and add option for multiple formats
+
             svg2img(finalSvg.toString(), function (error, buffer) {
                 console.log('generating PNG')
                 if (error) {
