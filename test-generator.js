@@ -1,7 +1,8 @@
 'use strict'
-
+const fs = require('fs');
 const g = require('./services/image-generator')
 
+global.__basedir = __dirname
 const date = new Date()
 const data = {
     city_name: 'Porto',
@@ -16,4 +17,10 @@ const data = {
     rotina_habitual_value: 147,
     isolados_value: 852,
 }
-g.dashboard(data)
+async function generateDashboardImage () {
+    const buffer = await g.dashboard(data);
+    fs.writeFileSync(__dirname +'/resources/dashboard.png', buffer);
+}
+generateDashboardImage ()
+
+
