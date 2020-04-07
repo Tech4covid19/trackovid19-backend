@@ -32,7 +32,10 @@ module.exports = async (fastify) => {
             const myHash = caseHash.digest('hex')
 
             let res = await fastify.models().ShareImagesByPostalcode.findOne({
-                where: {image_hash: myHash},
+                where: {
+                    image_hash: myHash, 
+                    postalcode: postparts[0]
+                },
             })
             if (!res) {
                 let data = {}
@@ -73,10 +76,9 @@ module.exports = async (fastify) => {
                 console.log('data object: ', data);
                 let buffer = await imgGeneratorService.dashboard(data)
 
-                let fileKey = await awsService.S3.storeS3(buffer,
-                    myHash + '.png')
+                let fileKey = await awsService.S3.storeS3(buffer, myHash + '.png')
                 const fileUrl = process.env.AWS_S3_DOMAIN + '/' + fileKey
-
+                
                 fastify.models().
                     ShareImagesByPostalcode.
                     create({
