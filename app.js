@@ -13,6 +13,8 @@ const swagger = require('./config/swagger')
 // store application root
 global.__basedir = __dirname
 
+
+
 fastify.register(oas, swagger.options)
 
 const dotEnv = require('dotenv').config()

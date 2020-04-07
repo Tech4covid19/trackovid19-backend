@@ -1,8 +1,14 @@
 'use strict'
 
+const Canvas = require('canvas')
+
+Canvas.registerFont('/var/task/fonts/Archivo-Regular.ttf', {family: 'Archivo'});
+
 const cheerio = require('cheerio')
 const fs = require('fs')
 const svg2img = require('svg2img')
+
+
 
 function generateImage (svg, data) {
     return new Promise(function (resolve, reject) {
