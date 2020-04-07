@@ -61,7 +61,7 @@ module.exports = async (fastify) => {
                 let inf = cases.find(cs => cs.status === 1)
                 data.infectados_value = inf === undefined ? '0' : inf.hits
                 // sem sintomas
-                let ss = cases.find(cs => cs.confinement_state === 200)
+                let ss = cases.find(cs => cs.status === 200)
                 data.sem_sintomas_value = ss === undefined ? '0' : ss.hits
                 // isolados
                 let iso = cases.find(cs => cs.confinement_state === 300)
