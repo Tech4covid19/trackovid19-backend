@@ -44,6 +44,7 @@ provider:
     AWS_S3_BUCKET: ${self:custom.AWS_S3_BUCKET.${opt:stage, 'dev'}}  
     AWS_S3_DOMAIN: ${self:custom.AWS_S3_DOMAIN.${opt:stage, 'dev'}}  
     AWS_SNS_FAIL_EMAIL_TOPICARN: ${self:custom.AWS_SNS_FAIL_EMAIL_TOPICARN.${opt:stage, 'dev'}} 
+    FONTCONFIG_PATH: ${self:custom.FONTCONFIG_PATH.${opt:stage, 'dev'}} 
 
 functions:
   app:
@@ -208,6 +209,10 @@ custom:
     dev: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error-staging
     staging: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error-staging
     prd: arn:aws:sns:eu-west-1:788648735177:user-data-removal-notification-error
+  FONTCONFIG_PATH: 
+    dev: /var/task/resources/fonts
+    staging: /var/task/resources/fonts
+    prd: /var/task/resources/fonts
 
 # Plugins
 plugins:
