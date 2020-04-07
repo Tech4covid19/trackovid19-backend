@@ -33,7 +33,7 @@ module.exports = async (fastify) => {
 
             let res = await fastify.models().ShareImagesByPostalcode.findOne({
                 where: {
-                    image_hash: myHash, 
+                    image_hash: myHash,
                     postalcode: postparts[0]
                 },
             })
@@ -69,16 +69,33 @@ module.exports = async (fastify) => {
                 data.em_casa_value = ecp === undefined ? '0' : ecp.hits
 
                 // get latest date in cases response
-                data.last_update = new Date(
+                let date = new Date(
                     Math.max.apply(null, cases.map(function (e) {
                         return new Date(e.latest_status_ts)
-                    })))
+                    })));
+                let months = [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ]
+                let datestr = `Estado em ${date.getDate()} de ${months[date.getMonth()]} de ${date.getUTCFullYear()}, às ${date.getHours()}:${(date.getMinutes()<10?'0':'') + date.getMinutes()}`;
+
+                data.last_update = datestr;
                 console.log('data object: ', data);
                 let buffer = await imgGeneratorService.dashboard(data)
 
                 let fileKey = await awsService.S3.storeS3(buffer, myHash + '.png')
                 const fileUrl = process.env.AWS_S3_DOMAIN + '/' + fileKey
-                
+
                 fastify.models().
                     ShareImagesByPostalcode.
                     create({
