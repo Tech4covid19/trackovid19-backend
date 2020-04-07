@@ -11,7 +11,7 @@ CREATE TABLE public.notifications
 INSERT INTO notifications (code, title, body, options, sent_block_size)
 VALUES ('users-no-update-24h', 'Atualização pendente', 'Não atualizou o seu estado nas últimas 24 horas.', '{
   "icon": "https://app.covidografia.pt/assets/img/favicon/favicon-32x32.png"
-}', 100)
+}', 1000)
 ON CONFLICT (code)
 DO NOTHING;
 
