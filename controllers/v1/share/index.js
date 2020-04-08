@@ -95,7 +95,7 @@ module.exports = async (fastify) => {
 
                 let fileKey = await awsService.S3.storeS3(buffer, myHash + '.png')
                 const fileUrl = process.env.AWS_S3_DOMAIN + '/' + fileKey
-
+                
                 fastify.models().
                     ShareImagesByPostalcode.
                     create({
