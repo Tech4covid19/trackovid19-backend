@@ -32,17 +32,6 @@ const sequelizeConfig = {
   logging: false
 }
 
-const subscriptionsToSend = `select 
-push_subscriptions.id as push_subscriptions_id
-,push_subscriptions.user_id
-,push_subscriptions.endpoint
-,push_subscriptions.keys
-from latest_status, push_subscriptions
-where 
-latest_status.user_id = push_subscriptions.user_id
-and push_subscriptions.push_type = 'web-push'
-and latest_status.timestamp <= CURRENT_TIMESTAMP + interval '-24h'`;
-
 function connectToDB(options) {
   return new Promise((resolve, reject) => {
     const sequelize = new Sequelize(options);
@@ -84,7 +73,8 @@ async function runJob(event, context, callback) {
         notification = Object.assign(notification, JSON.parse(notDB[0].options));
       }
 
-      const pushSubscriptions = await sequelize.query(subscriptionsToSend, { type: sequelize.QueryTypes.SELECT});
+      const pushSubscriptions = await sequelize.query('select * from get_subscriptions_for_job (:p_notification_code, :p_pagesize)',
+          { replacements: { p_notification_code: notificationCode, p_pagesize: notDB[0].sent_block_size || 50 }, type: sequelize.QueryTypes.SELECT });
 
       let sends = [];
       let expired = [];
@@ -100,6 +90,9 @@ async function runJob(event, context, callback) {
 
             console.log('Web Push Application Server - Notification sent to ' + subscription.endpoint);
             sends.push(subscription.endpoint);
+
+            await sequelize.query('update push_deliveries set sent_at = :p_current_datetime where id = :p_push_deliveries_id',
+              { replacements: { p_current_datetime: new Date(), p_push_deliveries_id: pushSub.push_deliveries_id } });
           }
           catch (error) {
             console.log('ERROR in sending Notification to ' + subscription.endpoint);

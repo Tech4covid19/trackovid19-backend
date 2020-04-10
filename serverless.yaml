@@ -62,7 +62,11 @@ functions:
   notifications:
     handler: jobs/notify-users-no-update-24h.handler
     events:
-      - schedule: cron(00 20 * * ? *)
+      - schedule: rate(10 minutes)
+
+
+
+
 
 # Custom Variables
 custom:
