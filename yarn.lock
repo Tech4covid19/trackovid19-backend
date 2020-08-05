@@ -238,10 +238,10 @@ atomic-sleep@^1.0.0:
   resolved "https://registry.yarnpkg.com/atomic-sleep/-/atomic-sleep-1.0.0.tgz#eb85b77a601fc932cfe432c5acd364a9e2c9075b"
   integrity sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==
 
-avvio@^6.3.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/avvio/-/avvio-6.3.1.tgz#201ec26505551657272cda90c23ef1cb0c7e390a"
-  integrity sha512-jfcOyzK+TVBRae/FrIhlgVIDcGzRzIyDvOq+5e1IkxY141QSVZoe9kKhOwLdYkDBCkOQT6JU/53NkJY0qNrpqw==
+avvio@^6.4.1:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/avvio/-/avvio-6.5.0.tgz#d2cf119967fe90d2156afc29de350ced800cdaab"
+  integrity sha512-BmzcZ7gFpyFJsW8G+tfQw8vJNUboA9SDkkHLZ9RAALhvw/rplfWwni8Ee1rA11zj/J7/E5EvZmweusVvTHjWCA==
   dependencies:
     archy "^1.0.0"
     debug "^4.0.0"
@@ -1249,16 +1249,7 @@ fast-json-stable-stringify@^2.0.0:
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
   integrity sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
 
-fast-json-stringify@^1.14.0:
-  version "1.17.0"
-  resolved "https://registry.yarnpkg.com/fast-json-stringify/-/fast-json-stringify-1.17.0.tgz#4a3487837c1f5294d9b4df40bae5b1d7d2b8ed68"
-  integrity sha512-dyb9I8HrVHoCjE5cPwTF+vZxERbKY7l3yvScfr3bVIuM2aAXao9VPE4uGafYRMzX2ueTfiyeS/Cx5zyKDKC3uA==
-  dependencies:
-    ajv "^6.11.0"
-    deepmerge "^4.2.2"
-    string-similarity "^4.0.1"
-
-fast-json-stringify@^1.18.0:
+fast-json-stringify@^1.14.0, fast-json-stringify@^1.18.0:
   version "1.18.0"
   resolved "https://registry.yarnpkg.com/fast-json-stringify/-/fast-json-stringify-1.18.0.tgz#dff1335f5d9e69ee80655569d5c4fb981d07a02e"
   integrity sha512-rhIDy38MspXW/11OJZwXc4cGsWrhBmKEvOPvxl9WDUSUW6D9TeNwza5ejP2ZRgv2rJ705gvTOTCCe6OafvwR2Q==
@@ -1399,18 +1390,18 @@ fastify-static@^2.6.0:
     readable-stream "^3.4.0"
     send "^0.16.0"
 
-fastify@^2.13.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.13.0.tgz#236906311122e38c45c6610cbd09b8818471d9cf"
-  integrity sha512-iAFPs1qsYRaVdoAVFqC2Q6BmPsfaUZBnW6Icupjt/eVKD4SolSkg4aAlWJlZl3Nh3MLpCc6O+y3Apg/LVQ5PoA==
+fastify@^2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/fastify/-/fastify-2.15.1.tgz#195a068bca87c7b57a83fe81f0aa66e86c6a3992"
+  integrity sha512-pEE1pa5j/vtZeZTbPpFgsJgzLbThcYgiLDw2yZIG8qNZ5LkF1Ew2vbv9k3nTXNxGEPYFBbyNTCKRSj3JbX+FhA==
   dependencies:
     abstract-logging "^2.0.0"
     ajv "^6.12.0"
-    avvio "^6.3.1"
+    avvio "^6.4.1"
     fast-json-stringify "^1.18.0"
     find-my-way "^2.2.2"
     flatstr "^1.0.12"
-    light-my-request "^3.7.2"
+    light-my-request "^3.7.3"
     middie "^4.1.0"
     pino "^5.17.0"
     proxy-addr "^2.0.6"
@@ -2268,10 +2259,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-light-my-request@^3.7.2:
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-3.7.2.tgz#8f153c299beeae31bbcb98111474952900c461cd"
-  integrity sha512-K8vjEMo+LhAUV/R5KB3EdI1EaBmif5zOR5kg1+7wX32SoHIsUsFdcSAf/dNMurvZSoRQmLKyBsXlKr0ukNTreQ==
+light-my-request@^3.7.3:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-3.8.0.tgz#7da96786e4d479371b25cfd524ee05d5d583dae8"
+  integrity sha512-cIOWmNsgoStysmkzcv2EwvLwMb2hEm6oqKMerG/b5ey9F0we2Qony8cAZgBktmGPYUvPyKsDCzMcYU6fXbpWew==
   dependencies:
     ajv "^6.10.2"
     cookie "^0.4.0"
